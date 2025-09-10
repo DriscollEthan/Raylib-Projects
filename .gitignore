@@ -13,3 +13,5 @@ x64/
 
 #DO NOT Ignore Raylib-cpp
 !**raylib-cpp
+!vcpkg.json
+!vcpkg-configuration.json
