@@ -12,5 +12,4 @@ x64/
 *.user
 
 #DO NOT Ignore Raylib-cpp
-*raylib-cpp
-*raylib-cpp/:
+!**raylib-cpp
