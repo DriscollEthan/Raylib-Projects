@@ -1,0 +1,16 @@
+
+# Visual Studio Junk
+.vs/
+
+# Build Artifacts
+Debug/
+Release/
+
+x64/
+
+#Ignore .user FIles
+*.user
+
+#DO NOT Ignore Raylib-cpp
+*raylib-cpp
+*raylib-cpp/:
