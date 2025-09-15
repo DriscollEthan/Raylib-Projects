@@ -32,6 +32,8 @@ int main()
 		BeginDrawing();
 
 		ClearBackground(DARKGRAY);
+
+		EndDrawing();
 	}
 
 	/*** *** ***/
