@@ -1,9 +1,25 @@
+#include <iostream> //std::cout and Logging 
 #include "../raylib-cpp/include/raylib-cpp.hpp"
+#include "Vector2D.h"
 #include "Object.h"
 #include "Player.h"
 #include "Collectable.h"
-#include <iostream> //std::cout and Logging 
 
+
+int RoundedInt(float x)
+{
+	float y = x;
+	while (y > 1)
+	{
+		--y;
+	}
+
+	if (y >= 0.5)
+	{
+		x += 0.5f;
+	}
+	return x;
+}
 
 int main()
 {
@@ -11,7 +27,7 @@ int main()
 	int ScreenWidth = 1000;
 	int ScreenHeight = 600;
 	raylib::Window Window(ScreenWidth, ScreenHeight, "Default Window");
-	raylib::Vector2 Grid(5, 3);
+	Driscoll::Vector2D Grid(5, 3);
 	int const TotalGridSegments = 15;
 	Player* CurrentPlayer = new Player();
 	Collectable CollectableObjects[TotalGridSegments];
@@ -27,9 +43,10 @@ int main()
 		float xP = (i + 1) / Grid.x;
 		while (xP > 1)
 		{
-			xP -= 1;  
+			xP -= 1;
 		}
-		int xPos = xP * Grid.x;
+
+		int xPos = RoundedInt(xP * Grid.x);
 
 		switch (j)
 		{
@@ -41,13 +58,13 @@ int main()
 
 		case 1:
 			CollectableObjects[i].Image = CollectableImage;
-			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) / 2), (300));
+			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 100), (300));
 			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
 			break;
 
 		case 2:
 			CollectableObjects[i].Image = CollectableImage;
-			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) / 2), (500));
+			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 100), (500));
 			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
 			break;
 		}
@@ -79,8 +96,7 @@ int main()
 
 		for (int i = 0; i < TotalGridSegments; ++i)
 		{
-			DrawCircleV(CollectableObjects[i].Position / 2, 25, YELLOW);
-			//ImageDrawCircleV(&CollectableObjects[i].Image, CollectableObjects[i].Position, 25, WHITE);
+			ImageDrawCircleV(&CollectableObjects[i].Image, CollectableObjects[i].Position, 25, WHITE);
 		}
 
 		ClearBackground(DARKGRAY);
