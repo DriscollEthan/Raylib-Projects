@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/miniaudio-x64-windows-0.11.22-f9c3ca55-88b8-4cf0-b89b-e6579715ca02",
-  "name": "miniaudio:x64-windows@0.11.22 61826b879c2903e0aa451ab241112457de6453f2176f17c7727adce1696b9d27",
+  "documentNamespace": "https://spdx.org/spdxdocs/miniaudio-x64-windows-0.11.22-1236dd3b-e322-4491-b011-c440c4110743",
+  "name": "miniaudio:x64-windows@0.11.22 0fca38b611e79536532cbe336094e7eb2c4671df060759af45573b3a170417e8",
   "creationInfo": {
     "creators": [
       "Tool: vcpkg-2025-09-03-4580816534ed8fd9634ac83d46471440edd82dfe"
     ],
-    "created": "2025-09-10T06:25:14Z"
+    "created": "2025-09-09T17:41:51Z"
   },
   "relationships": [
     {
@@ -64,7 +64,7 @@
     {
       "name": "miniaudio:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "61826b879c2903e0aa451ab241112457de6453f2176f17c7727adce1696b9d27",
+      "versionInfo": "0fca38b611e79536532cbe336094e7eb2c4671df060759af45573b3a170417e8",
       "downloadLocation": "NONE",
       "licenseConcluded": "(Unlicense OR MIT-0)",
       "licenseDeclared": "NOASSERTION",

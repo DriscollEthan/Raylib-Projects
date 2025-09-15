@@ -1,5 +1,4 @@
 #include "../raylib-cpp/include/raylib-cpp.hpp"
-#include <iostream>
 
 raylib::Vector2 Wrap(raylib::Vector2 _currentVector, raylib::Vector2 _min, raylib::Vector2 _max)
 {
@@ -88,11 +87,11 @@ raylib::Vector2 Movement(raylib::Vector2 _curPos, raylib::Vector2 _movementVecto
 
 int main()
 {
-	//Initialization
+	//Variable Initialization
 	int ScreenWidth = 800;
 	int ScreenHeight = 800;
-	raylib::Color TextColor = raylib::Color::Green();
 	raylib::Window Window(ScreenWidth, ScreenHeight, "Basic Window");
+	raylib::Color TextColor = raylib::Color::Green();
 	raylib::Text Text("Congrats! I created my first window!");
 	raylib::Vector2 PlayerPosition(0, 0);
 	float MovementSpeed = 1.0f;
