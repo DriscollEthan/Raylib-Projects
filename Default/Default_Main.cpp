@@ -96,14 +96,19 @@ int main()
 	raylib::Text Text("Congrats! I created my first window!");
 	raylib::Vector2 PlayerPosition(0, 0);
 	float MovementSpeed = 1.0f;
+	raylib::Vector2 MovementVector(0, 0);
 
 	SetTargetFPS(60);
 
 	//Main Game Loop
 	while (!Window.ShouldClose())
 	{
-		raylib::Vector2 MovementVector(0, 0);
+		//Variable Reset Location
+		MovementVector = (0, 0);
+
 		//Update Look For Input
+		// 
+		//MOVEMENT INPUT
 		if (IsKeyDown(KEY_W))
 		{
 			MovementVector.y -= 1;
@@ -121,6 +126,7 @@ int main()
 			MovementVector.x += 1;
 		}
 
+		//UPDATE TEXT AND CHANGE TEXT MOVEMENT SPEED INPUT
 		if (IsKeyPressed(KEY_SPACE))
 		{
 			if (TextColor == raylib::Color::Green())
@@ -149,6 +155,7 @@ int main()
 			TextColor.DrawText(Text.GetText(), PlayerPosition.x, PlayerPosition.y, 20);
 		}
 	}
+	//END OF MAIN GAME LOOP
 
 	return 0;
 }
