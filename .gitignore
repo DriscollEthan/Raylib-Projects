@@ -1,6 +1,7 @@
 
 # Visual Studio Junk
 .vs/
+vcpkg_installed/
 
 # Build Artifacts
 Debug/
