@@ -2,27 +2,44 @@
 
 int main()
 {
-	//Variable Initialization
+	//Variable Initialization:
 	int ScreenWidth = 800;
 	int ScreenHeight = 800;
 	raylib::Window Window(ScreenWidth, ScreenHeight, "Default Window");
 
-	//Main Game Loop
+	/*** *** ***/
+
+	SetTargetFPS(60);
+
+	/*** *** ***/
+
+	//Main Game Loop and Entry Point
 	while (!Window.ShouldClose())
 	{
 		//Variable Reset Location
 
+		/*** *** ***/
+
 		//Update Look For Input
+
+		/*** *** ***/
 
 		//Variable Updates
 
+		/*** *** ***/
+
 		//Draw
-		while (Window.Drawing())
-		{
-			Window.ClearBackground(BLACK);
-		}
+		BeginDrawing();
+
+		ClearBackground(DARKGRAY);
 	}
+
+	/*** *** ***/
+
 	//END OF MAIN GAME LOOP
 
+	/*** *** ***/
+
+	//END *** ***
 	return 0;
 }
