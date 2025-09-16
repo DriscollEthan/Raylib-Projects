@@ -237,7 +237,7 @@ namespace Driscoll
 			}
 
 		// returns a new Vector where each component is divided by the scalar value
-		Vector2D operator /=(const float _otherFloat)
+		Vector2D& operator /=(const float _otherFloat)
 			{
 				x /= _otherFloat;
 				y /= _otherFloat;

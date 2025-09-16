@@ -25,6 +25,15 @@ public:
      */
     Texture& operator=(const Texture&) = delete;
 
+    Texture(int _id, int _width, int _height, int _mipmaps, int _format)
+    {
+        id = _id;
+        width = _width;
+        height = _height;
+        mipmaps = _mipmaps;
+        format = _format;
+    }
+
     /**
      * Move constructor.
      */

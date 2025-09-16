@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_MathForGamesDemo", "01_M
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathLibrary", "MathLibrary\MathLibrary.vcxproj", "{0AB5C897-236C-4CEC-94AC-5C6517E64BEC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_TwinStick", "02_TwinStick\02_TwinStick.vcxproj", "{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{0AB5C897-236C-4CEC-94AC-5C6517E64BEC}.Release|x64.Build.0 = Release|x64
 		{0AB5C897-236C-4CEC-94AC-5C6517E64BEC}.Release|x86.ActiveCfg = Release|Win32
 		{0AB5C897-236C-4CEC-94AC-5C6517E64BEC}.Release|x86.Build.0 = Release|Win32
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Debug|x64.ActiveCfg = Debug|x64
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Debug|x64.Build.0 = Debug|x64
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Debug|x86.ActiveCfg = Debug|Win32
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Debug|x86.Build.0 = Debug|Win32
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Release|x64.ActiveCfg = Release|x64
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Release|x64.Build.0 = Release|x64
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Release|x86.ActiveCfg = Release|Win32
+		{C3FE5BAE-8CF9-46F8-91A5-8ABF00E21805}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
