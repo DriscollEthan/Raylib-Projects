@@ -10,7 +10,7 @@ Collectable::Collectable(raylib::Image _image, raylib::Vector2 _position)
 	Image = _image;
 	Position = _position;
 
-	Hitbox = raylib::Rectangle(raylib::Vector2(0, 0), Image.GetSize());
+	Hitbox = raylib::Rectangle(raylib::Vector2(0, 0), raylib::Vector2(Image.width, Image.height));
 }
 
 Collectable::Collectable(Collectable& const _other)

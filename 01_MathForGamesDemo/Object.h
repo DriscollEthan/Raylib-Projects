@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../raylib-cpp/include/raylib-cpp.hpp"
+#include "Vector2D.h"
 
 
 class Object
@@ -18,9 +19,9 @@ public:
 
 public:	
 
-	raylib::Vector2 Position;
+	Driscoll::Vector2D Position;
 
-	raylib::Image Image;
+	Texture2D Image;
 
 	raylib::Rectangle Hitbox;
 };

@@ -30,7 +30,11 @@ int main()
 	Driscoll::Vector2D Grid(5, 3);
 	int const TotalGridSegments = 15;
 	Player* CurrentPlayer = new Player();
+	CurrentPlayer->ShouldWrapAroundScreen(true);
 	Collectable CollectableObjects[TotalGridSegments];
+	Driscoll::Vector2D MovementVector = Driscoll::Vector2D();
+
+	raylib::Vector4 newVector = { 10, 20, 15, 0 };
 
 	raylib::Image CollectableImage;
 	CollectableImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
@@ -52,19 +56,19 @@ int main()
 		{
 		case 0:
 			CollectableObjects[i].Image = CollectableImage;
-			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 100), (100));
+			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 125), (75));
 			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
 			break;
 
 		case 1:
 			CollectableObjects[i].Image = CollectableImage;
-			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 100), (300));
+			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 125), (275));
 			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
 			break;
 
 		case 2:
 			CollectableObjects[i].Image = CollectableImage;
-			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 100), (500));
+			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 125), (475));
 			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
 			break;
 		}
@@ -80,15 +84,31 @@ int main()
 	while (!Window.ShouldClose())
 	{
 		//Variable Resets
-
+		MovementVector = { 0,0 };
 		/*** *** ***/
 
 		//Update Look For Input
+		if (IsKeyDown(KEY_W))
+		{
+			MovementVector.y -= 1;
+		}
+		if (IsKeyDown(KEY_S))
+		{
+			MovementVector.y += 1;
+		}
+		if (IsKeyDown(KEY_A))
+		{
+			MovementVector.x -= 1;
+		}
+		if (IsKeyDown(KEY_D))
+		{
+			MovementVector.x += 1;
+		}
 
 		/*** *** ***/
 
 		//Variable Updates
-
+		CurrentPlayer->Movement(MovementVector, Window.GetSize(), 5.0f);
 		/*** *** ***/
 
 		//Draw
@@ -96,8 +116,10 @@ int main()
 
 		for (int i = 0; i < TotalGridSegments; ++i)
 		{
-			ImageDrawCircleV(&CollectableObjects[i].Image, CollectableObjects[i].Position, 25, WHITE);
+			DrawTexture(CollectableObjects[i].Image, CollectableObjects[i].Position.x, CollectableObjects[i].Position.y, WHITE);
 		}
+
+   	DrawCircleV(CurrentPlayer->CurrentPosition(), 10, BLUE);
 
 		ClearBackground(DARKGRAY);
 

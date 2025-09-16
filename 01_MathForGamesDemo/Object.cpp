@@ -4,7 +4,7 @@ Object::Object()
 {
 	Position = raylib::Vector2(0, 0);
 	Image = raylib::Image();
-	Hitbox = raylib::Rectangle(raylib::Vector2(0, 0), Image.GetSize());
+	Hitbox = raylib::Rectangle(raylib::Vector2(0, 0), raylib::Vector2(Image.width, Image.height));
 }
 
 Object::Object(Object& const _other)

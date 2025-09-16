@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 
 namespace Driscoll 
 {
@@ -51,7 +52,7 @@ namespace Driscoll
 		//Returns the Length of the Vector2D
 		float Magnitude() const
 		{
-			return sqrtf(((x * x), +(y * y)));
+			return sqrtf(((x * x) + (y * y)));
 		}
 
 		//Returns the Length Squared of the Vector2D
@@ -63,11 +64,21 @@ namespace Driscoll
 		//Returns the Unit Vector2D
 		void Normalise()
 		{
-			float mag = Magnitude();
+			float mag = this->Magnitude();
 
 			x /= mag;
 			y /= mag;
 
+			return;
+		}
+
+		//Safely Returns the Unit Vector2D
+		void SafeNormalise()
+		{
+			if (this->Magnitude() != 0)
+			{
+				Normalise();
+			}
 			return;
 		}
 
@@ -78,6 +89,19 @@ namespace Driscoll
 			copy.Normalise();
 			
 			return copy;
+		}
+
+		//Returns a Vector2D that is a unit Vector2D
+		Vector2D SafeNormalised()
+		{
+			if (this->Magnitude() != 0)
+			{
+				Vector2D copy = *this;
+				copy.SafeNormalise();
+
+				return copy;
+			}
+			return Vector2D();
 		}
 
 		//Returns the Dot Product of a Vector2D
@@ -111,12 +135,12 @@ namespace Driscoll
 			}
 		}
 
-		bool Equals(Vector2D& const _otherVector) const
+		bool Equals(const Vector2D& _otherVector) const
 		{
 			return ((x == _otherVector.x) && (y == _otherVector.y));
 		}
 
-		bool NearlyEquals(Vector2D& const _otherVector, float Tolerance = 0.00001f) const
+		bool NearlyEquals(const Vector2D& _otherVector, float Tolerance = 0.00001f) const
 		{
 			Vector2D distance = {x - _otherVector.x, y - _otherVector.y};
 			distance.Absolute();
@@ -124,16 +148,36 @@ namespace Driscoll
 			return ((distance.x < Tolerance) && (distance.y < Tolerance));
 		}
 
+		float Distance(Vector2D& const _otherVector) const
+		{
+			return (*this - _otherVector).Magnitude();
+		}
+
+		float DistanceSqr(Vector2D& const _otherVector) const
+		{
+			return (*this - _otherVector).MagnitudeSqr();
+		}
+
+		static float Distance(Vector2D& const _first, Vector2D& const _second)
+		{
+			return _first.Distance(_second);
+		}
+
+		static float DistacneSqr(Vector2D& const _first, Vector2D& const _second)
+		{
+			return _first.DistanceSqr(_second);
+		}
+
 		//Operators
 		
 		// returns true if every component is equal to the other in the other vector
-		bool operator == (Vector2D& const _otherVector) const
+		bool operator == (const Vector2D& _otherVector) const
 		{
 			return Equals(_otherVector);
 		}
 
 		// returns a new Vector containing the summed value of each component
-		Vector2D operator +(Vector2D& const _otherVector) const
+		Vector2D operator +(const Vector2D& _otherVector) const
 		{
 			Vector2D tempVector = { x, y };
 			tempVector.x += _otherVector.x;
@@ -142,7 +186,7 @@ namespace Driscoll
 		}
 
 		// assigns this Vector the value of this vector added to the other vector
-		Vector2D& operator +=(Vector2D& const _otherVector)
+		Vector2D& operator +=(const Vector2D& _otherVector)
 			{
 				x += _otherVector.x;
 				y += _otherVector.y;
@@ -150,7 +194,7 @@ namespace Driscoll
 			}
 
 		// returns a new Vector containing the subtracted value of each component
-		Vector2D operator -(Vector2D& const _otherVector) const
+		Vector2D operator -(const Vector2D& _otherVector) const
 			{
 				Vector2D tempVector = { x, y };
 				tempVector.x -= _otherVector.x;
@@ -159,7 +203,7 @@ namespace Driscoll
 			}
 
 		// assigns this Vector the value of this vector subtracted from the other vector
-		Vector2D& operator -=(Vector2D& const _otherVector)
+		Vector2D& operator -=(const Vector2D& _otherVector)
 			{
 				x -= _otherVector.x;
 				y -= _otherVector.y;
@@ -167,7 +211,7 @@ namespace Driscoll
 			}
 
 		// returns a new Vector where each component is scaled by the scalar value
-		Vector2 operator *(float const _otherFloat) const
+		Vector2 operator *(const float _otherFloat) const
 			{
 				Vector2D tempVector = { x, y };
 				tempVector.x *= _otherFloat;
@@ -176,7 +220,7 @@ namespace Driscoll
 			}
 
 		// assigns this Vector the value of this vector where each component is scaled by the scalar value
-		Vector2D& operator *=(float const _otherFloat)
+		Vector2D& operator *=(const float _otherFloat)
 			{
 				x *= _otherFloat;
 				y *= _otherFloat;
@@ -184,7 +228,7 @@ namespace Driscoll
 			}
 
 		// returns a new Vector where each component is divided by the scalar value
-		Vector2D operator /(float const _otherFloat) const
+		Vector2D operator /(const float _otherFloat) const
 			{
 				Vector2D tempVector = { x, y };
 				tempVector.x /= _otherFloat;
@@ -193,7 +237,7 @@ namespace Driscoll
 			}
 
 		// returns a new Vector where each component is divided by the scalar value
-		Vector2D operator /=(float const _otherFloat)
+		Vector2D operator /=(const float _otherFloat)
 			{
 				x /= _otherFloat;
 				y /= _otherFloat;
@@ -201,7 +245,7 @@ namespace Driscoll
 			}
 
 		// returns true if any component is NOT equal to the other in the other vector
-		bool operator != (Vector2D& const _otherVector) const
+		bool operator != (const Vector2D& _otherVector) const
 			{
 				return !(Equals(_otherVector));
 			}
@@ -211,5 +255,11 @@ namespace Driscoll
 			_stream << "x: " << _vector2D.x << ", y: " << _vector2D.y;
 			return _stream;
 		}
+
+		std::string ToString() const
+		{
+			return "x: " + std::to_string(x) + ", y: " + std::to_string(y);
+		}
+
 	};
 }

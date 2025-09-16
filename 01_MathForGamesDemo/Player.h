@@ -22,7 +22,7 @@ private:
 
 public:
 	//Functions
-	void Movement(raylib::Vector2 _movementVector, raylib::Vector2 _screenSize);
+	void Movement(Driscoll::Vector2D _movementVector, raylib::Vector2 _screenSize, float _speed);
 
 	void ShouldWrapAroundScreen(bool _bShouldWrap);
 
