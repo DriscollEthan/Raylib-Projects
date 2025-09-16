@@ -2,7 +2,7 @@
 
 Collectable::Collectable() : Object()
 {
-
+	bIsAlive = true;
 }
 
 Collectable::Collectable(raylib::Image _image, raylib::Vector2 _position)
@@ -10,19 +10,22 @@ Collectable::Collectable(raylib::Image _image, raylib::Vector2 _position)
 	Image = _image;
 	Position = _position;
 
-	Hitbox = raylib::Rectangle(raylib::Vector2(0, 0), raylib::Vector2(Image.width, Image.height));
+	HitboxRadius = Image.width;
+	bIsAlive = true;
 }
 
 Collectable::Collectable(Collectable& const _other)
 {
 	Image = _other.Image;
-	Hitbox = _other.Hitbox;
+	HitboxRadius = _other.HitboxRadius;
+	bIsAlive = _other.bIsAlive;
 }
 
 Collectable Collectable::operator=(Collectable& const _other)
 {
 	Image = _other.Image;
-	Hitbox = _other.Hitbox;
+	HitboxRadius = _other.HitboxRadius;
+	bIsAlive = _other.bIsAlive;
 	return *this;
 }
 

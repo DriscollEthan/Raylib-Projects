@@ -27,12 +27,20 @@ int main()
 	int ScreenWidth = 1000;
 	int ScreenHeight = 600;
 	raylib::Window Window(ScreenWidth, ScreenHeight, "Default Window");
+
+
 	Driscoll::Vector2D Grid(5, 3);
 	int const TotalGridSegments = 15;
+
 	Player* CurrentPlayer = new Player();
 	CurrentPlayer->ShouldWrapAroundScreen(true);
+	CurrentPlayer->OverrideHitBoxSize(5.0f);
+
 	Collectable CollectableObjects[TotalGridSegments];
+
 	Driscoll::Vector2D MovementVector = Driscoll::Vector2D();
+	
+	int TotalScore = 0;
 
 	raylib::Vector4 newVector = { 10, 20, 15, 0 };
 
@@ -57,19 +65,19 @@ int main()
 		case 0:
 			CollectableObjects[i].Image = CollectableImage;
 			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 125), (75));
-			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
+			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetWidth() / 2.0f);
 			break;
 
 		case 1:
 			CollectableObjects[i].Image = CollectableImage;
 			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 125), (275));
-			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
+			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetWidth() / 2.0f);
 			break;
 
 		case 2:
 			CollectableObjects[i].Image = CollectableImage;
 			CollectableObjects[i].Position = raylib::Vector2((((ScreenWidth / Grid.x) * xPos) - 125), (475));
-			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetSize());
+			CollectableObjects[i].OverrideHitBoxSize(CollectableImage.GetWidth() / 2.0f);
 			break;
 		}
 	}
@@ -108,22 +116,45 @@ int main()
 		/*** *** ***/
 
 		//Variable Updates
-		CurrentPlayer->Movement(MovementVector, Window.GetSize(), 5.0f);
+		CurrentPlayer->Movement(MovementVector, Window.GetSize(), 2.5f);
+
+		/*** *** ***/
+
+		//Collision Checks
+		//Check Collisions for Alive coins against the Player.
+		for (int i = 0; i < TotalGridSegments; ++i)
+		{
+			if (CollectableObjects[i].bIsAlive && CheckCollisionCircles(CollectableObjects[i].Position + Driscoll::Vector2D(0, 25), CollectableObjects[i].HitboxRadius, CurrentPlayer->Position, CurrentPlayer->HitboxRadius))
+			{
+				++TotalScore;
+				CollectableObjects[i].bIsAlive = false;
+				break;
+			}
+		}
+
 		/*** *** ***/
 
 		//Draw
-		BeginDrawing();
-
-		for (int i = 0; i < TotalGridSegments; ++i)
+		while (Window.Drawing())
 		{
-			DrawTexture(CollectableObjects[i].Image, CollectableObjects[i].Position.x, CollectableObjects[i].Position.y, WHITE);
+			//Set Background Color
+			ClearBackground(DARKGRAY);
+
+			//Draw Coins on the Screen
+			for (int i = 0; i < TotalGridSegments; ++i)
+			{
+				if (CollectableObjects[i].bIsAlive)
+				{
+					DrawTexture(CollectableObjects[i].Image, CollectableObjects[i].Position.x, CollectableObjects[i].Position.y, WHITE);
+				}
+			}
+
+			//Draw Score on Screen behind Player
+			DrawText(TextFormat("Score: %02i", TotalScore), 10, 10, 25, WHITE);
+
+			//Draw Player on the Screen
+			DrawCircleV(CurrentPlayer->CurrentPosition(), 10, BLUE);
 		}
-
-   	DrawCircleV(CurrentPlayer->CurrentPosition(), 10, BLUE);
-
-		ClearBackground(DARKGRAY);
-
-		EndDrawing();
 	}
 
 	/*** *** ***/

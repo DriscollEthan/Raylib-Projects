@@ -13,5 +13,7 @@ public:
 	Collectable operator=(Collectable& const _other);
 
 	~Collectable();
+
+	bool bIsAlive;
 };
 

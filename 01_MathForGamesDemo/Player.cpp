@@ -9,7 +9,7 @@ Player::Player(raylib::Image _image)
 {
 	Image = _image;
 
-	Hitbox = raylib::Rectangle(raylib::Vector2(0, 0), raylib::Vector2(Image.width, Image.height));
+	HitboxRadius = Image.width;
 
 	Position = raylib::Vector2(0, 0);
 	bIsWrapAroundScreen = false;
@@ -18,7 +18,7 @@ Player::Player(raylib::Image _image)
 Player::Player(Player& const _other)
 {
 	Image = _other.Image;
-	Hitbox = _other.Hitbox;
+	HitboxRadius = _other.HitboxRadius;
 	Position = _other.Position;
 	bIsWrapAroundScreen = _other.bIsWrapAroundScreen;
 }
@@ -26,7 +26,7 @@ Player::Player(Player& const _other)
 Player Player::operator=(Player& const _other)
 {
 	Image = _other.Image;
-	Hitbox = _other.Hitbox;
+	HitboxRadius = _other.HitboxRadius;
 	Position = _other.Position;
 	bIsWrapAroundScreen = _other.bIsWrapAroundScreen;
 	return *this;
@@ -38,18 +38,12 @@ Player::~Player()
 
 void Player::Movement(Driscoll::Vector2D _movementVector, raylib::Vector2 _screenSize, float _speed)
 {
-	std::cout << "Current Position: " << Position << std::endl;;
-
-	Position += _movementVector.SafeNormalised() * _speed;
+	Position += (_movementVector.SafeNormalised() * (_speed * GetFrameTime() * 100.0f));
 
 	if (bIsWrapAroundScreen)
 	{
 		Position = Wrap(Position, raylib::Vector2(0, 0), _screenSize);
 	}
-
-	OverrideHitBoxSize(Hitbox.GetSize());
-
-	std::cout << "End Position: " << Position << std::endl;
 }
 
 void Player::ShouldWrapAroundScreen(bool _bShouldWrap)

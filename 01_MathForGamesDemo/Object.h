@@ -15,7 +15,7 @@ public:
 
 	~Object();
 
-	void OverrideHitBoxSize(raylib::Vector2 _size);
+	void OverrideHitBoxSize(float _radius);
 
 public:	
 
@@ -23,5 +23,5 @@ public:
 
 	Texture2D Image;
 
-	raylib::Rectangle Hitbox;
+	float HitboxRadius;
 };
