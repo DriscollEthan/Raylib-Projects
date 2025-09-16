@@ -112,15 +112,15 @@ namespace Driscoll
 		}
 
 		//Returns the Dot Product of a Vector2D
-		static float DotProduct2D(const Vector2D& _otherVector)
+		float Dot(const Vector2D& _otherVector)
 		{
 			return ((x * _otherVector.x) + (y * _otherVector.y));
 		}
 
 		//Returns the Dot Product of two Vector2Ds
-		static float DotProduct2D(const Vector2D& _firstVector, Vector2D const & _secondVector)
+		static float Dot(Vector2D& const _firstVector, Vector2D& const _secondVector)
 		{
-			return _firstVector.DotProduct2D(_secondVector);
+			return _firstVector.Dot(_secondVector);
 		}
 
 		//Returns the Perpendicular Vector setup as a Right Handed System!
@@ -155,31 +155,30 @@ namespace Driscoll
 			return ((distance.x < Tolerance) && (distance.y < Tolerance));
 		}
 
-		float Distance(Vector2D& const _otherVector) const
+		float Distance(const Vector2D& _otherVector) const
 		{
 			return (*this - _otherVector).Magnitude();
 		}
 
-		float DistanceSqr(Vector2D& const _otherVector) const
+		float DistanceSqr(const Vector2D& _otherVector) const
 		{
 			return (*this - _otherVector).MagnitudeSqr();
 		}
 
-		static float Distance(Vector2D& const _first, Vector2D& const _second)
+		static float Distance(const Vector2D& _first, const Vector2D& _second)
 		{
 			return _first.Distance(_second);
 		}
 
-		static float DistacneSqr(Vector2D& const _first, Vector2D& const _second)
+		static float DistacneSqr(const Vector2D& _first, const Vector2D& _second)
 		{
 			return _first.DistanceSqr(_second);
 		}
 
 		//Find Angle Between 2 Vectors2D
-		float AngleBetween(Vector2D& _otherVector) const
+		float AngleBetween(const Vector2D& _otherVector)
 		{
-			return std::acosf(this->DotProduct2D(_otherVector) / Magnitude() * _otherVector.Magnitude());
-		}
+			return std::acosf(Dot(_otherVector) / (Magnitude() * _otherVector.Magnitude()));
 
 		//Operators
 		
@@ -263,7 +262,7 @@ namespace Driscoll
 				return !(Equals(_otherVector));
 			}
 
-		friend std::ostream& operator<<(std::ostream& _stream, Vector2D& const _vector2D)
+		friend std::ostream& operator<<(std::ostream& _stream, const Vector2D&  _vector2D)
 		{
 			_stream << "x: " << _vector2D.x << ", y: " << _vector2D.y;
 			return _stream;

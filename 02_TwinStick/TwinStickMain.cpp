@@ -49,7 +49,7 @@ int main()
 	/*** *** ***/
 
 	//END OF MAIN GAME LOOP
-
+	delete E;
 	/*** *** ***/
 
 	//END *** ***
