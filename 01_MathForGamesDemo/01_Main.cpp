@@ -26,7 +26,7 @@ int main()
 	//Variable Initialization:
 	int ScreenWidth = 1000;
 	int ScreenHeight = 600;
-	raylib::Window Window(ScreenWidth, ScreenHeight, "Default Window");
+	raylib::Window Window(ScreenWidth, ScreenHeight, "Default Window", 20.0f);
 
 
 	Driscoll::Vector2D Grid(5, 3);

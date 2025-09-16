@@ -1,6 +1,41 @@
 #pragma once
 #include "Entity.h"
+#include "GlobalVariableObject.h"
 
+enum EInputType
+{
+	E_IsKeyDown,
+	E_IsKeyPressed,
+	E_IsKeyPressedRepeat,
+	E_IsKeyReleased,
+	E_IsKeyUp
+};
+
+struct FInputReturnStruct
+{
+	bool bIsInput = false;
+	int Index = -1;
+};
+
+//To be Defined in BeginPlay, After creating the Array for each Input Type.
+struct FInput
+{
+	FInput() {}
+
+	FInput(EInputType _inputType, int _key, int _inputReturnIndex)
+	{
+		InputType = _inputType;
+		Key = _key;
+		InputIndex = _inputReturnIndex;
+	}
+
+	//Raylib Input Type, Default: "E_IsKeyDown"
+	EInputType InputType = E_IsKeyDown;
+	//Key To Check, Use Raylib MACROS for Key int, Default: 0 / NULL
+	int Key = 0;
+	//Index for Input Return, Default: -1
+	int InputIndex = -1;
+};
 
 class Player : public Entity
 {
@@ -46,6 +81,15 @@ protected:
 
 	Driscoll::Vector2D MovementVector;
 
+	float Speed;
+
+	class GlobalVariableObject GVO;
+
+	//Input Arrays:
+		//Movement: (WASD), (ARROW KEYS)
+		FInput MovementInput[8];
+
+
 public:
 	/* FUNCTIONS */
 
@@ -61,7 +105,23 @@ public:
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
-	/* ENTITY SPECIFIC GET FUNCTIONS */
+	/* PLAYER INPUT FUNCTIONS */
+	FInputReturnStruct Input(FInput _input);
+	
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
+	/* PLAYER SPECIFIC GET FUNCTIONS */
+
+
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+
+	/* PLAYER SPECIFIC SET FUNCTIONS */
+
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+
+	/* PLAYER ONLY FUNCTIONS */
+	void Move();
+
+	Driscoll::Vector2D Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max);
 };
 

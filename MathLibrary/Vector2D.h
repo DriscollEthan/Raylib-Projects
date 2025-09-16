@@ -49,6 +49,13 @@ namespace Driscoll
 		}
 #endif
 
+		//Sets the Vector back to (0,0)
+		void Zero()
+		{
+			x = 0;
+			y = 0;
+		}
+
 		//Returns the Length of the Vector2D
 		float Magnitude() const
 		{
@@ -105,15 +112,15 @@ namespace Driscoll
 		}
 
 		//Returns the Dot Product of a Vector2D
-		float Dot(Vector2D& const _otherVector)
+		static float DotProduct2D(const Vector2D& _otherVector)
 		{
 			return ((x * _otherVector.x) + (y * _otherVector.y));
 		}
 
 		//Returns the Dot Product of two Vector2Ds
-		static float Dot(Vector2D& const _firstVector, Vector2D& const _secondVector)
+		static float DotProduct2D(const Vector2D& _firstVector, Vector2D const & _secondVector)
 		{
-			return _firstVector.Dot(_secondVector);
+			return _firstVector.DotProduct2D(_secondVector);
 		}
 
 		//Returns the Perpendicular Vector setup as a Right Handed System!
@@ -168,6 +175,12 @@ namespace Driscoll
 			return _first.DistanceSqr(_second);
 		}
 
+		//Find Angle Between 2 Vectors2D
+		float AngleBetween(Vector2D& _otherVector) const
+		{
+			return std::acosf(this->DotProduct2D(_otherVector) / Magnitude() * _otherVector.Magnitude());
+		}
+
 		//Operators
 		
 		// returns true if every component is equal to the other in the other vector
@@ -211,7 +224,7 @@ namespace Driscoll
 			}
 
 		// returns a new Vector where each component is scaled by the scalar value
-		Vector2 operator *(const float _otherFloat) const
+		Vector2D operator *(const float _otherFloat) const
 			{
 				Vector2D tempVector = { x, y };
 				tempVector.x *= _otherFloat;

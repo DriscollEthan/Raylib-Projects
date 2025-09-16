@@ -99,11 +99,13 @@ Entity::~Entity()
 //Begin Play: Called Before Start of Main Game Loop && MUST BE USER CALLED
 void Entity::BeginPlay()
 {
+	Object::BeginPlay();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
 void Entity::Update()
 {
+	Object::Update();
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
@@ -112,7 +114,10 @@ void Entity::Draw()
 	Object::Draw();
 	if (E_Texture != nullptr)
 	{
-		E_Texture->Draw(E_Position);
+		Driscoll::Vector2D offset = Driscoll::Vector2D();
+		offset.x = (E_Texture->GetWidth() / 2.0f);
+		offset.y = (E_Texture->GetHeight() / 2.0f);
+		E_Texture->Draw(E_Position - offset);
 	}
 }
 
