@@ -134,3 +134,33 @@ float Entity::GetRadius()
 {
 	return E_Radius;
 }
+
+/*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
+
+/* ENTITY SPECIFIC GET FUNCTIONS */
+
+//Set Position
+void Entity::SetPosition(Driscoll::Vector2D _newPosition)
+{
+	E_Position = _newPosition;
+}
+
+//Set Texture BY IMAGE only
+void Entity::SetTexture(raylib::Image _textureImage)
+{
+	if (E_Texture == nullptr)
+	{
+		E_Texture = new raylib::TextureUnmanaged(_textureImage);
+	}
+	else
+	{
+		delete E_Texture;
+		E_Texture = E_Texture = new raylib::TextureUnmanaged(_textureImage);
+	}
+}
+
+//Set Radius
+void Entity::SetRadius(float _newRadius)
+{
+	E_Radius = _newRadius;
+}

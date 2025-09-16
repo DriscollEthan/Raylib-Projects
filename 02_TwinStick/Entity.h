@@ -86,5 +86,16 @@ public:
 	 */
 	float GetRadius();
 
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+
+	/* ENTITY SPECIFIC SET FUNCTION */
+	//Set Position
+	void SetPosition(Driscoll::Vector2D _newPosition);
+
+	//Set Texture BY IMAGE Only
+	void SetTexture(raylib::Image _textureImage);
+
+	//Set Radius
+	void SetRadius(float _newRadius);
 };
 
