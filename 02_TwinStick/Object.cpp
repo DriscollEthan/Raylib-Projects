@@ -32,5 +32,5 @@ void Object::Update()
 
 void Object::Draw()
 {
-
+	
 }

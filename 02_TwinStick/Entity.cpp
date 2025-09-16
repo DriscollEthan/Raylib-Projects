@@ -108,6 +108,7 @@ void Entity::Update()
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Entity::Draw()
 {
+	Object::Draw();
 	if (E_Texture != nullptr)
 	{
 		E_Texture->Draw(E_Position);

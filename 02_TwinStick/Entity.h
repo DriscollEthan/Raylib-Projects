@@ -21,7 +21,7 @@ public:
 	//SET Radius Only
 	Entity(float _radius);
 
-	//Set Position & Texture
+	//Set Position & Texture BY IMAGE Only
 	Entity(Driscoll::Vector2D _position, raylib::Image _texture);
 
 	//Set Position & Radius
