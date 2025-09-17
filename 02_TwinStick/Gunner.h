@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "Bullet.h"
 
 class Gunner : public Player
 {
@@ -26,6 +27,8 @@ public:
 protected:
 	/* VARIABLES */
 	//Array of Bullets || USE OBJECT POOLING WITH HEAP MEMORY
+	class Bullet* BulletsInPool;
+
 	const int MAX_BULLETS_IN_POOL = 10;
 
 	int WhichBulletToUse;

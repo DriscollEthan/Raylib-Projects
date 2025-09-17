@@ -7,6 +7,7 @@ Gunner::Gunner(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 {
 	WhichBulletToUse = 0;
 	ScaleMult = _scale;
+	BulletsInPool = nullptr;
 }
 
 //Copy Constructor
@@ -43,7 +44,10 @@ Gunner Gunner::operator=(const Gunner& _other)
 //Destructor
 Gunner::~Gunner()
 {
-
+	if (BulletsInPool != nullptr)
+	{
+		delete[] BulletsInPool;
+	}
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -57,8 +61,7 @@ void Gunner::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	E_Speed = 2.5f;
-	GVO = GlobalVariableObject();
+	BulletsInPool = new Bullet[MAX_BULLETS_IN_POOL]();
 
 	//Setup Input Keybinds
 	{
