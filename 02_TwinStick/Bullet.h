@@ -1,42 +1,8 @@
 #pragma once
 #include "Entity.h"
 
-enum EInputType
-{
-	E_IsKeyDown,
-	E_IsKeyPressed,
-	E_IsKeyPressedRepeat,
-	E_IsKeyReleased,
-	E_IsKeyUp
-};
 
-struct FInputReturnStruct
-{
-	bool bIsInput = false;
-	int Index = -1;
-};
-
-//To be Defined in BeginPlay, After creating the Array for each Input Type.
-struct FInput
-{
-	FInput() {}
-
-	FInput(EInputType _inputType, int _key, int _inputReturnIndex)
-	{
-		InputType = _inputType;
-		Key = _key;
-		InputIndex = _inputReturnIndex;
-	}
-
-	//Raylib Input Type, Default: "E_IsKeyDown"
-	EInputType InputType = E_IsKeyDown;
-	//Key To Check, Use Raylib MACROS for Key int, Default: 0 / NULL
-	int Key = 0;
-	//Index for Input Return, Default: -1
-	int InputIndex = -1;
-};
-
-class Player : public Entity
+class Bullet : public Entity
 {
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
@@ -49,14 +15,16 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Player(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Bullet(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
-	Player(const Player& _other);
+	//COPY CONSTRUCTOR
+	Bullet(const Bullet& _other);
 
-	Player operator=(const Player& _other);
+	//COPY ASSIGNMENT
+	Bullet operator =(const Bullet& _other);
 
 	//DESTRUCTOR
-	~Player();
+	virtual ~Bullet();
 
 protected:
 	/* VARIABLES */
@@ -78,20 +46,21 @@ public:
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
-	/* PLAYER INPUT FUNCTIONS */
-	FInputReturnStruct Input(FInput _input);
-	
-	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
-
-	/* PLAYER SPECIFIC GET FUNCTIONS */
+	/* BULLET INPUT FUNCTIONS */
 
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
-	/* PLAYER SPECIFIC SET FUNCTIONS */
+	/* BULLET SPECIFIC GET FUNCTIONS */
+
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
-	/* PLAYER ONLY FUNCTIONS */
+	/* BULLET SPECIFIC SET FUNCTIONS */
+
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+
+	/* BULLET ONLY FUNCTIONS */
+
 };
 

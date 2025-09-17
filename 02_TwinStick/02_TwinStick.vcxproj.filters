@@ -39,14 +39,17 @@
     <ClCompile Include="GlobalVariableObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TwinStickMain.cpp">
-      <Filter>Source Files\Derived Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>Source Files\Derived Classes</Filter>
     </ClCompile>
     <ClCompile Include="Gunner.cpp">
       <Filter>Source Files\Derived Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Derived Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="TwinStickMain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +69,9 @@
       <Filter>Header Files\Derived Classes</Filter>
     </ClInclude>
     <ClInclude Include="Gunner.h">
+      <Filter>Header Files\Derived Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
       <Filter>Header Files\Derived Classes</Filter>
     </ClInclude>
   </ItemGroup>

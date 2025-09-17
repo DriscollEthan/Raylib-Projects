@@ -97,5 +97,14 @@ public:
 
 	//Set Radius
 	void SetRadius(float _newRadius);
+
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+	/* ENTITY SPECIFC FUNCTIONS */
+	void Move();
+
+	void Rotate(float _newRotation);
+
+	Driscoll::Vector2D Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max);
+	
 };
 

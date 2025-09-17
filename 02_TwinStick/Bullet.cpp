@@ -1,15 +1,15 @@
-#include "Player.h"
+#include "Bullet.h"
 
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Player::Player(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
+Bullet::Bullet(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
 
 }
 
 //Copy Constructor
-Player::Player(const Player& _other) 
+Bullet::Bullet(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
@@ -22,7 +22,7 @@ Player::Player(const Player& _other)
 }
 
 //Copy Assignment
-Player Player::operator=(const Player& _other)
+Bullet Bullet::operator=(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
@@ -36,7 +36,7 @@ Player Player::operator=(const Player& _other)
 }
 
 //Destructor
-Player::~Player()
+Bullet::~Bullet()
 {
 
 }
@@ -47,77 +47,40 @@ Player::~Player()
 
 /* OBJECT VIRTUAL FUNCTION OVERRIDES */
 //Begin Play: Called Before Start of Main Game Loop && MUST BE USER CALLED
-void Player::BeginPlay()
+void Bullet::BeginPlay()
 {
 	Entity::BeginPlay();
 
 	//Init Vars
-
-
-	//Setup Input Keybinds and Grab Mouse POS
 	
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
-void Player::Update()
+void Bullet::Update()
 {
 	//Call Parent Update
 	Entity::Update();
 
 	//Rest Vars
-	E_MovementVector.Zero();
-
-	//Get Movement Input
-
-	//Using the newly Updated Movement Vector, call movement.
 
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
-void Player::Draw()
+void Bullet::Draw()
 {
 	Entity::Draw();
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
-	/* PLAYER INPUT FUNCTIONS */
-FInputReturnStruct Player::Input(FInput _input)
-{
-	FInputReturnStruct returnValue = FInputReturnStruct();
-	returnValue.Index = _input.InputIndex;
-
-	switch (_input.InputType)
-	{
-	case E_IsKeyDown:
-		returnValue.bIsInput = IsKeyDown(_input.Key);
-		break;
-	case E_IsKeyPressed:
-		returnValue.bIsInput = IsKeyPressed(_input.Key);
-		break;
-	case E_IsKeyPressedRepeat:
-		returnValue.bIsInput = IsKeyPressedRepeat(_input.Key);
-		break;
-	case E_IsKeyReleased:
-		returnValue.bIsInput = IsKeyReleased(_input.Key);
-		break;
-	case E_IsKeyUp:
-		returnValue.bIsInput = IsKeyUp(_input.Key);
-		break;
-	}
-
-	return returnValue;
-}
+	/* Bullet SPECIFIC GET FUNCTIONS */
 
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
-/* PLAYER SPECIFIC GET FUNCTIONS */
+	/* Bullet SPECIFIC SET FUNCTIONS */
+
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
-/* PLAYER SPECIFIC SET FUNCTIONS */
-
-/*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
-
-/* PLAYER ONLY FUNCTIONS */
+	/* BULLET ONLY FUNCTIONS */

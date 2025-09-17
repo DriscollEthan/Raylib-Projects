@@ -147,3 +147,96 @@ void Entity::SetRadius(float _newRadius)
 {
 	E_Radius = _newRadius;
 }
+
+/*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
+
+/* PLAYER ONLY FUNCTIONS */
+//Move Entity
+void Entity::Move()
+{
+	E_Position += E_MovementVector.SafeNormalised() * (E_Speed * GetFrameTime() * 100.0f);
+	E_Position = Wrap(E_Position, Driscoll::Vector2D(0, 0), GVO.GetScreenSize());
+}
+
+//Rotate Entity
+void Entity::Rotate(float _newRotation)
+{
+	E_Rotation = _newRotation;
+}
+
+//Wrap Vector
+Driscoll::Vector2D Entity::Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max)
+{
+	//Over Max on X-Axis Wrapper
+	if (_currentVector.x > _max.x)
+	{
+		float overFlow = _currentVector.x - _max.x;
+		if (overFlow > _max.x)
+		{
+			overFlow /= _max.x;
+			int overFlowTruncated = overFlow;
+
+			overFlow -= overFlowTruncated;
+
+			_currentVector.x = overFlow * _max.x;
+		}
+		else
+		{
+			_currentVector.x = overFlow;
+		}
+	}
+	//Under Min on X-Axis Wrapper
+	else if (_currentVector.x < _min.x)
+	{
+		float overFlow = _max.x - _currentVector.x;
+
+		if (overFlow > _max.x)
+		{
+			overFlow /= _max.x;
+			int overFlowTruncated = overFlow;
+
+			overFlow -= overFlowTruncated;
+
+			_currentVector.x = _max.x - overFlow;
+		}
+		else
+		{
+			_currentVector.x = overFlow;
+		}
+	}
+	//Over Max on Y-Axis Wrapper
+	if (_currentVector.y > _max.y)
+	{
+		float overFlow = _currentVector.y - _max.y;
+		if (overFlow > _max.y)
+		{
+			overFlow /= _max.y;
+			int overFlowTruncated = overFlow;
+
+			overFlow -= overFlowTruncated;
+
+			_currentVector.y = overFlow * _max.y;
+		}
+		else
+		{
+			_currentVector.y = overFlow;
+		}
+	}
+	//Under Min on Y-Axis Wrapper
+	else if (_currentVector.y < _min.y)
+	{
+		float overFlow = _max.y - _currentVector.y;
+
+		if (overFlow > _max.y)
+		{
+			overFlow /= _max.y;
+			int overFlowTruncated = overFlow;
+
+			overFlow -= overFlowTruncated;
+
+			_currentVector.y = _max.y - overFlow;
+		}
+	}
+
+	return _currentVector;
+}
