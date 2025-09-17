@@ -53,7 +53,6 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	GVO = GlobalVariableObject();
 
 	//Setup Input Keybinds
 	{
