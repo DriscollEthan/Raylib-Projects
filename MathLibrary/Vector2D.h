@@ -6,7 +6,12 @@ namespace Driscoll
 {
 	struct Vector2D
 	{
-		float x, y;
+		union
+		{
+			struct { float x, y; };
+			float data[2];
+		};
+
 
 		/// <summary>
 		/// Default Constructor - Initizalize all Components to Zero.
@@ -94,7 +99,7 @@ namespace Driscoll
 		{
 			Vector2D copy = *this;
 			copy.Normalise();
-			
+
 			return copy;
 		}
 
@@ -112,7 +117,7 @@ namespace Driscoll
 		}
 
 		//Returns the Dot Product of a Vector2D
-		float Dot(const Vector2D& _otherVector)
+		float Dot(const Vector2D& _otherVector) const
 		{
 			return ((x * _otherVector.x) + (y * _otherVector.y));
 		}
@@ -126,11 +131,11 @@ namespace Driscoll
 		//Returns the Perpendicular Vector setup as a Right Handed System!
 		Vector2D Perpendicular() const
 		{
-			return {-y, x};
+			return { -y, x };
 		}
 
 		//Sets and Returns the Absolute values for the Vector2D
-		Vector2D Absolute ()
+		Vector2D Absolute()
 		{
 			if (x < 0)
 			{
@@ -149,7 +154,7 @@ namespace Driscoll
 
 		bool NearlyEquals(const Vector2D& _otherVector, float Tolerance = 0.00001f) const
 		{
-			Vector2D distance = {x - _otherVector.x, y - _otherVector.y};
+			Vector2D distance = { x - _otherVector.x, y - _otherVector.y };
 			distance.Absolute();
 
 			return ((distance.x < Tolerance) && (distance.y < Tolerance));
@@ -179,9 +184,9 @@ namespace Driscoll
 		float AngleBetween(const Vector2D& _otherVector)
 		{
 			return std::acosf(Dot(_otherVector) / (Magnitude() * _otherVector.Magnitude()));
-
+		}
 		//Operators
-		
+
 		// returns true if every component is equal to the other in the other vector
 		bool operator == (const Vector2D& _otherVector) const
 		{
@@ -199,70 +204,70 @@ namespace Driscoll
 
 		// assigns this Vector the value of this vector added to the other vector
 		Vector2D& operator +=(const Vector2D& _otherVector)
-			{
-				x += _otherVector.x;
-				y += _otherVector.y;
-				return *this;
-			}
+		{
+			x += _otherVector.x;
+			y += _otherVector.y;
+			return *this;
+		}
 
 		// returns a new Vector containing the subtracted value of each component
 		Vector2D operator -(const Vector2D& _otherVector) const
-			{
-				Vector2D tempVector = { x, y };
-				tempVector.x -= _otherVector.x;
-				tempVector.y -= _otherVector.y;
-				return tempVector;
-			}
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x -= _otherVector.x;
+			tempVector.y -= _otherVector.y;
+			return tempVector;
+		}
 
 		// assigns this Vector the value of this vector subtracted from the other vector
 		Vector2D& operator -=(const Vector2D& _otherVector)
-			{
-				x -= _otherVector.x;
-				y -= _otherVector.y;
-				return *this;
-			}
+		{
+			x -= _otherVector.x;
+			y -= _otherVector.y;
+			return *this;
+		}
 
 		// returns a new Vector where each component is scaled by the scalar value
-		Vector2D operator *(const float _otherFloat) const
-			{
-				Vector2D tempVector = { x, y };
-				tempVector.x *= _otherFloat;
-				tempVector.y *= _otherFloat;
-				return tempVector;
-			}
+		Vector2D operator*(float _otherFloat) const
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x *= _otherFloat;
+			tempVector.y *= _otherFloat;
+			return tempVector;
+		}
 
 		// assigns this Vector the value of this vector where each component is scaled by the scalar value
-		Vector2D& operator *=(const float _otherFloat)
-			{
-				x *= _otherFloat;
-				y *= _otherFloat;
-				return *this;
-			}
+		Vector2D& operator *=(float _otherFloat)
+		{
+			x *= _otherFloat;
+			y *= _otherFloat;
+			return *this;
+		}
 
 		// returns a new Vector where each component is divided by the scalar value
-		Vector2D operator /(const float _otherFloat) const
-			{
-				Vector2D tempVector = { x, y };
-				tempVector.x /= _otherFloat;
-				tempVector.y /= _otherFloat;
-				return tempVector;
-			}
+		Vector2D operator /(float _otherFloat) const
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x /= _otherFloat;
+			tempVector.y /= _otherFloat;
+			return tempVector;
+		}
 
 		// returns a new Vector where each component is divided by the scalar value
-		Vector2D& operator /=(const float _otherFloat)
-			{
-				x /= _otherFloat;
-				y /= _otherFloat;
-				return *this;
-			}
+		Vector2D& operator /=(float _otherFloat)
+		{
+			x /= _otherFloat;
+			y /= _otherFloat;
+			return *this;
+		}
 
 		// returns true if any component is NOT equal to the other in the other vector
 		bool operator != (const Vector2D& _otherVector) const
-			{
-				return !(Equals(_otherVector));
-			}
+		{
+			return !(Equals(_otherVector));
+		}
 
-		friend std::ostream& operator<<(std::ostream& _stream, const Vector2D&  _vector2D)
+		friend std::ostream& operator<<(std::ostream& _stream, const Vector2D& _vector2D)
 		{
 			_stream << "x: " << _vector2D.x << ", y: " << _vector2D.y;
 			return _stream;
@@ -272,6 +277,12 @@ namespace Driscoll
 		{
 			return "x: " + std::to_string(x) + ", y: " + std::to_string(y);
 		}
-
 	};
+		/**
+			* Returns a new Vector where each component is scaled by the scalar value
+			* @param scalar The scalar.
+			* @param vector The Vector.
+			* @return The scaled Vector.
+			*/
+	inline Vector2D operator*(float _scalar, const Vector2D& _vector);
 }

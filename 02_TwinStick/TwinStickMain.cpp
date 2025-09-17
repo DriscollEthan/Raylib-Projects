@@ -14,7 +14,7 @@ int main()
 
 		//Player Setup
 		raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-		Player* E = new Player(Driscoll::Vector2D(500, 300), PlayerImage, 20.0f);
+		Player* CurrentPlayer = new Player(Driscoll::Vector2D(500, 300), PlayerImage, 20.0f);
 
 		//Others
 
@@ -25,7 +25,7 @@ int main()
 	/*** *** ***/
 
 	//BEGIN PLAY
-	E->BeginPlay();
+	CurrentPlayer->BeginPlay();
 	
 	/*** *** ***/
 
@@ -33,7 +33,7 @@ int main()
 	while (!Window.ShouldClose())
 	{
 		//Update
-		E->Update();
+		CurrentPlayer->Update();
 
 		/*** *** ***/
 
@@ -42,14 +42,14 @@ int main()
 		{
 			ClearBackground(DARKGRAY);
 
-			E->Draw();
+			CurrentPlayer->Draw();
 		}
 	}
 
 	/*** *** ***/
 
 	//END OF MAIN GAME LOOP
-	delete E;
+	delete CurrentPlayer;
 	/*** *** ***/
 
 	//END *** ***
