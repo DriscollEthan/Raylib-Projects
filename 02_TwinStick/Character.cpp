@@ -1,11 +1,12 @@
 #include "Character.h"
+#include <iostream> //std::cout DEBUG
 
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, float _radius, float _rotation, float _speed) : Player(_position, _texture, _radius, _rotation, _speed)
+Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
-
+	Turret = nullptr;
 }
 
 //Copy Constructor
@@ -13,6 +14,8 @@ Character::Character(const Character& _other)
 {
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Origin = _other.E_Origin;
+	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
@@ -24,6 +27,8 @@ Character Character::operator=(const Character& _other)
 {
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Origin = _other.E_Origin;
+	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
@@ -34,6 +39,7 @@ Character Character::operator=(const Character& _other)
 //Destructor
 Character::~Character()
 {
+	delete Turret;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -61,6 +67,12 @@ void Character::BeginPlay()
 		MovementInput[7] = FInput(E_IsKeyDown, KEY_RIGHT, 3);
 	}
 
+	raylib::Image turretImage;
+	turretImage.Load("Resources/Turret.png");
+
+	Turret = new Gunner(E_Position, turretImage, { 0.5, 1 }, { (E_Scale.x / 2.0f), E_Scale.y}, 0, E_Rotation, 0);
+
+	Turret->BeginPlay();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -94,12 +106,19 @@ void Character::Update()
 	}
 	//Using the newly Updated Movement Vector, call movement.
 	Move();
+	Turret->SetPosition(E_Position);
+	Turret->SetScale(E_Scale);
+
+	Turret->Update();
+
+	E_Scale += {0.0001f, 0.0001f};
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Character::Draw()
 {
 	Player::Draw();
+	Turret->Draw();
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

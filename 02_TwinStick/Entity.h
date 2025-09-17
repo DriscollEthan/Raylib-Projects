@@ -18,7 +18,7 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Entity(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Entity(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Entity(const Entity& _other);
@@ -45,6 +45,10 @@ protected:
 
 	float E_Speed;
 
+	//Origin Offset (0-1)
+	Driscoll::Vector2D E_Origin;
+
+	Driscoll::Vector2D E_Scale;
 public:
 	/* FUNCTIONS */
 
@@ -84,7 +88,9 @@ public:
 
 	/* ENTITY SPECIFIC SET FUNCTION */
 	//Set Position
-	void SetPosition(Driscoll::Vector2D _newPosition);
+	virtual void SetPosition(Driscoll::Vector2D _newPosition);
+
+	virtual void SetScale(Driscoll::Vector2D _newScale);
 
 	//Set Texture BY IMAGE Only
 	void SetTexture(raylib::Image _textureImage);

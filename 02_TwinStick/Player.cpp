@@ -3,7 +3,7 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Player::Player(Driscoll::Vector2D _position, raylib::Image _texture, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _radius, _rotation, _speed)
+Player::Player(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
 
 }
@@ -13,6 +13,8 @@ Player::Player(const Player& _other)
 {
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Origin = _other.E_Origin;
+	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
@@ -24,6 +26,8 @@ Player Player::operator=(const Player& _other)
 {
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Origin = _other.E_Origin;
+	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;

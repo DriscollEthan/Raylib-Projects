@@ -49,14 +49,14 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Player(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Player(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	Player(const Player& _other);
 
 	Player operator=(const Player& _other);
 
 	//DESTRUCTOR
-	virtual ~Player();
+	~Player();
 
 protected:
 	/* VARIABLES */

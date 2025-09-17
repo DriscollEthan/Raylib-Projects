@@ -14,7 +14,7 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Gunner(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Gunner(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 	
 	Gunner(const Gunner& _other);
 
@@ -25,7 +25,10 @@ public:
 
 protected:
 	/* VARIABLES */
-	//TURRET POINTER
+	//Array of Bullets || USE OBJECT POOLING WITH HEAP MEMORY
+	const int MAX_BULLETS_IN_POOL = 10;
+
+	int WhichBulletToUse;
 
 
 	//Input Arrays:
@@ -54,6 +57,8 @@ public:
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Gunner SPECIFIC SET FUNCTIONS */
+
+	virtual void SetScale(Driscoll::Vector2D _newScale) override;
 
 };
 

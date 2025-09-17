@@ -14,7 +14,7 @@ int main()
 
 		//Player Setup
 		raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-		Character* CurrentPlayer = new Character(Driscoll::Vector2D(500, 300), PlayerImage, 20.0f, 0.0f, 2.5f);
+		Character* CurrentPlayer = new Character(Driscoll::Vector2D(500, 300), PlayerImage, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1,1), 20.0f, 0.0f, 2.5f);
 
 		//Others
 

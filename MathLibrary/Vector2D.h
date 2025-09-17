@@ -235,12 +235,29 @@ namespace Driscoll
 			tempVector.y *= _otherFloat;
 			return tempVector;
 		}
+		// returns a new Vector where each component is scaled by the Vector Component Aligned with it.
+		Vector2D operator*(Vector2D _otherVector) const
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x *= _otherVector.x;
+			tempVector.y *= _otherVector.y;
+			return tempVector;
+		}
 
 		// assigns this Vector the value of this vector where each component is scaled by the scalar value
 		Vector2D& operator *=(float _otherFloat)
 		{
 			x *= _otherFloat;
 			y *= _otherFloat;
+			return *this;
+		}
+
+		// assigns this Vector the value of this vector where each component is scaled by Vector Component Aligned with it.
+		Vector2D operator*=(Vector2D _otherVector)
+		{
+			Vector2D tempVector = { x, y };
+			x *= _otherVector.x;
+			y *= _otherVector.y;
 			return *this;
 		}
 
@@ -253,11 +270,29 @@ namespace Driscoll
 			return tempVector;
 		}
 
+		// returns a new Vector where each component is scaled by the Vector Component Aligned with it.
+		Vector2D operator/(Vector2D _otherVector) const
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x /= _otherVector.x;
+			tempVector.y /= _otherVector.y;
+			return tempVector;
+		}
+
 		// returns a new Vector where each component is divided by the scalar value
 		Vector2D& operator /=(float _otherFloat)
 		{
 			x /= _otherFloat;
 			y /= _otherFloat;
+			return *this;
+		}
+
+		// assigns this Vector the value of this vector where each component is scaled by Vector Component Aligned with it.
+		Vector2D operator/=(Vector2D _otherVector)
+		{
+			Vector2D tempVector = { x, y };
+			x /= _otherVector.x;
+			y /= _otherVector.y;
 			return *this;
 		}
 
