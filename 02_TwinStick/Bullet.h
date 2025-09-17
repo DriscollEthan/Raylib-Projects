@@ -1,6 +1,12 @@
 #pragma once
 #include "Entity.h"
 
+enum EState
+{
+	None,
+	Inactive,
+	Active
+};
 
 class Bullet : public Entity
 {
@@ -28,8 +34,11 @@ public:
 
 protected:
 	/* VARIABLES */
+	EState CurrentState;
 
-	//Input Arrays:
+	float TimeAlive;
+
+	float TimeToLive;
 
 public:
 	/* FUNCTIONS */
@@ -52,15 +61,19 @@ public:
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* BULLET SPECIFIC GET FUNCTIONS */
-
-
+	EState GetCurrentState();
+	
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* BULLET SPECIFIC SET FUNCTIONS */
+	void SetCurrentState(EState _newState);
+
+	void SetTimeToLive(float _newTimeToLive);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* BULLET ONLY FUNCTIONS */
+	void SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _movementVector, float _speed, float _timeToLive);
 
 };
 

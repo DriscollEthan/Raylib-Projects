@@ -79,10 +79,17 @@ public:
 	raylib::TextureUnmanaged * GetTexture();
 
 	 /**
-	 * Get Radius
+	 * Get Radius:
 	 *Returns Current Radius in a float
 	 */
 	float GetRadius();
+
+	/**
+		* Collision Check
+		* Takes in Another Entity to Check Collision With
+		*Returns bool Is Colliding
+		*/
+	bool CollisionCheck(Entity& _otherObject);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

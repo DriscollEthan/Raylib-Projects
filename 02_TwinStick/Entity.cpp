@@ -117,6 +117,11 @@ float Entity::GetRadius()
 
 /* ENTITY SPECIFIC SET FUNCTIONS */
 
+bool Entity::CollisionCheck(Entity& _otherObject)
+{
+	return CheckCollisionCircles(E_Position, E_Radius, _otherObject.E_Position, E_Radius);
+}
+
 //Set Position
 void Entity::SetPosition(Driscoll::Vector2D _newPosition)
 {
