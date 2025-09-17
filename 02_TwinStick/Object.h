@@ -14,7 +14,7 @@ public:
 	Object operator =(const Object& _other);
 
 	//Desctructor
-	~Object();
+	virtual ~Object();
 
 protected:
 	/* VARIABLES */

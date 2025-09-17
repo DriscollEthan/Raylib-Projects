@@ -3,61 +3,9 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Player::Player() : Entity()
+Player::Player(Driscoll::Vector2D _position, raylib::Image _texture, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _radius, _rotation, _speed)
 {
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
 
-/*	Variable Constructors */
-
-//SET Position Only
-Player::Player(Driscoll::Vector2D _position) : Entity(_position)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//SET Texture BY IMAGE Only
-Player::Player(raylib::Image _texture) : Entity(_texture)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//SET Radius Only
-Player::Player(float _radius) : Entity(_radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Position & Texture by IMAGE Only
-Player::Player(Driscoll::Vector2D _position, raylib::Image _texture) : Entity(_position, _texture)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Position & Radius
-Player::Player(Driscoll::Vector2D _position, float _radius) : Entity(_position, _radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Texture BY IMAGE Only & Radius
-Player::Player(raylib::Image _texture, float _radius) : Entity(_texture, _radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Postion, Texture BY IMAGE Only, & Radius
-Player::Player(Driscoll::Vector2D _position, raylib::Image _texture, float _radius) : Entity(_position, _texture, _radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
 }
 
 //Copy Constructor
@@ -66,8 +14,9 @@ Player::Player(const Player& _other)
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
 	E_Radius = _other.E_Radius;
-	MovementVector = _other.MovementVector;
-		Speed = _other.Speed;
+	E_MovementVector = _other.E_MovementVector;
+	E_Speed = _other.E_Speed;
+	E_Rotation = _other.E_Rotation;
 }
 
 //Copy Assignment
@@ -76,15 +25,16 @@ Player Player::operator=(const Player& _other)
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
 	E_Radius = _other.E_Radius;
-	MovementVector = _other.MovementVector;
-	Speed = _other.Speed;
+	E_MovementVector = _other.E_MovementVector;
+	E_Speed = _other.E_Speed;
+	E_Rotation = _other.E_Rotation;
 	return *this;
 }
 
 //Destructor
 Player::~Player()
 {
-	
+
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -98,8 +48,7 @@ void Player::BeginPlay()
 	Entity::BeginPlay();
 
 	//Init Vars
-	Speed = 2.5f;
-	GVO = GlobalVariableObject();
+	E_Speed = 2.5f;
 
 	//Setup Input Keybinds and Grab Mouse POS
 	
@@ -112,7 +61,7 @@ void Player::Update()
 	Entity::Update();
 
 	//Rest Vars
-	MovementVector.Zero();
+	E_MovementVector.Zero();
 
 	//Get Movement Input
 
@@ -170,8 +119,13 @@ FInputReturnStruct Player::Input(FInput _input)
 /* PLAYER ONLY FUNCTIONS */
 void Player::Move()
 {
-	E_Position += MovementVector.SafeNormalised() * (Speed * GetFrameTime() * 100.0f);
+	E_Position += E_MovementVector.SafeNormalised() * (E_Speed * GetFrameTime() * 100.0f);
 	E_Position = Wrap(E_Position, Driscoll::Vector2D(0, 0), GVO.GetScreenSize());
+}
+
+void Player::Rotate(float _newRotation)
+{
+	E_Rotation = _newRotation;
 }
 
 Driscoll::Vector2D Player::Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max)

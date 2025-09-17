@@ -3,35 +3,22 @@
 #include "Object.h"
 #include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
 #include "Vector2D.h"
+#include "GlobalVariableObject.h"
 
 class Entity : public Object
 {
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
-	//DEFAULT CONSTRUCTOR
-	Entity();
-
-	/*Variable Constructors*/
-	//SET Position Only
-	Entity(Driscoll::Vector2D _position);
-	
-	//SET Texture BY IMAGE Only
-	Entity(raylib::Image _texture);
-
-	//SET Radius Only
-	Entity(float _radius);
-
-	//Set Position & Texture BY IMAGE Only
-	Entity(Driscoll::Vector2D _position, raylib::Image _texture);
-
-	//Set Position & Radius
-	Entity(Driscoll::Vector2D _position, float _radius);
-
-	//Set Texture & Radius
-	Entity(raylib::Image _texture, float _radius);
-
-	//Set Position, Texture, & Radius
-	Entity(Driscoll::Vector2D _position, raylib::Image _texture, float _radius);
+	/**
+		* DEFAULT CONSTRUCTOR: 
+		* Parameters:
+		* Position as a Driscoll::Vector2D	| Default: 0,0
+		* Texture as an Image								| Default: Default Constructor
+		* Radius as a Float									| Default: 0.0
+		* Rotation as a Float								| Default: 0.0
+		* Speed as a flaot									| Default: 1.0
+		*/
+	Entity(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Entity(const Entity& _other);
@@ -40,16 +27,23 @@ public:
 	Entity operator =(const Entity& _other);
 
 	//DESTRUCTOR
-	~Entity();
+	virtual ~Entity();
 	
 protected:
 	/* VARIABLES */
+	class GlobalVariableObject GVO;
 
 	Driscoll::Vector2D E_Position;
 
 	raylib::TextureUnmanaged * E_Texture;
 
 	float E_Radius;
+
+	Driscoll::Vector2D E_MovementVector;
+
+	float E_Rotation = 0.0f;
+
+	float E_Speed;
 
 public:
 	/* FUNCTIONS */

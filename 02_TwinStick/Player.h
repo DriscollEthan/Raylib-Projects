@@ -1,6 +1,5 @@
 #pragma once
 #include "Entity.h"
-#include "GlobalVariableObject.h"
 
 enum EInputType
 {
@@ -41,47 +40,26 @@ class Player : public Entity
 {
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
-	//DEFAULT CONSTRUCTOR
-	Player();
+	/**
+		* DEFAULT CONSTRUCTOR:
+		* Parameters:
+		* Position as a Driscoll::Vector2D	| Default: 0,0
+		* Texture as an Image								| Default: Default Constructor
+		* Radius as a Float									| Default: 0.0
+		* Rotation as a Float								| Default: 0.0
+		* Speed as a flaot									| Default: 1.0
+		*/
+	Player(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
-	/*Variable Constructors*/
-	//SET Position Only
-	Player(Driscoll::Vector2D _position);
-
-	//SET Texture BY IMAGE Only
-	Player(raylib::Image _texture);
-
-	//SET Radius Only
-	Player(float _radius);
-
-	//Set Position & Texture BY IMAGE Only
-	Player(Driscoll::Vector2D _position, raylib::Image _texture);
-
-	//Set Position & Radius
-	Player(Driscoll::Vector2D _position, float _radius);
-
-	//Set Texture & Radius
-	Player(raylib::Image _texture, float _radius);
-
-	//Set Position, Texture, & Radius
-	Player(Driscoll::Vector2D _position, raylib::Image _texture, float _radius);
-
-	//COPY CONSTRUCTOR
 	Player(const Player& _other);
 
-	//COPY ASSIGNMENT
-	Player operator =(const Player& _other);
+	Player operator=(const Player& _other);
 
 	//DESTRUCTOR
-	~Player();
+	virtual ~Player();
 
 protected:
 	/* VARIABLES */
-	class GlobalVariableObject GVO;
-
-	Driscoll::Vector2D MovementVector;
-
-	float Speed;
 
 	//Input Arrays:
 
@@ -116,6 +94,8 @@ public:
 
 	/* PLAYER ONLY FUNCTIONS */
 	void Move();
+
+	void Rotate(float _newRotation);
 
 	Driscoll::Vector2D Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max);
 };

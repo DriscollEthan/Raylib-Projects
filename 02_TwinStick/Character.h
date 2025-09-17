@@ -5,30 +5,16 @@ class Character : public Player
 {
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
-	//DEFAULT CONSTRUCTOR
-	Character();
-
-	/*Variable Constructors*/
-	//SET Position Only
-	Character(Driscoll::Vector2D _position);
-
-	//SET Texture BY IMAGE Only
-	Character(raylib::Image _texture);
-
-	//SET Radius Only
-	Character(float _radius);
-
-	//Set Position & Texture BY IMAGE Only
-	Character(Driscoll::Vector2D _position, raylib::Image _texture);
-
-	//Set Position & Radius
-	Character(Driscoll::Vector2D _position, float _radius);
-
-	//Set Texture & Radius
-	Character(raylib::Image _texture, float _radius);
-
-	//Set Position, Texture, & Radius
-	Character(Driscoll::Vector2D _position, raylib::Image _texture, float _radius);
+	/**
+		* DEFAULT CONSTRUCTOR:
+		* Parameters:
+		* Position as a Driscoll::Vector2D	| Default: 0,0
+		* Texture as an Image								| Default: Default Constructor
+		* Radius as a Float									| Default: 0.0
+		* Rotation as a Float								| Default: 0.0
+		* Speed as a flaot									| Default: 1.0
+		*/
+	Character(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Character(const Character& _other);
@@ -37,7 +23,7 @@ public:
 	Character operator =(const Character& _other);
 
 	//DESTRUCTOR
-	~Character();
+	virtual ~Character();
 
 protected:
 	/* VARIABLES */

@@ -3,61 +3,9 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Character::Character() : Player()
+Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, float _radius, float _rotation, float _speed) : Player(_position, _texture, _radius, _rotation, _speed)
 {
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
 
-/*	Variable Constructors */
-
-//SET Position Only
-Character::Character(Driscoll::Vector2D _position) : Player(_position)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//SET Texture BY IMAGE Only
-Character::Character(raylib::Image _texture) : Player(_texture)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//SET Radius Only
-Character::Character(float _radius) : Player(_radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Position & Texture by IMAGE Only
-Character::Character(Driscoll::Vector2D _position, raylib::Image _texture) : Player(_position, _texture)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Position & Radius
-Character::Character(Driscoll::Vector2D _position, float _radius) : Player(_position, _radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Texture BY IMAGE Only & Radius
-Character::Character(raylib::Image _texture, float _radius) : Player(_texture, _radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
-}
-
-//Set Postion, Texture BY IMAGE Only, & Radius
-Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, float _radius) : Player(_position, _texture, _radius)
-{
-	MovementVector = Driscoll::Vector2D();
-	Speed = 1.0f;
 }
 
 //Copy Constructor
@@ -66,8 +14,9 @@ Character::Character(const Character& _other)
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
 	E_Radius = _other.E_Radius;
-	MovementVector = _other.MovementVector;
-	Speed = _other.Speed;
+	E_MovementVector = _other.E_MovementVector;
+	E_Speed = _other.E_Speed;
+	E_Rotation = _other.E_Rotation;
 }
 
 //Copy Assignment
@@ -76,15 +25,15 @@ Character Character::operator=(const Character& _other)
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
 	E_Radius = _other.E_Radius;
-	MovementVector = _other.MovementVector;
-	Speed = _other.Speed;
+	E_MovementVector = _other.E_MovementVector;
+	E_Speed = _other.E_Speed;
+	E_Rotation = _other.E_Rotation;
 	return *this;
 }
 
 //Destructor
 Character::~Character()
 {
-
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -98,7 +47,6 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	Speed = 2.5f;
 	GVO = GlobalVariableObject();
 
 	//Setup Input Keybinds
@@ -130,16 +78,16 @@ void Character::Update()
 			switch (inputReturn.Index)
 			{
 			case 0:
-				MovementVector.y -= 1;
+				E_MovementVector.y -= 1;
 				break;
 			case 1:
-				MovementVector.y += 1;
+				E_MovementVector.y += 1;
 				break;
 			case 2:
-				MovementVector.x -= 1;
+				E_MovementVector.x -= 1;
 				break;
 			case 3:
-				MovementVector.x += 1;
+				E_MovementVector.x += 1;
 				break;
 			}
 		}

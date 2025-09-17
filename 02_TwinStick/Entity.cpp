@@ -3,69 +3,14 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Entity::Entity()
-{
-	E_Position = Driscoll::Vector2D();
-	E_Texture = nullptr;
-	E_Radius = float();
-}
-
-/*	Variable Constructors */
-
-//SET Position Only
-Entity::Entity(Driscoll::Vector2D _position)
-{
-	E_Position = _position;
-	E_Texture = nullptr;
-	E_Radius = float();
-}
-
-//SET Texture BY IMAGE Only
-Entity::Entity(raylib::Image _texture)
-{
-	E_Position = Driscoll::Vector2D();
-	E_Texture = new raylib::TextureUnmanaged(_texture);
-	E_Radius = float();
-}
-
-//SET Radius Only
-Entity::Entity(float _radius)
-{
-	E_Position = Driscoll::Vector2D();
-	E_Texture = nullptr;
-	E_Radius = _radius;
-}
-
-//Set Position & Texture by IMAGE Only
-Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture)
-{
-	E_Position = _position;
-	E_Texture = new raylib::TextureUnmanaged(_texture);
-	E_Radius = float();
-}
-
-//Set Position & Radius
-Entity::Entity(Driscoll::Vector2D _position, float _radius)
-{
-	E_Position = _position;
-	E_Texture = nullptr;
-	E_Radius = _radius;
-}
-
-//Set Texture BY IMAGE Only & Radius
-Entity::Entity(raylib::Image _texture, float _radius)
-{
-	E_Position = Driscoll::Vector2D();
-	E_Texture = new raylib::TextureUnmanaged(_texture);
-	E_Radius = _radius;
-}
-
-//Set Postion, Texture BY IMAGE Only, & Radius
-Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, float _radius)
+Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, float _radius, float _rotation, float _speed)
 {
 	E_Position = _position;
 	E_Texture = new raylib::TextureUnmanaged(_texture);
 	E_Radius = _radius;
+	E_MovementVector = Driscoll::Vector2D();
+	E_Rotation = _rotation;
+	E_Speed = _speed;
 }
 
 //Copy Constructor
@@ -74,6 +19,9 @@ Entity::Entity(const Entity& _other)
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
 	E_Radius = _other.E_Radius;
+	E_MovementVector = _other.E_MovementVector;
+	E_Speed = _other.E_Speed;
+	E_Rotation = _other.E_Rotation;
 }
 
 //Copy Assignment
@@ -82,13 +30,19 @@ Entity Entity::operator=(const Entity& _other)
 	E_Position = _other.E_Position;
 	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
 	E_Radius = _other.E_Radius;
+	E_MovementVector = _other.E_MovementVector;
+	E_Speed = _other.E_Speed;
+	E_Rotation = _other.E_Rotation;
 	return *this;
 }
 
 //Destructor
 Entity::~Entity()
 {
-	delete E_Texture;
+	if (E_Texture != nullptr)
+	{
+		delete E_Texture;
+	}
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -100,6 +54,8 @@ Entity::~Entity()
 void Entity::BeginPlay()
 {
 	Object::BeginPlay();
+
+	GVO = GlobalVariableObject();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -117,7 +73,7 @@ void Entity::Draw()
 		Driscoll::Vector2D offset = Driscoll::Vector2D();
 		offset.x = (E_Texture->GetWidth() / 2.0f);
 		offset.y = (E_Texture->GetHeight() / 2.0f);
-		E_Texture->Draw(E_Position - offset);
+		E_Texture->Draw(E_Position - offset, E_Rotation);
 	}
 }
 

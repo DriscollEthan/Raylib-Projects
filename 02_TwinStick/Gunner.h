@@ -5,39 +5,23 @@ class Gunner : public Player
 {
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
-	//DEFAULT CONSTRUCTOR
-	Gunner();
-
-	/*Variable Constructors*/
-	//SET Position Only
-	Gunner(Driscoll::Vector2D _position);
-
-	//SET Texture BY IMAGE Only
-	Gunner(raylib::Image _texture);
-
-	//SET Radius Only
-	Gunner(float _radius);
-
-	//Set Position & Texture BY IMAGE Only
-	Gunner(Driscoll::Vector2D _position, raylib::Image _texture);
-
-	//Set Position & Radius
-	Gunner(Driscoll::Vector2D _position, float _radius);
-
-	//Set Texture & Radius
-	Gunner(raylib::Image _texture, float _radius);
-
-	//Set Position, Texture, & Radius
-	Gunner(Driscoll::Vector2D _position, raylib::Image _texture, float _radius);
-
-	//COPY CONSTRUCTOR
+	/**
+		* DEFAULT CONSTRUCTOR:
+		* Parameters:
+		* Position as a Driscoll::Vector2D	| Default: 0,0
+		* Texture as an Image								| Default: Default Constructor
+		* Radius as a Float									| Default: 0.0
+		* Rotation as a Float								| Default: 0.0
+		* Speed as a flaot									| Default: 1.0
+		*/
+	Gunner(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	
 	Gunner(const Gunner& _other);
 
-	//COPY ASSIGNMENT
-	Gunner operator =(const Gunner& _other);
+	Gunner operator=(const Gunner& _other);
 
 	//DESTRUCTOR
-	~Gunner();
+	virtual ~Gunner();
 
 protected:
 	/* VARIABLES */
