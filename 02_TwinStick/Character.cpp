@@ -110,8 +110,6 @@ void Character::Update()
 	Turret->SetScale(E_Scale);
 
 	Turret->Update();
-
-	E_Scale += {0.0001f, 0.0001f};
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED

@@ -30,6 +30,7 @@ protected:
 
 	int WhichBulletToUse;
 
+	Driscoll::Vector2D ScaleMult;
 
 	//Input Arrays:
 		//Movement: (WASD), (ARROW KEYS)

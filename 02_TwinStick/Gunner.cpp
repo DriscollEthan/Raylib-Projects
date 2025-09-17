@@ -6,6 +6,7 @@
 Gunner::Gunner(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
 	WhichBulletToUse = 0;
+	ScaleMult = _scale;
 }
 
 //Copy Constructor
@@ -20,6 +21,7 @@ Gunner::Gunner(const Gunner& _other)
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
 	WhichBulletToUse = _other.WhichBulletToUse;
+	ScaleMult = _other.E_Scale;
 }
 
 //Copy Assignment
@@ -34,6 +36,7 @@ Gunner Gunner::operator=(const Gunner& _other)
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
 	WhichBulletToUse = _other.WhichBulletToUse;
+	ScaleMult = _other.E_Scale;
 	return *this;
 }
 
@@ -108,5 +111,5 @@ void Gunner::Draw()
 
 void Gunner::SetScale(Driscoll::Vector2D _newScale)
 {
-	E_Scale = E_Scale * _newScale;
+	E_Scale = ScaleMult * _newScale;
 }
