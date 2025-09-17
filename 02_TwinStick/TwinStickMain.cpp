@@ -2,7 +2,7 @@
 #include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
 #include "Vector2D.h"															//CUSTOM VECTOR2D
 #include "GlobalVariableObject.h"									//Global Variables Meant for Access in Multiple Classes
-#include "Player.h"																//Entity Class
+#include "Character.h"																//Entity Class
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
 
 		//Player Setup
 		raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-		Player* CurrentPlayer = new Player(Driscoll::Vector2D(500, 300), PlayerImage, 20.0f);
+		Character* CurrentPlayer = new Character(Driscoll::Vector2D(500, 300), PlayerImage, 20.0f);
 
 		//Others
 

@@ -77,18 +77,13 @@ public:
 
 protected:
 	/* VARIABLES */
-	//TURRET POINTER
+	class GlobalVariableObject GVO;
 
 	Driscoll::Vector2D MovementVector;
 
 	float Speed;
 
-	class GlobalVariableObject GVO;
-
 	//Input Arrays:
-		//Movement: (WASD), (ARROW KEYS)
-		FInput MovementInput[8];
-
 
 public:
 	/* FUNCTIONS */

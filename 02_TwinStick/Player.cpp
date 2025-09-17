@@ -101,18 +101,8 @@ void Player::BeginPlay()
 	Speed = 2.5f;
 	GVO = GlobalVariableObject();
 
-	//Setup Input Keybinds
-	{
-		MovementInput[0] = FInput(E_IsKeyDown, KEY_W, 0);
-		MovementInput[1] = FInput(E_IsKeyDown, KEY_S, 1);
-		MovementInput[2] = FInput(E_IsKeyDown, KEY_A, 2);
-		MovementInput[3] = FInput(E_IsKeyDown, KEY_D, 3);
-		MovementInput[4] = FInput(E_IsKeyDown, KEY_UP, 0);
-		MovementInput[5] = FInput(E_IsKeyDown, KEY_DOWN, 1);
-		MovementInput[6] = FInput(E_IsKeyDown, KEY_LEFT, 2);
-		MovementInput[7] = FInput(E_IsKeyDown, KEY_RIGHT, 3);
-	}
-
+	//Setup Input Keybinds and Grab Mouse POS
+	
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -125,32 +115,8 @@ void Player::Update()
 	MovementVector.Zero();
 
 	//Get Movement Input
-	for (int i = 0; i < 8; ++i)
-	{
-		FInputReturnStruct movementInput = Input(MovementInput[i]);
-		if (movementInput.bIsInput)
-		{
-			switch (movementInput.Index)
-			{
-				case 0:
-					MovementVector.y -= 1;
-					break;
-				case 1:
-					MovementVector.y += 1;
-					break;
-				case 2:
-					MovementVector.x -= 1;
-					break;
-				case 3:
-					MovementVector.x += 1;
-					break;
-			}
-		}
-	}
 
 	//Using the newly Updated Movement Vector, call movement.
-	Move();
-
 
 }
 

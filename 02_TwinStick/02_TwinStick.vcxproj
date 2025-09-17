@@ -138,15 +138,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GlobalVariableObject.cpp" />
+    <ClCompile Include="Gunner.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TwinStickMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GlobalVariableObject.h" />
+    <ClInclude Include="Gunner.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
