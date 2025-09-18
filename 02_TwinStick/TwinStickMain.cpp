@@ -9,8 +9,7 @@ int main()
 	//Variable Initialization:
 		//RAYLIB WINDOW
 	GlobalVariableObject GVO = GlobalVariableObject();
-	Driscoll::Vector2D ScreenSize = GVO.GetScreenSize();
-		raylib::Window Window(ScreenSize.x, ScreenSize.y, "Twin Stick Shooter");
+		raylib::Window Window(GVO.GetScreenSize().x, GVO.GetScreenSize().y, "Twin Stick Shooter");
 
 		//Player Setup
 		raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
