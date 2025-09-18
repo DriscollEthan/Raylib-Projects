@@ -35,7 +35,7 @@ protected:
 
 	Driscoll::Vector2D E_Position;
 
-	raylib::TextureUnmanaged * E_Texture;
+	raylib::Texture E_Texture;
 
 	float E_Radius;
 
@@ -76,7 +76,7 @@ public:
 	 * MUST BE CHECKED FOR NULLPTR ON CALLING
 	 *Returns Pointer To Current Texture
 	 */
-	raylib::TextureUnmanaged * GetTexture();
+	raylib::Texture GetTexture();
 
 	 /**
 	 * Get Radius:

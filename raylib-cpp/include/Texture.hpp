@@ -18,12 +18,27 @@ public:
     /**
      * Explicitly forbid the copy constructor.
      */
-    Texture(const Texture&) = delete;
+    Texture(const Texture& _other)
+    {
+        id = _other.id;
+        width = _other.width;
+        height = _other.height;
+        mipmaps = _other.mipmaps;
+        format = _other.format;
+    }
 
     /**
      * Explicitly forbid copy assignment.
      */
-    Texture& operator=(const Texture&) = delete;
+    Texture& operator=(const Texture& _other)
+    {
+        id = _other.id;
+        width = _other.width;
+        height = _other.height;
+        mipmaps = _other.mipmaps;
+        format = _other.format;
+        return *this;
+    }
 
     Texture(int _id, int _width, int _height, int _mipmaps, int _format)
     {

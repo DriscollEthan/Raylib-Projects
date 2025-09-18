@@ -14,7 +14,7 @@ Gunner::Gunner(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 Gunner::Gunner(const Gunner& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -29,7 +29,7 @@ Gunner::Gunner(const Gunner& _other)
 Gunner Gunner::operator=(const Gunner& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -61,7 +61,14 @@ void Gunner::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	BulletsInPool = new Bullet[MAX_BULLETS_IN_POOL]();
+	raylib::Image BulletImage; BulletImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
+
+	BulletsInPool = new Bullet[MAX_BULLETS_IN_POOL];
+
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].SetTexture(BulletImage);
+	}
 
 	//Setup Input Keybinds
 	{

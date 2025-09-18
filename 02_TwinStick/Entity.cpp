@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <iostream>
 
 /* CONSTRUCTORS & DESTRUCTORS */
 
@@ -6,7 +7,15 @@
 Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed)
 {
 	E_Position = _position;
-	E_Texture = new raylib::TextureUnmanaged(_texture);
+	if (_texture.IsValid())
+	{
+		E_Texture = _texture;
+	}
+	else
+	{
+		E_Texture.Load("Resources/DEFAULT.png"); \
+			std::cout << "WARNING: AN ENTITY WAS CONSTRUCTED WITHOUT A VALID IMAGE, USING DEFAULT IMAGE \n";
+	}
 	E_Origin = _origin;
 	E_Scale = _scale;
 	E_Radius = _radius;
@@ -19,7 +28,7 @@ Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 Entity::Entity(const Entity& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -32,7 +41,7 @@ Entity::Entity(const Entity& _other)
 Entity Entity::operator=(const Entity& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -45,10 +54,7 @@ Entity Entity::operator=(const Entity& _other)
 //Destructor
 Entity::~Entity()
 {
-	if (E_Texture != nullptr)
-	{
-		delete E_Texture;
-	}
+
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -74,8 +80,6 @@ void Entity::Update()
 void Entity::Draw()
 {
 	Object::Draw();
-	if (E_Texture != nullptr)
-	{
 	//	Driscoll::Vector2D offset = {};
 	//	offset.x -= E_Texture->GetWidth() / 2.0f;
 	//	offset.y -= E_Texture->GetHeight() / 2.0f;
@@ -83,13 +87,12 @@ void Entity::Draw()
 	//
 	//	std::cout << E_Position - offset << std::endl;
 
-		E_Texture->Draw(raylib::Rectangle(0, 0, (float)E_Texture->GetWidth(), (float)E_Texture->GetHeight()),						// SourceRec
-			raylib::Rectangle(E_Position.x, E_Position.y, (float)E_Texture->GetWidth() * E_Scale.x, (float)E_Texture->GetHeight() * E_Scale.y),	// DestRec
-			Driscoll::Vector2D((float)E_Texture->GetWidth() * E_Origin.x * E_Scale.x, (float)E_Texture->GetHeight() * E_Origin.y * E_Scale.y),		// Origin
+		E_Texture.Draw(raylib::Rectangle(0, 0, (float)E_Texture.GetWidth(), (float)E_Texture.GetHeight()),						// SourceRec
+			raylib::Rectangle(E_Position.x, E_Position.y, (float)E_Texture.GetWidth() * E_Scale.x, (float)E_Texture.GetHeight() * E_Scale.y),	// DestRec
+			Driscoll::Vector2D((float)E_Texture.GetWidth() * E_Origin.x * E_Scale.x, (float)E_Texture.GetHeight() * E_Origin.y * E_Scale.y),		// Origin
 			E_Rotation,	// Rotation
 			raylib::Color::White() // Tint
 		);
-	}
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -102,7 +105,7 @@ Driscoll::Vector2D Entity::GetPosition()
 }
 
 //Get Texture
-raylib::TextureUnmanaged * Entity::GetTexture()
+raylib::Texture Entity::GetTexture()
 {
 	return E_Texture;
 }
@@ -136,15 +139,7 @@ void Entity::SetScale(Driscoll::Vector2D _newScale)
 //Set Texture BY IMAGE only
 void Entity::SetTexture(raylib::Image _textureImage)
 {
-	if (E_Texture == nullptr)
-	{
-		E_Texture = new raylib::TextureUnmanaged(_textureImage);
-	}
-	else
-	{
-		delete E_Texture;
-		E_Texture = E_Texture = new raylib::TextureUnmanaged(_textureImage);
-	}
+	E_Texture = _textureImage;
 }
 
 //Set Radius

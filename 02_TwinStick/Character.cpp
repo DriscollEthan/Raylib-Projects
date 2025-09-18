@@ -13,7 +13,7 @@ Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, Drisc
 Character::Character(const Character& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -26,7 +26,7 @@ Character::Character(const Character& _other)
 Character Character::operator=(const Character& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;

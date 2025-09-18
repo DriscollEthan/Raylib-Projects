@@ -12,7 +12,7 @@ Player::Player(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 Player::Player(const Player& _other) 
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -25,7 +25,7 @@ Player::Player(const Player& _other)
 Player Player::operator=(const Player& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = new raylib::TextureUnmanaged(_other.E_Texture->GetData());
+	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
