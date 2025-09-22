@@ -29,7 +29,7 @@ protected:
 	//Array of Bullets || USE OBJECT POOLING WITH HEAP MEMORY
 	class Bullet* BulletsInPool;
 
-	const int MAX_BULLETS_IN_POOL = 10;
+	const int MAX_BULLETS_IN_POOL = 60; //MAX_BULLETS_IN_POOL Should Equal: (Limetime * 10) + 10  ||  For adding a minor buffer from obtainably max by about 5 and not having too many objects spawned, based on speed clicking.  
 
 	int WhichBulletToUse;
 

@@ -101,7 +101,7 @@ void Gunner::Update()
 			Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
 			Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((E_Texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
 				((E_Texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
-			BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, 10.0f, 2.0f);
+			BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, 5.0f, 5.0F);
 
 			++WhichBulletToUse;
 
