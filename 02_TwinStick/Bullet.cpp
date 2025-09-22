@@ -62,6 +62,7 @@ void Bullet::BeginPlay()
 	//Init Vars
 	SetCurrentState(None);
 	E_Origin = { 0.5f, 0.5f };
+	E_Radius = E_Texture.GetWidth();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -102,6 +103,22 @@ void Bullet::Draw()
 		Entity::Draw();
 		break;
 	case Inactive:
+		break;
+	}
+}
+
+bool Bullet::CollisionCheck(Entity& _otherObject)
+{
+	switch (CurrentState)
+	{
+	case None:
+		return false;
+		break;
+	case Active:
+		return CheckCollisionCircles(E_Position, E_Radius, _otherObject.GetPosition(), _otherObject.GetRadius());
+		break;
+	case Inactive:
+		return false;
 		break;
 	}
 }

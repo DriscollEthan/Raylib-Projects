@@ -53,6 +53,10 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
+	raylib::Image turretImage;
+	turretImage.Load("Resources/Turret.png");
+
+	Turret = new Gunner(E_Position, turretImage, { 0.5, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0);
 
 	//Setup Input Keybinds
 	{
@@ -65,11 +69,6 @@ void Character::BeginPlay()
 		MovementInput[6] = FInput(E_IsKeyDown, KEY_LEFT, 2);
 		MovementInput[7] = FInput(E_IsKeyDown, KEY_RIGHT, 3);
 	}
-
-	raylib::Image turretImage;
-	turretImage.Load("Resources/Turret.png");
-
-	Turret = new Gunner(E_Position, turretImage, { 0.5, 1 }, { (E_Scale.x / 2.0f), E_Scale.y}, 0, E_Rotation, 0);
 
 	Turret->BeginPlay();
 }
@@ -116,6 +115,11 @@ void Character::Draw()
 {
 	Player::Draw();
 	Turret->Draw();
+}
+
+bool Character::BulletHitEnemy(Entity& _enemy)
+{
+	return Turret->CollisionCheck(_enemy);
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

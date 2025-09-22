@@ -2,7 +2,7 @@
 #include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
 #include "Vector2D.h"															//CUSTOM VECTOR2D
 #include "GlobalVariableObject.h"									//Global Variables Meant for Access in Multiple Classes
-#include "Character.h"																//Entity Class
+#include "GameManager.h"																//Entity Class
 
 int main()
 {
@@ -13,7 +13,7 @@ int main()
 
 		//Player Setup
 		raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-		Character* CurrentPlayer = new Character(Driscoll::Vector2D(500, 300), PlayerImage, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1,1), 20.0f, 0.0f, 2.5f);
+		GameManager* GameMode = new GameManager();
 
 		//Others
 
@@ -24,7 +24,7 @@ int main()
 	/*** *** ***/
 
 	//BEGIN PLAY
-	CurrentPlayer->BeginPlay();
+	GameMode->BeginPlay();
 	
 	/*** *** ***/
 
@@ -32,7 +32,7 @@ int main()
 	while (!Window.ShouldClose())
 	{
 		//Update
-		CurrentPlayer->Update();
+		GameMode->Update();
 
 		/*** *** ***/
 
@@ -41,14 +41,14 @@ int main()
 		{
 			ClearBackground(DARKGRAY);
 
-			CurrentPlayer->Draw();
+			GameMode->Draw();
 		}
 	}
 
 	/*** *** ***/
 
 	//END OF MAIN GAME LOOP
-	delete CurrentPlayer;
+	delete GameMode;
 	/*** *** ***/
 
 	//END *** ***

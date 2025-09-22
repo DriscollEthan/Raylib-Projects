@@ -49,6 +49,8 @@ public:
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
 
+	bool BulletHitEnemy(Entity& _enemy);
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC GET FUNCTIONS */

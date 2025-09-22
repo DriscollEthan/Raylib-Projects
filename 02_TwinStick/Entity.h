@@ -49,6 +49,7 @@ protected:
 	Driscoll::Vector2D E_Origin;
 
 	Driscoll::Vector2D E_Scale;
+
 public:
 	/* FUNCTIONS */
 
@@ -61,6 +62,8 @@ public:
 
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
+
+	//Collided: Called when Collision is detected.
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
@@ -89,7 +92,7 @@ public:
 		* Takes in Another Entity to Check Collision With
 		*Returns bool Is Colliding
 		*/
-	bool CollisionCheck(Entity& _otherObject);
+	virtual bool CollisionCheck(Entity& _otherObject);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
@@ -104,6 +107,7 @@ public:
 
 	//Set Radius
 	void SetRadius(float _newRadius);
+
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 	/* ENTITY SPECIFC FUNCTIONS */

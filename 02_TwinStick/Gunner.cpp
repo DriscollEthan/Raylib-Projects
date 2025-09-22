@@ -128,6 +128,18 @@ void Gunner::Draw()
 	}
 }
 
+bool Gunner::DidBulletHitEnemy(Entity& _enemy)
+{
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		if (BulletsInPool[i].CollisionCheck(_enemy))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 

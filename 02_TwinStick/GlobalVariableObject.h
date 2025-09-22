@@ -17,6 +17,6 @@ protected:
 
 public:
 	//GET GLOABL VARIABLES
-	const Driscoll::Vector2D GetScreenSize();
+	const Driscoll::Vector2D GetScreenSize() { return GlobalScreenSize; }
 };
 

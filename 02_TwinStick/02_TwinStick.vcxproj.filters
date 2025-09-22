@@ -36,9 +36,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalVariableObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>Source Files\Derived Classes</Filter>
     </ClCompile>
@@ -50,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="TwinStickMain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Derived Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +72,9 @@
       <Filter>Header Files\Derived Classes</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Derived Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
       <Filter>Header Files\Derived Classes</Filter>
     </ClInclude>
   </ItemGroup>
