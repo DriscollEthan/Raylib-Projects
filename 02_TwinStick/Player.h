@@ -7,7 +7,11 @@ enum EInputType
 	E_IsKeyPressed,
 	E_IsKeyPressedRepeat,
 	E_IsKeyReleased,
-	E_IsKeyUp
+	E_IsKeyUp,
+	E_IsMouseButtonPressed,
+	E_IsMouseButtonDown,
+	E_IsMouseButtonReleased,
+	E_IsMouseButtonUp
 };
 
 struct FInputReturnStruct

@@ -86,7 +86,6 @@ FInputReturnStruct Player::Input(FInput _input)
 {
 	FInputReturnStruct returnValue = FInputReturnStruct();
 	returnValue.Index = _input.InputIndex;
-
 	switch (_input.InputType)
 	{
 	case E_IsKeyDown:
@@ -103,6 +102,18 @@ FInputReturnStruct Player::Input(FInput _input)
 		break;
 	case E_IsKeyUp:
 		returnValue.bIsInput = IsKeyUp(_input.Key);
+		break;
+	case E_IsMouseButtonPressed:
+		returnValue.bIsInput = IsMouseButtonPressed(_input.Key);
+		break;
+	case E_IsMouseButtonDown:
+		returnValue.bIsInput = IsMouseButtonDown(_input.Key);
+		break;
+	case E_IsMouseButtonReleased:
+		returnValue.bIsInput = IsMouseButtonReleased(_input.Key);
+		break;
+	case E_IsMouseButtonUp:
+		returnValue.bIsInput = IsMouseButtonUp(_input.Key);
 		break;
 	}
 

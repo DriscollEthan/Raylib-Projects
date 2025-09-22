@@ -5,7 +5,9 @@
 //DEFAULT CONSTRUCTOR
 Bullet::Bullet(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
-
+	CurrentState = None;
+	TimeAlive = 0.0f;
+	TimeToLive = 0.0f;
 }
 
 //Copy Constructor
@@ -19,6 +21,9 @@ Bullet::Bullet(const Bullet& _other)
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
+	CurrentState = _other.CurrentState;
+	TimeAlive = _other.TimeAlive;
+	TimeToLive = _other.TimeToLive;
 }
 
 //Copy Assignment
@@ -32,6 +37,9 @@ Bullet Bullet::operator=(const Bullet& _other)
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
+	CurrentState = _other.CurrentState;
+	TimeAlive = _other.TimeAlive;
+	TimeToLive = _other.TimeToLive;
 	return *this;
 }
 
@@ -53,6 +61,7 @@ void Bullet::BeginPlay()
 
 	//Init Vars
 	SetCurrentState(None);
+	E_Origin = { 0.5f, 0.5f };
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -118,7 +127,7 @@ void Bullet::SetCurrentState(EState _newState)
 //Set Time To Live
 void Bullet::SetTimeToLive(float _newTimeToLive)
 {
-	SetTimeToLive(_newTimeToLive);
+	TimeToLive = _newTimeToLive;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

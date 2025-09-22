@@ -1,4 +1,5 @@
 #include "Gunner.h"
+#include "Utils.h"
 
 /* CONSTRUCTORS & DESTRUCTORS */
 
@@ -67,13 +68,14 @@ void Gunner::BeginPlay()
 
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
+		BulletsInPool[i].BeginPlay();
 		BulletsInPool[i].SetTexture(BulletImage);
 	}
 
 	//Setup Input Keybinds
 	{
-		ShootInput[0] = FInput(E_IsKeyDown, MOUSE_BUTTON_LEFT, 0);
-		ShootInput[1] = FInput(E_IsKeyDown, KEY_SPACE, 0);
+		ShootInput[0] = FInput(E_IsMouseButtonPressed, MOUSE_BUTTON_LEFT, 0);
+		ShootInput[1] = FInput(E_IsKeyPressed, KEY_SPACE, 0);
 	}
 
 }
@@ -84,14 +86,25 @@ void Gunner::Update()
 	//Call Parent Update
 	Player::Update();
 
-	//Get Movement Input
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].Update();
+	}
+
+	//Get Shoot Input
 	for (int i = 0; i < 2; ++i)
 	{
 		FInputReturnStruct inputReturn = Input(ShootInput[i]);
 		if (inputReturn.bIsInput)
 		{
 			//Shoot Function
+			Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
+			Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((E_Texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
+				((E_Texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
+			BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, 10.0f, 2.0f);
+
 			++WhichBulletToUse;
+
 			if (WhichBulletToUse >= MAX_BULLETS_IN_POOL)
 			{
 				WhichBulletToUse = 0;
@@ -108,6 +121,11 @@ void Gunner::Update()
 void Gunner::Draw()
 {
 	Player::Draw();
+
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].Draw();
+	}
 }
 
 
