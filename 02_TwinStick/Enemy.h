@@ -2,6 +2,36 @@
 #include "Entity.h"
 #include "Gunner.h"
 
+struct Timer
+{
+	float TimerLength;
+
+	float TimerDeviation;
+
+	float CurrentTimer;
+
+	bool TimerOver()
+	{
+		return CurrentTimer >= TimerLength;
+	}
+
+	void ResetTimer(float _newTime, float _randomDeviation)
+	{
+		CurrentTimer = 0.0f;
+
+		float min = 0 - _randomDeviation;
+		float max = 0 + _randomDeviation;
+		TimerDeviation = GetRandomValue(min, max);
+
+		TimerLength = _newTime + TimerDeviation;
+	}
+
+	void TimerUpdate()
+	{
+		CurrentTimer += GetFrameTime();
+	}
+};
+
 class Enemy : public Entity
 {
 public:
@@ -31,6 +61,5 @@ protected:
 	Gunner* Turret;
 
 	Entity* PlayerRef;
-
 };
 
