@@ -10,20 +10,46 @@ struct Timer
 
 	float CurrentTimer;
 
+	Timer() { TimerLength = TimerDeviation = CurrentTimer = 0.0f; }
+
+	Timer(float _length, float _deviation)
+	{
+		TimerLength = _length;
+		TimerDeviation = _deviation;
+		CurrentTimer = 0.0f;
+	}
+
+	Timer(const Timer& _other)
+	{
+		TimerLength = _other.TimerLength;
+		TimerDeviation = _other.TimerDeviation;
+		CurrentTimer = _other.CurrentTimer;
+	}
+
+	Timer operator =(const Timer& _other)
+	{
+		TimerLength = _other.TimerLength;
+		TimerDeviation = _other.TimerDeviation;
+		CurrentTimer = _other.CurrentTimer;
+		return *this;
+	}
+
 	bool TimerOver()
 	{
 		return CurrentTimer >= TimerLength;
 	}
 
-	void ResetTimer(float _newTime, float _randomDeviation)
+	void ResetTimer()
 	{
 		CurrentTimer = 0.0f;
 
-		float min = 0 - _randomDeviation;
-		float max = 0 + _randomDeviation;
+		TimerLength -= TimerDeviation;
+
+		float min = 0 - TimerDeviation;
+		float max = 0 + TimerDeviation;
 		TimerDeviation = GetRandomValue(min, max);
 
-		TimerLength = _newTime + TimerDeviation;
+		TimerLength += TimerDeviation;
 	}
 
 	void TimerUpdate()
@@ -57,9 +83,13 @@ public:
 
 	void SetPlayerRef(Entity* _playerRef);
 
+	void SetTimer(Timer _newTimer);
+
 protected:
 	Gunner* Turret;
 
 	Entity* PlayerRef;
+
+	Timer ShootingTimer;
 };
 

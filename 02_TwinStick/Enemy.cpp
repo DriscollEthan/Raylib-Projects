@@ -3,6 +3,8 @@
 Enemy::Enemy(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
   Turret = nullptr;
+  PlayerRef = nullptr;
+  ShootingTimer = {};
 }
 
 Enemy::~Enemy()
@@ -35,17 +37,30 @@ void Enemy::Update()
     Turret->Rotate(PlayerRef->GetPosition().AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f);
   }
 
-  Turret->Update();
-}
+  ShootingTimer.TimerUpdate();
 
-void Enemy::Draw()
+  if (ShootingTimer.TimerOver())
+  {
+    Turret->Shoot(2.0f, 3.0f);
+    ShootingTimer.ResetTimer();
+  }
+
+    Turret->Update();
+  }
+
+  void Enemy::Draw()
+  {
+    Entity::Draw();
+
+    Turret->Draw();
+  }
+
+  void Enemy::SetPlayerRef(Entity* _playerRef)
+  {
+    PlayerRef = _playerRef;
+  }
+
+void Enemy::SetTimer(Timer _newTimer)
 {
-  Entity::Draw();
-
-  Turret->Draw();
-}
-
-void Enemy::SetPlayerRef(Entity* _playerRef)
-{
-  PlayerRef = _playerRef;
+  ShootingTimer = _newTimer;
 }
