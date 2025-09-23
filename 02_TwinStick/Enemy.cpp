@@ -46,8 +46,13 @@ void Enemy::Update()
   }
 
   //Movement for Enemy
+    /* Brainstorming:
+    *  Random POS?
+    *  Direction of Player?
+    *  Away from Bullets?
+    */
 
-    Turret->Update();
+  Turret->Update();
   }
 
   void Enemy::Draw()
