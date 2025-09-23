@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Character.h" //For Player -- Player Manages it's Turret and Bullets
+#include "Enemy.h"     //For Enemy -- Enemy Manages it's Turret and Bullets
 
 
 
@@ -19,6 +20,8 @@ public:
   virtual void Draw() override;
   
 protected:
-  Character* Player;
+  Character* PlayerRef;
+
+  Enemy* EnemyRef;
 };
 

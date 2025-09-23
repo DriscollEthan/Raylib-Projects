@@ -467,4 +467,3 @@ namespace Driscoll
 		return _vector * _scalar;
 	}
 };
-}

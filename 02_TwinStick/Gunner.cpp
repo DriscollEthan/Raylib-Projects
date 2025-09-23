@@ -4,16 +4,27 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Gunner::Gunner(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
+Gunner::Gunner(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed, int _maxBulletsInPool, raylib::Image _bulletImage) : Player(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
 {
 	WhichBulletToUse = 0;
 	ScaleMult = _scale;
 	BulletsInPool = nullptr;
+	MAX_BULLETS_IN_POOL = _maxBulletsInPool;
+	if (_bulletImage.IsValid())
+	{
+		BulletImage = _bulletImage;
+	}
+	else
+	{
+		BulletImage.Load("Resources/DEFAULT.png"); 
+			std::cout << "\033[1;31mWARNING: A GUNNER WAS CONSTRUCTED WITHOUT A VALID IMAGE FOR THE BULLET, USING DEFAULT IMAGE \033[0m\n";
+	}
 }
 
 //Copy Constructor
 Gunner::Gunner(const Gunner& _other)
 {
+	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
 	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
@@ -24,11 +35,14 @@ Gunner::Gunner(const Gunner& _other)
 	E_Rotation = _other.E_Rotation;
 	WhichBulletToUse = _other.WhichBulletToUse;
 	ScaleMult = _other.E_Scale;
+	MAX_BULLETS_IN_POOL = _other.MAX_BULLETS_IN_POOL;
+	BulletImage = _other.BulletImage;
 }
 
 //Copy Assignment
 Gunner Gunner::operator=(const Gunner& _other)
 {
+	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
 	E_Texture = _other.E_Texture;
 	E_Origin = _other.E_Origin;
@@ -39,6 +53,8 @@ Gunner Gunner::operator=(const Gunner& _other)
 	E_Rotation = _other.E_Rotation;
 	WhichBulletToUse = _other.WhichBulletToUse;
 	ScaleMult = _other.E_Scale;
+	MAX_BULLETS_IN_POOL = _other.MAX_BULLETS_IN_POOL;
+	BulletImage = _other.BulletImage;
 	return *this;
 }
 
@@ -62,20 +78,12 @@ void Gunner::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	raylib::Image BulletImage; BulletImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-
 	BulletsInPool = new Bullet[MAX_BULLETS_IN_POOL];
 
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
 		BulletsInPool[i].BeginPlay();
 		BulletsInPool[i].SetTexture(BulletImage);
-	}
-
-	//Setup Input Keybinds
-	{
-		ShootInput[0] = FInput(E_IsMouseButtonPressed, MOUSE_BUTTON_LEFT, 0);
-		ShootInput[1] = FInput(E_IsKeyPressed, KEY_SPACE, 0);
 	}
 
 }
@@ -90,31 +98,6 @@ void Gunner::Update()
 	{
 		BulletsInPool[i].Update();
 	}
-
-	//Get Shoot Input
-	for (int i = 0; i < 2; ++i)
-	{
-		FInputReturnStruct inputReturn = Input(ShootInput[i]);
-		if (inputReturn.bIsInput)
-		{
-			//Shoot Function
-			Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
-			Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((E_Texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
-				((E_Texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
-			BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, 5.0f, 5.0F);
-
-			++WhichBulletToUse;
-
-			if (WhichBulletToUse >= MAX_BULLETS_IN_POOL)
-			{
-				WhichBulletToUse = 0;
-			}
-			break;
-		}
-	}
-	//Look Functionality
-	Driscoll::Vector2D mousePosition = GetMousePosition();
-	Rotate((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
@@ -138,6 +121,22 @@ bool Gunner::DidBulletHitEnemy(Entity& _enemy)
 		}
 	}
 	return false;
+}
+
+void Gunner::Shoot(float _speed, float _lifetime)
+{
+	//Shoot Function
+	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
+	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((E_Texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
+		((E_Texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
+	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
+
+	++WhichBulletToUse;
+
+	if (WhichBulletToUse >= MAX_BULLETS_IN_POOL)
+	{
+		WhichBulletToUse = 0;
+	}
 }
 
 

@@ -76,7 +76,7 @@ raylib::Vector2 Wrap(raylib::Vector2 _currentVector, raylib::Vector2 _min, rayli
 	return _currentVector;
 }
 
-raylib::Vector2 Movement(raylib::Vector2 _curPos, raylib::Vector2 _movementVector, /aylib::Vector2 _max)
+raylib::Vector2 Movement(raylib::Vector2 _curPos, raylib::Vector2 _movementVector, raylib::Vector2 _max)
 {
 	_curPos += _movementVector;
 
@@ -145,7 +145,7 @@ int main()
 		}
 		//Variable Updates
 		MovementVector *= MovementSpeed;
-		PlayerPosition = Movement(PlayerPosition, MovementVector, raylib::Vector2(/creenWidth, ScreenHeight));
+		PlayerPosition = Movement(PlayerPosition, MovementVector, raylib::Vector2(ScreenWidth, ScreenHeight));
 
 		//Draw
 		while (Window.Drawing())

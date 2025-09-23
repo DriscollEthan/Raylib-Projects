@@ -220,14 +220,14 @@ namespace Driscoll
 		}
 
 		/*
-		 * Returns true if every component is approximately equal to the other.
+		 * Returns true if every component is exactly equal to the other.
 		 *
 		 * @param rhs The other Matrix.
 		 * @return True if equal, otherwise false.
 		 */
-		bool Equals(const Matrix3& rhs, float Tolerance = MAX_FLOAT_DELTA) const
+		bool Equals(const Matrix3& rhs) const
 		{
-			int(i = 0; i < 9; ++i)
+			for (int i = 0; i < 9; ++i)
 			{
 				if (v[i] != rhs.v[i])
 				{
@@ -238,11 +238,40 @@ namespace Driscoll
 		}
 
 		/*
+		 * Returns true if every component is approximately equal to the other.
+		 *
+		 * @param rhs The other Matrix.
+		 * @return True if equal, otherwise false.
+		 */
+		bool NearlyEquals(const Matrix3& rhs, float Tolerance = MAX_FLOAT_DELTA) const
+		{
+			for (int i = 0; i < 9; ++i)
+			{
+				//Get the difference between the values
+				float temp = v[i] - rhs.v[i];
+				//Get the absolute Value for an accurate comparison
+				temp *= (temp < 0) ? -1 : 1;
+				//Compare, and if one number is greater than the tolerance, the matrix must not be nearly equal.
+				if (temp > Tolerance)
+				{
+					return false;
+				}
+			}
+			//If we never leave early every element must be nearly equal to every element in the other matrix.
+			return true;
+		}
+
+		/*
 		 * Returns this as a formatted string.
 		 *
 		 * @return A comma separated Vector with its components.
 		 */
-		std::string ToString() const;
+		std::string ToString() const
+		{
+			return "m1: " + std::to_string(m1) + ", m4: " + std::to_string(m4) + ", m7: " + std::to_string(m7)
+				+ "\nm2: " + std::to_string(m2) + ", m5: " + std::to_string(m5) + ", m8: " + std::to_string(m8)
+				+ "\nm3: " + std::to_string(m3) + ", m6 : " + std::to_string(m6) + ", m7 : " + std::to_string(m9);
+		}
 
 		/*
 		 * Transform Factory Functions
@@ -403,7 +432,10 @@ namespace Driscoll
 		 * @param dim The index (accessed by "columns").
 		 * @return Returns a reference to the element at the requested index.
 		 */
-		float& operator [](int dim);
+		float& operator [](int dim)
+		{
+			return v[dim];
+		}
 
 		/*
 		 * Accesses the matrix as though it were an array of floats in columns.
@@ -411,20 +443,29 @@ namespace Driscoll
 		 * @param dim The index (accessed by "columns").
 		 * @return Returns a const reference to the element at the requested index.
 		 */
-		const float& operator [](int dim) const;
+		const float& operator [](int dim) const
+		{
+			return v[dim];
+		}
 
 		/*
 		 * Casts the matrix as though it were an array of floats in columns.
 		 *
 		 * @return Returns a float* pointing to the first element of the "array".
 		 */
-		operator float* ();
+		operator float* ()
+		{
+			return v[0];
+		}
 
 		/*
 		 * Casts the matrix as though it were an array of floats in columns.
 		 *
 		 * @return Returns a const float* pointing to the first element of the "array".
 		 */
-		operator const float* () const;
+		operator const float* () const
+		{
+			return v[0];
+		}
 	};
 }

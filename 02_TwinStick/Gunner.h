@@ -15,7 +15,7 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Gunner(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Gunner(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f, int _maxBulletsInPool = 0, raylib::Image _bulletImage = {});
 	
 	Gunner(const Gunner& _other);
 
@@ -29,16 +29,13 @@ protected:
 	//Array of Bullets || USE OBJECT POOLING WITH HEAP MEMORY
 	class Bullet* BulletsInPool;
 
-	const int MAX_BULLETS_IN_POOL = 60; //MAX_BULLETS_IN_POOL Should Equal: (Limetime * 10) + 10  ||  For adding a minor buffer from obtainably max by about 5 and not having too many objects spawned, based on speed clicking.  
+	int MAX_BULLETS_IN_POOL; //MAX_BULLETS_IN_POOL Should Equal: (Limetime * 10) + 10  ||  For adding a minor buffer from obtainably max by about 5 and not having too many objects spawned, based on speed clicking.  
 
 	int WhichBulletToUse;
 
 	Driscoll::Vector2D ScaleMult;
 
-	//Input Arrays:
-		//Movement: (WASD), (ARROW KEYS)
-	FInput ShootInput[2];
-
+	raylib::Image BulletImage;
 
 public:
 	/* FUNCTIONS */
@@ -54,6 +51,8 @@ public:
 	virtual void Draw() override;
 
 	bool DidBulletHitEnemy(Entity& _enemy);
+
+	void Shoot(float _speed, float _lifetime);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

@@ -55,11 +55,14 @@ void Character::BeginPlay()
 	//Init Vars
 	raylib::Image turretImage;
 	turretImage.Load("Resources/Turret.png");
+	raylib::Image bulletImage; 
+	bulletImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
 
-	Turret = new Gunner(E_Position, turretImage, { 0.5, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0);
+	Turret = new Gunner(E_Position, turretImage, { 0.5, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, bulletImage);
 
 	//Setup Input Keybinds
 	{
+		//Setup Movement Variables
 		MovementInput[0] = FInput(E_IsKeyDown, KEY_W, 0);
 		MovementInput[1] = FInput(E_IsKeyDown, KEY_S, 1);
 		MovementInput[2] = FInput(E_IsKeyDown, KEY_A, 2);
@@ -68,6 +71,10 @@ void Character::BeginPlay()
 		MovementInput[5] = FInput(E_IsKeyDown, KEY_DOWN, 1);
 		MovementInput[6] = FInput(E_IsKeyDown, KEY_LEFT, 2);
 		MovementInput[7] = FInput(E_IsKeyDown, KEY_RIGHT, 3);
+
+		//Setup Shoot Variables
+		ShootInput[0] = FInput(E_IsMouseButtonPressed, MOUSE_BUTTON_LEFT, 0);
+		ShootInput[1] = FInput(E_IsKeyPressed, KEY_SPACE, 0);
 	}
 
 	Turret->BeginPlay();
@@ -102,8 +109,27 @@ void Character::Update()
 			}
 		}
 	}
+
+	//Get Shoot Input
+	for (int i = 0; i < 2; ++i)
+	{
+		FInputReturnStruct inputReturn = Input(ShootInput[i]);
+		if (inputReturn.bIsInput)
+		{
+			Turret->Shoot(5, 5);
+			break;
+		}
+	}
+
 	//Using the newly Updated Movement Vector, call movement.
 	Move();
+
+	//Update Turret Vars
+	//Look
+	Driscoll::Vector2D mousePosition = GetMousePosition();
+	Turret->Rotate((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
+
+	//Position and Scale
 	Turret->SetPosition(E_Position);
 	Turret->SetScale(E_Scale);
 

@@ -33,8 +33,10 @@ protected:
 
 	//Input Arrays:
 		//Movement: (WASD), (ARROW KEYS)
-	FInput MovementInput[8];
+		FInput MovementInput[8];
 
+		//Shoot: (Left Click) (Space Bar)
+		FInput ShootInput[2];
 
 public:
 	/* FUNCTIONS */

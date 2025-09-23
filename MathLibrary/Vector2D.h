@@ -187,7 +187,7 @@ namespace Driscoll
 		//Find Angle Between 2 Vectors2D
 		float AngleBetween(const Vector2D& _otherVector)
 		{
-			return std::acosf(Dot(_otherVector) / (Magnitude() * _otherVector.Magnitude()));
+			return std::atan2f(y - _otherVector.y, x - _otherVector.x);
 		}
 		//Operators
 

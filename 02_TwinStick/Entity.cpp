@@ -14,7 +14,7 @@ Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 	else
 	{
 		E_Texture.Load("Resources/DEFAULT.png"); \
-			std::cout << "WARNING: AN ENTITY WAS CONSTRUCTED WITHOUT A VALID IMAGE, USING DEFAULT IMAGE \n";
+			std::cout << "\033[1;31mWARNING: AN ENTITY WAS CONSTRUCTED WITHOUT A VALID IMAGE, USING DEFAULT IMAGE \033[0m\n";
 	}
 	E_Origin = _origin;
 	E_Scale = _scale;

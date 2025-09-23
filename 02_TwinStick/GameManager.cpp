@@ -2,33 +2,42 @@
 
 GameManager::GameManager()
 {
-  Player = nullptr;
+  PlayerRef = nullptr;
+  EnemyRef = nullptr;
 }
 
 GameManager::~GameManager()
 {
-  if (Player)
+  if (PlayerRef)
   {
-    delete Player;
+    delete PlayerRef;
+  }
+  if (EnemyRef)
+  {
+    delete EnemyRef;
   }
 }
 
 void GameManager::BeginPlay()
 {
   raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-  Player = new Character(Driscoll::Vector2D(500, 300), PlayerImage, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 2.5f);
-  Player->BeginPlay();
+  PlayerRef = new Character(Driscoll::Vector2D(500, 300), PlayerImage, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 2.5f);
+  PlayerRef->BeginPlay();
+  EnemyRef = new Enemy(Driscoll::Vector2D(500, 300), PlayerImage, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 2.5f);
+  EnemyRef->SetPlayerRef(PlayerRef);
+  EnemyRef->BeginPlay();
 }
 
 void GameManager::Update()
 {
-  Player->Update();
-
+  PlayerRef->Update();
+  EnemyRef->Update();
   //Check Collision with bullets for enemies
 
 }
 
 void GameManager::Draw()
 {
-  Player->Draw();
+  PlayerRef->Draw();
+  EnemyRef->Draw();
 }

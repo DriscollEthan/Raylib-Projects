@@ -50,7 +50,7 @@ namespace Driscoll
 	template<typename T>
 	inline T CosDeg(T _x)
 	{
-		return cos(_x * (Pi / 180.0f));
+		return cos(_x * Rad2Deg);
 	}
 
 	template<typename T>

@@ -1,8 +1,10 @@
 #pragma once
 #include "Entity.h"
+#include "Gunner.h"
 
 class Enemy : public Entity
 {
+public:
 	/* CONSTRUCTORS & DESTRUCTORS */
 		/**
 			* DEFAULT CONSTRUCTOR:
@@ -23,6 +25,12 @@ class Enemy : public Entity
 
   virtual void Draw() override;
 
+	void SetPlayerRef(Entity* _playerRef);
+
+protected:
+	Gunner* Turret;
+
+	Entity* PlayerRef;
 
 };
 
