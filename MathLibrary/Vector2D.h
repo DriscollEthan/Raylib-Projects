@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+#include "Utils.h"
+
 namespace Driscoll 
 {
 	struct Vector2D
@@ -64,7 +66,7 @@ namespace Driscoll
 		//Returns the Length of the Vector2D
 		float Magnitude() const
 		{
-			return sqrtf(((x * x) + (y * y)));
+			return sqrtf((x * x) + (y * y));
 		}
 
 		//Returns the Length Squared of the Vector2D
@@ -145,6 +147,8 @@ namespace Driscoll
 			{
 				y *= -1;
 			}
+
+			return *this;
 		}
 
 		bool Equals(const Vector2D& _otherVector) const
@@ -152,12 +156,12 @@ namespace Driscoll
 			return ((x == _otherVector.x) && (y == _otherVector.y));
 		}
 
-		bool NearlyEquals(const Vector2D& _otherVector, float Tolerance = 0.00001f) const
+		bool NearlyEquals(const Vector2D& _otherVector, float _tolerance = MAX_FLOAT_DELTA) const
 		{
 			Vector2D distance = { x - _otherVector.x, y - _otherVector.y };
 			distance.Absolute();
 
-			return ((distance.x < Tolerance) && (distance.y < Tolerance));
+			return ((distance.x < _tolerance) && (distance.y < _tolerance));
 		}
 
 		float Distance(const Vector2D& _otherVector) const
@@ -170,14 +174,14 @@ namespace Driscoll
 			return (*this - _otherVector).MagnitudeSqr();
 		}
 
-		static float Distance(const Vector2D& _first, const Vector2D& _second)
+		static float Distance(const Vector2D& _firstVector, const Vector2D& _secondVector)
 		{
-			return _first.Distance(_second);
+			return _firstVector.Distance(_secondVector);
 		}
 
-		static float DistacneSqr(const Vector2D& _first, const Vector2D& _second)
+		static float DistacneSqr(const Vector2D& _firstVector, const Vector2D& _secondVector)
 		{
-			return _first.DistanceSqr(_second);
+			return _firstVector.DistanceSqr(_secondVector);
 		}
 
 		//Find Angle Between 2 Vectors2D
@@ -308,10 +312,16 @@ namespace Driscoll
 			return _stream;
 		}
 
+		float operator[](int _index)
+		{
+			return data[_index];
+		}
+		
 		std::string ToString() const
 		{
 			return "x: " + std::to_string(x) + ", y: " + std::to_string(y);
 		}
+
 	};
 		/**
 			* Returns a new Vector where each component is scaled by the scalar value
@@ -319,5 +329,8 @@ namespace Driscoll
 			* @param vector The Vector.
 			* @return The scaled Vector.
 			*/
-	inline Vector2D operator*(float _scalar, const Vector2D& _vector);
+	inline Vector2D operator*(float _scalar, const Vector2D& _vector)
+	{
+		return _vector * _scalar;
+	}
 }
