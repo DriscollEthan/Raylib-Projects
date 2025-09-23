@@ -42,10 +42,10 @@ namespace Driscoll
 	constexpr float Pi = 3.14159265358979323846264338327950288f;
 
 	// Deg2Rad
-	constexpr float Deg2Rad = Pi * 2.0f / 360.0f;
+	constexpr float Rad2Deg = Pi / 180.0f;
 
 	// Rad2Deg
-	constexpr float Rad2Deg = 1.0f / Deg2Rad;
+	constexpr float Deg2Rad = 1.0f / Deg2Rad;
 
 	template<typename T>
 	inline T CosDeg(T _x)
