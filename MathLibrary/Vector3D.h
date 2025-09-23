@@ -42,9 +42,9 @@ namespace Driscoll
 		 *
 		 * The Z value will be zero by default or as specified.
 		 *
-		 * @param _vector2D The Vector2 whose X and Y will be copied. | Default = 0
+		 * @param _vector2D The Vector2 whose X and Y will be copied.
 		 */
-		Vector3D(const Driscoll::Vector2D& _vector2D = {}, float _z = 0)
+		Vector3D(const Driscoll::Vector2D& _vector2D, float _z = 0)
 		{
 			x = _vector2D.x;
 			y = _vector2D.y;

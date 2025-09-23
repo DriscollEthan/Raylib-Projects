@@ -9,9 +9,10 @@ namespace Driscoll
 	struct Matrix3
 	{
 		/*
-		 * 1 2 3
-		 * 4 5 6
-		 * 7 8 9
+		 *		 c1 c2 c3
+		 *	r1  1  2  3
+		 *	r2  4	 5	6
+		 *	r3  7  8  9
 		 * 
 		 * =========
 		 * 
@@ -59,6 +60,15 @@ namespace Driscoll
 			m9 = _inM9;
 		}
 
+		//COPY CONSTRUCTOR
+		Matrix3(const Matrix3& _otherMatrix3)
+		{
+			for (int i = 0; i < 9; ++i)
+			{
+				v[i] = _otherMatrix3.v[i];
+			}
+		}
+
 		/*
 		 * Initializes a matrix based on a 9-element array
 		 *
@@ -96,11 +106,7 @@ namespace Driscoll
 		Matrix3 operator *(Matrix3 rhs) const
 		{
 			//Init Temp Matrix Var
-			Matrix3 temp;
-			for (int i = 0; i < 9; ++i)
-			{
-				temp.v[i] = v[i];
-			}
+			Matrix3 temp = *this;
 			
 			//Create Row Vector 3s from First Matrix
 			Vector3D Row1 = { m1, m4, m7 };
@@ -124,6 +130,8 @@ namespace Driscoll
 			temp.m7 = Row3.Dot(Column1);
 			temp.m8 = Row3.Dot(Column2);
 			temp.m9 = Row3.Dot(Column3);
+
+			return temp;
 		}
 
 		/*
@@ -133,7 +141,12 @@ namespace Driscoll
 		 * @param rhs The other Matrix.
 		 * @return The reference to this Matrix after multiplication.
 		 */
-		Matrix3& operator *=(Matrix3 rhs);
+		Matrix3& operator *=(Matrix3 rhs)
+		{
+			(*this) = (*this) * rhs;
+
+			return *this;
+		}
 
 		/*
 		 * Multiplies this matrix against the given Vector3D, treating it like
@@ -142,7 +155,21 @@ namespace Driscoll
 		 * @param rhs The vector
 		 * @return The product of multiplying the 3x3 by a 3x1
 		 */
-		Vector3D operator *(Vector3D rhs) const;
+		Vector3D operator *(Vector3D rhs) const
+		{
+			Vector3D temp = {};
+
+			//Create Row Vector 3s from First Matrix
+			Vector3D Row1 = { m1, m4, m7 };
+			Vector3D Row2 = { m2, m5, m8 };
+			Vector3D Row3 = { m3, m6, m9 };
+
+			temp.x = Row1.Dot(rhs);
+			temp.y = Row2.Dot(rhs);
+			temp.z = Row3.Dot(rhs);
+			
+			return temp;
+		}
 
 		/*
 		 * Multiplies this matrix against the given Vector2D, treating it like
@@ -152,7 +179,21 @@ namespace Driscoll
 		 * @return The product of multiplying the 3x3 by a 3x1, then truncating
 		 *		   it to a 2x1.
 		 */
-		Vector2D operator *(Vector2D rhs) const;
+		Vector2D operator *(Vector2D rhs) const
+		{
+			Vector3D temp = {};
+
+			//Create Row Vector 3s from First Matrix
+			Vector3D Row1 = { m1, m4, m7 };
+			Vector3D Row2 = { m2, m5, m8 };
+			Vector3D Row3 = { m3, m6, m9 };
+
+			temp.x = Row1.Dot(Vector3D(rhs, 1.0f));
+			temp.y = Row2.Dot(Vector3D(rhs, 1.0f));
+			temp.z = Row3.Dot(Vector3D(rhs, 1.0f));
+
+			return Vector2D(temp.x, temp.y);
+		}
 
 		/*
 		 * Returns true if every component is exactly equal to the other.
@@ -162,7 +203,10 @@ namespace Driscoll
 		 * @param rhs The other Matrix.
 		 * @return True if equal, otherwise false.
 		 */
-		bool operator == (const Matrix3& rhs) const;
+		bool operator == (const Matrix3& rhs) const
+		{
+			return Equals(rhs);
+		}
 
 		/*
 		 * Returns true if any component is not exactly equal to the other.
@@ -170,7 +214,10 @@ namespace Driscoll
 		 * @param rhs The other Matrix.
 		 * @return True if equal, otherwise false.
 		 */
-		bool operator != (const Matrix3& rhs) const;
+		bool operator != (const Matrix3& rhs) const
+		{
+			return Equals(rhs);
+		}
 
 		/*
 		 * Returns true if every component is approximately equal to the other.
@@ -178,7 +225,17 @@ namespace Driscoll
 		 * @param rhs The other Matrix.
 		 * @return True if equal, otherwise false.
 		 */
-		bool Equals(const Matrix3& rhs, float Tolerance = MAX_FLOAT_DELTA) const;
+		bool Equals(const Matrix3& rhs, float Tolerance = MAX_FLOAT_DELTA) const
+		{
+			int(i = 0; i < 9; ++i)
+			{
+				if (v[i] != rhs.v[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 
 		/*
 		 * Returns this as a formatted string.
