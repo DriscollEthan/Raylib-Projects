@@ -45,6 +45,8 @@ void Enemy::Update()
     ShootingTimer.ResetTimer();
   }
 
+  //Movement for Enemy
+
     Turret->Update();
   }
 
