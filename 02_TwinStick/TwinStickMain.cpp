@@ -39,7 +39,7 @@ int main()
 		//Draw
 		while (Window.Drawing())
 		{
-			ClearBackground(DARKGRAY);
+			Window.ClearBackground(DARKGRAY);
 
 			GameMode->Draw();
 		}

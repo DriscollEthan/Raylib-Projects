@@ -1,6 +1,6 @@
 #include "../raylib-cpp/include/raylib-cpp.hpp"
 
-raylib::Vector2 Wrap(raylib::Vector2 _currentVector, raylib::Vector2 _min, raylib::/ector2 _max)
+raylib::Vector2 Wrap(raylib::Vector2 _currentVector, raylib::Vector2 _min, raylib::Vector2 _max)
 {
 	//Over Max on X-Axis Wrapper
 	if (_currentVector.x > _max.x)

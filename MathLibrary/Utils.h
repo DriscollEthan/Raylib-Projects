@@ -45,7 +45,7 @@ namespace Driscoll
 	constexpr float Rad2Deg = Pi / 180.0f;
 
 	// Rad2Deg
-	constexpr float Deg2Rad = 1.0f / Deg2Rad;
+	constexpr float Deg2Rad = 1.0f / Rad2Deg;
 
 	template<typename T>
 	inline T CosDeg(T _x)
@@ -56,6 +56,6 @@ namespace Driscoll
 	template<typename T>
 	inline T SinDeg (T _x)
 	{
-				return sin(_x * (Pi / 180.0f));
+				return sin(_x * Rad2Deg);
 	}
 }

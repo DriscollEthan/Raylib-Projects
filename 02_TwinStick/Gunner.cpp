@@ -114,7 +114,7 @@ void Gunner::Update()
 	}
 	//Look Functionality
 	Driscoll::Vector2D mousePosition = GetMousePosition();
-	Rotate((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Rad2Deg) + 90.0f);
+	Rotate((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
