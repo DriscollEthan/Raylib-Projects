@@ -26,10 +26,7 @@ namespace Driscoll
 
 		Color()
 		{
-			r = '0';
-			g = '0';
-			b = '0';
-			a = '0';
+			r = g = b = a = 0;
 		}
 
 		Color(char8_t red, char8_t green, char8_t blue, char8_t alpha)

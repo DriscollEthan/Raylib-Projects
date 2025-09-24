@@ -180,19 +180,6 @@ namespace MathLibraryTests
 
 			CustomAssert::AreEqualsMember(Vector2(52.734371f, -188.398422f), v2c);
 		}
-
-		TEST_METHOD(DivideScalarAssign)
-		{
-			Vector2 v2a(10, 2);
-
-			float* p = (float*)v2a;
-			Assert::AreEqual(p[0], 10.f);
-			Assert::AreEqual(p[1], 2.f);
-
-			const float* q = (float*)v2a;
-			Assert::AreEqual(q[0], 10.f);
-			Assert::AreEqual(q[1], 2.f);
-		}
 	};
 }
 
@@ -244,6 +231,19 @@ namespace MathLibraryTests_OPTIONAL
 			const float* ptrConst = (float*)v2a;
 			Assert::AreEqual(ptrConst[0], 10.f);
 			Assert::AreEqual(ptrConst[1], 2.f);
+		}
+
+		TEST_METHOD(DivideScalarAssign)
+		{
+			Vector2 v2a(10, 2);
+
+			float* p = (float*)v2a;
+			Assert::AreEqual(p[0], 10.f);
+			Assert::AreEqual(p[1], 2.f);
+
+			const float* q = (float*)v2a;
+			Assert::AreEqual(q[0], 10.f);
+			Assert::AreEqual(q[1], 2.f);
 		}
 	};
 }

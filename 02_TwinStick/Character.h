@@ -31,6 +31,9 @@ protected:
 	//TURRET POINTER
 	Gunner* Turret;
 
+	float BulletSpeed = 5.0f;
+	float BulletLifetime = 5.0f;
+
 	//Input Arrays:
 		//Movement: (WASD), (ARROW KEYS)
 		FInput MovementInput[8];

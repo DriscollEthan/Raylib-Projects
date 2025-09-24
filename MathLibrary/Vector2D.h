@@ -312,14 +312,34 @@ namespace Driscoll
 			return _stream;
 		}
 
-		float operator[](int _index)
+		float& operator[](int _index)
 		{
 			return data[_index];
 		}
 
-		float operator[](int _index) const
+		const float& operator[](int _index) const
 		{
 			return data[_index];
+		}
+
+		/**
+		 * OPTIONAL
+		 */
+
+		 /**
+			* Treats this Vector as an array of floats containing its components.
+			*/
+		operator float* ()
+		{
+			return data;
+		}
+
+		/**
+		 * Treats this Vector as an const array of floats containing its components.
+		 */
+		operator const float* () const
+		{
+			return data;
 		}
 		
 		std::string ToString() const

@@ -106,10 +106,10 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
 		// Print each column as a vector.
 		constexpr auto delimiter = L", ";
 		ss << L"["
-			<< t.r << delimiter
-			<< t.g << delimiter
-			<< t.b << delimiter
-			<< t.a << L"]";
+			<< (unsigned char)t.r << delimiter
+			<< (unsigned char)t.g << delimiter
+			<< (unsigned char)t.b << delimiter
+			<< (unsigned char)t.a << L"]";
 
 		return ss.str();
 	}

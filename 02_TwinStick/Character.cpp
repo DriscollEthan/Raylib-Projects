@@ -116,7 +116,7 @@ void Character::Update()
 		FInputReturnStruct inputReturn = Input(ShootInput[i]);
 		if (inputReturn.bIsInput)
 		{
-			Turret->Shoot(5, 5);
+			Turret->Shoot(BulletSpeed, BulletLifetime);
 			break;
 		}
 	}

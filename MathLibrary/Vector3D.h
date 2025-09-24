@@ -93,7 +93,7 @@ namespace Driscoll
 		 */
 		float Dot(const Vector3D& _otherVector) const
 		{
-			return ((x * _otherVector.x) + (y * _otherVector.y) + (y + _otherVector.y));
+			return ((x * _otherVector.x) + (y * _otherVector.y) + (z * _otherVector.z));
 		}
 
 		/*
@@ -120,7 +120,7 @@ namespace Driscoll
 
 			tempVector.x = (y * _otherVector.z) - (z * _otherVector.y);
 			tempVector.y = (z * _otherVector.x) - (x * _otherVector.z);
-			tempVector.y = (x * _otherVector.y) - (y * _otherVector.x);
+			tempVector.z = (x * _otherVector.y) - (y * _otherVector.x);
 
 			return tempVector;
 		}

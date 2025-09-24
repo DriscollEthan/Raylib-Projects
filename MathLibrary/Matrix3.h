@@ -114,21 +114,21 @@ namespace Driscoll
 			Vector3D Row3 = { m3, m6, m9 };
 
 			//Create Column Vector 3s from rhs Matrix
-			Vector3D Column1 = { rhs.m1, rhs.m4, rhs.m7 };
-			Vector3D Column2 = { rhs.m2, rhs.m5, rhs.m8 };
-			Vector3D Column3 = { rhs.m3, rhs.m6, rhs.m9 };
+			Vector3D Column1 = { rhs.m1, rhs.m2, rhs.m3 };
+			Vector3D Column2 = { rhs.m4, rhs.m5, rhs.m6 };
+			Vector3D Column3 = { rhs.m7, rhs.m8, rhs.m9 };
 
 			//Update the tempMaxtrix3 with Dot Prods from the Column and Rows
 			temp.m1 = Row1.Dot(Column1);
-			temp.m2 = Row1.Dot(Column2);
-			temp.m3 = Row1.Dot(Column3);
+			temp.m4 = Row1.Dot(Column2);
+			temp.m7 = Row1.Dot(Column3);
 
-			temp.m4 = Row2.Dot(Column1);
+			temp.m2 = Row2.Dot(Column1);
 			temp.m5 = Row2.Dot(Column2);
-			temp.m6 = Row2.Dot(Column3);
+			temp.m8 = Row2.Dot(Column3);
 
-			temp.m7 = Row3.Dot(Column1);
-			temp.m8 = Row3.Dot(Column2);
+			temp.m3 = Row3.Dot(Column1);
+			temp.m6 = Row3.Dot(Column2);
 			temp.m9 = Row3.Dot(Column3);
 
 			return temp;
@@ -216,7 +216,7 @@ namespace Driscoll
 		 */
 		bool operator != (const Matrix3& rhs) const
 		{
-			return Equals(rhs);
+			return !Equals(rhs);
 		}
 
 		/*

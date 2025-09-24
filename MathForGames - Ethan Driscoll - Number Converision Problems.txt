@@ -1,0 +1,33 @@
+Question 1: How many Unique Color Values can the color value integer contain?
+Answer: Without Accounting for Alpha: 16,777,216; With Accounting for Alpha: 4,294,967,296;
+
+Question 2: What is the minimum value, maximum value, and range for each colour component?
+Answer: Min = 0; Max = 255; Range = 256;
+
+Question 3: Write '94' as a binary Number
+Answer: 01011110;
+
+Question 4: Write out all 4 RGBA Bytes if g=b=a=0 and r = 94
+Answer: 01011110000000000000000000000000;
+
+Question 5: Decimal Value from Binary from Question 4
+Answer: 3,154,116,608;
+
+Question 6: Bit shift the R value to the G value
+Answer: (int32*)ColorValue >> 8;
+
+Question 7: New Binary and Int32 Value if r=b=a=0 and g=94
+Answer: Binary: 0000000001011110000000000000000; Decimal: 6,160,384;
+
+Question 8: New Color Class Test
+Answer: TEST_METHOD(ColorChangesWithMacros)
+				{
+					Color actual = ORANGE;
+					Assert::AreEqual(Color(255, 165, 0, 255), actual);
+
+					actual = PINK;
+					Assert::AreEqual(Color(255, 77, 255, 255), actual);
+
+					actual = YELLOW;
+					Assert::AreEqual(Color(255, 255, 0, 255), actual);
+				}

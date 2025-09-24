@@ -47,10 +47,10 @@ void Enemy::Update()
 
   //Movement for Enemy
     /* Brainstorming:
-    *  Random POS?
-    *  Direction of Player?
-    *  Away from Bullets?
-    */
+     *  Random POS?             | Probably About To Win                     | Random could look weird, but also make it always different.
+     *  Direction of Player?    | Second Place Probably                     | Could be weird to follow Player && Look At Player && Shoot at Player
+     *  Away from Bullets?      | Too many bullets for this calculation     | Upto 60 possible calculations and search locations sounds like a bad Idea.
+     */
 
   Turret->Update();
   }

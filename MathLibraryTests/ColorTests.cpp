@@ -75,7 +75,7 @@ namespace MathLibraryTests
 		{
 			Color actual;
 
-			Assert::AreEqual(Color(0, 0, 0, 255), actual);
+			Assert::AreEqual(Color(0, 0, 0, 0), actual);
 		}
 
 		// parameterized constructor
@@ -124,6 +124,18 @@ namespace MathLibraryTests
 			actual.a = 128;
 
 			Assert::AreEqual(Color(32, 64, 0, 128), actual);
+		}
+
+		TEST_METHOD(ColorChangesWithMacros)
+		{
+			Color actual = ORANGE;
+			Assert::AreEqual(Color(255, 165, 0, 255), actual);
+
+			actual = PINK;
+			Assert::AreEqual(Color(255, 77, 255, 255), actual);
+
+			actual = YELLOW;
+			Assert::AreEqual(Color(255, 255, 0, 255), actual);
 		}
 	};
 }

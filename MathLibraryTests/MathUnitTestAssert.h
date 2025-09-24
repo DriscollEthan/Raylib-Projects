@@ -18,7 +18,7 @@ namespace aie::test
 	public:
 		template<typename T> static void AreEqualsMember(const T& expected, const T& actual, const wchar_t* message = nullptr)
 		{
-			if (!expected.Equals(actual))
+			if (!expected.NearlyEquals(actual))
 			{
 				Microsoft::VisualStudio::CppUnitTestFramework::Assert::Fail(GetFailMessage(expected, actual).c_str());
 			}
@@ -26,7 +26,7 @@ namespace aie::test
 
 		template<typename T> static void AreNotEqualsMember(const T& expected, const T& actual, const wchar_t* message = nullptr)
 		{
-			if (expected.Equals(actual))
+			if (expected.NearlyEquals(actual))
 			{
 				Microsoft::VisualStudio::CppUnitTestFramework::Assert::Fail(GetFailMessage(expected, actual).c_str());
 			}
