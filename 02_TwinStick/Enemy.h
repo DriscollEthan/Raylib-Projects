@@ -85,11 +85,17 @@ public:
 
 	void SetTimer(Timer _newTimer);
 
+	void SetRandomLocation();
+
+	void MoveToRandomLocation();
+
 protected:
 	Gunner* Turret;
 
 	Entity* PlayerRef;
 
 	Timer ShootingTimer;
+
+	Driscoll::Vector2D RandomMoveToLocation;
 };
 

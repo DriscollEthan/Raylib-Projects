@@ -58,7 +58,7 @@ void Character::BeginPlay()
 	raylib::Image bulletImage; 
 	bulletImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
 
-	Turret = new Gunner(E_Position, turretImage, { 0.5, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, bulletImage);
+	Turret = new Gunner(E_Position, turretImage, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, bulletImage);
 
 	//Setup Input Keybinds
 	{
@@ -129,7 +129,7 @@ void Character::Update()
 	Driscoll::Vector2D mousePosition = GetMousePosition();
 	Turret->Rotate((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
 
-	//Position and Scale
+	//Turret Position and Scale
 	Turret->SetPosition(E_Position);
 	Turret->SetScale(E_Scale);
 

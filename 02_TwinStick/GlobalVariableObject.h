@@ -15,8 +15,14 @@ protected:
 	//GLOABL VARIABLES:
 	const Driscoll::Vector2D GlobalScreenSize = Driscoll::Vector2D(1000.0f, 600.0f);
 
+	int GlobalX = GlobalScreenSize.x;
+	int GlobalY = GlobalScreenSize.y;
+
 public:
 	//GET GLOABL VARIABLES
 	const Driscoll::Vector2D GetScreenSize() { return GlobalScreenSize; }
+
+	int GetScreenSizeIntX() { return GlobalX; }
+	int GetScreenSizeIntY() { return GlobalY; }
 };
 

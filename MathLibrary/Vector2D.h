@@ -25,6 +25,13 @@ namespace Driscoll
 		/// <summary>
 		Vector2D(float _x, float _y) { x = _x; y = _y; }
 
+		Vector2D(int _x, int _y) { x = _x; y = _y; }
+
+		Vector2D(int _x, float _y) { x = _x; y = _y; }
+
+		Vector2D(float _x, int _y) { x = _x; y = _y; }
+
+
 		//REQUIRES RAYLIBCPP LIB TO BE INCLUDED BEFORE THIS HEADER
 #ifdef RAYLIB_CPP_INCLUDE_RAYLIB_CPP_HPP_
 		// implicit conversion from raylib-cpp Vec2 to our Vec2

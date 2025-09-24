@@ -25,7 +25,7 @@ void GameManager::BeginPlay()
   PlayerRef->BeginPlay();
   EnemyRef = new Enemy(Driscoll::Vector2D(500, 300), PlayerImage, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 2.5f);
   EnemyRef->SetPlayerRef(PlayerRef);
-  EnemyRef->SetTimer(Timer(8.0f, 0.5f));
+  EnemyRef->SetTimer(Timer(5.0f, 1.0f));
   EnemyRef->BeginPlay();
 }
 
