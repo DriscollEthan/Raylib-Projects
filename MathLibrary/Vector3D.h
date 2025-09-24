@@ -204,7 +204,7 @@ namespace Driscoll
 		 *
 		 * @return A Vector3D copy if possible.
 		 */
-		Vector2D Absolute()
+		Vector3D Absolute()
 		{
 			if (x < 0)
 			{
@@ -472,6 +472,10 @@ namespace Driscoll
 			return !Equals(_otherVector);
 		}
 
+		float operator[](int _index)
+		{
+			return data[_index];
+		}
   };
 
 	/**
@@ -482,7 +486,8 @@ namespace Driscoll
 	 */
 	inline Vector3D operator*(float _scalar, const Vector3D& _vector)
 	{
-		return _vector * _scalar;
+		Vector3D temp = _vector * _scalar;
+		return temp;
 	}
 
 }

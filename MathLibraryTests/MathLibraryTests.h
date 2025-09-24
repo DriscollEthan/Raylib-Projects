@@ -6,8 +6,7 @@
  * Include your math headers here.
  */
 
-#include "Vector2D.h"
-#include "Utils.h"
+#include "DriscollMathUtils.h"
 
 namespace MathClasses
 {
@@ -24,14 +23,10 @@ namespace MathClasses
 	 * affect their references to the following types:
 	 */
 
-	using Driscoll::ApproximatelyEquals;
-	using Driscoll::MAX_FLOAT_DELTA;
 	using Vector2 = Driscoll::Vector2D;
-	// using Vector3 = YourVector3;
+	using Vector3 = Driscoll::Vector3D;
 	// using Vector4 = YourVector4;
-	
-	// using Matrix3 = YourMatrix3;
+	using Matrix3 = Driscoll::Matrix3;
 	// using Matrix4 = YourMatrix4;
-	
-	// using Color   = YourColor;
+	using Color = Driscoll::Color;
 }

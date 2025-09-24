@@ -316,6 +316,11 @@ namespace Driscoll
 		{
 			return data[_index];
 		}
+
+		float operator[](int _index) const
+		{
+			return data[_index];
+		}
 		
 		std::string ToString() const
 		{

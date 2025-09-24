@@ -2,14 +2,16 @@
 
 #include "CppUnitTestAssert.h"
 
+#include "TestToString.h"
 #include "MathLibraryTests.h"
 
-namespace aie { namespace test {
-
-	// NOTE: Tempting as it may be to use a 'using' declaration here for the MSFT Assert class,
-	//		 do NOT do it in a header.
-	//
-	//		 See: https://stackoverflow.com/questions/6175705/scope-of-using-declaration-within-a-namespace
+namespace aie::test
+{
+	/* @note Tempting as it may be to use a 'using' declaration here for the MSFT Assert class,
+	 *		 do NOT do it in a header.
+	 *
+	 *		 See: https://stackoverflow.com/questions/6175705/scope-of-using-declaration-within-a-namespace
+	 */
 
 	class CustomAssert
 	{
@@ -47,7 +49,7 @@ namespace aie { namespace test {
 		{
 			if (expected != actual)
 			{
-				Microsoft::VisualStudio::CppUnitTestFramework::Assert::Fail(GetFailMessage(expected, actual).c_str());
+				Microsoft::VisualStudio::CppUnitTestFramework::Assert::Fail(GetFailMessage(expected, actual, message).c_str());
 			}
 		}
 
@@ -55,9 +57,14 @@ namespace aie { namespace test {
 		template<typename T> static std::wstring GetFailMessage(const T& expected, const T& actual, const wchar_t* message = nullptr)
 		{
 			std::wstringstream Msg;
-			Msg << L"Assert failed. " << message << L"\nExpected:" << expected << L" Actual:" << actual;
+
+			if (message != nullptr)
+			{
+				Msg << message;
+			}
+			Msg << L"\nExpected:" << Microsoft::VisualStudio::CppUnitTestFramework::ToString(expected) << L" Actual:" << Microsoft::VisualStudio::CppUnitTestFramework::ToString(actual);
 
 			return Msg.str();
 		}
 	};
-} }
+}

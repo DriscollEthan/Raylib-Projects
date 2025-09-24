@@ -455,7 +455,7 @@ namespace Driscoll
 		 */
 		operator float* ()
 		{
-			return v[0];
+			return &v[0];
 		}
 
 		/*
@@ -465,7 +465,7 @@ namespace Driscoll
 		 */
 		operator const float* () const
 		{
-			return v[0];
+			return &v[0];
 		}
 	};
 }

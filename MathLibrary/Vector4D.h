@@ -186,7 +186,7 @@ namespace Driscoll
 		 *
 		 * @return A Vector4D copy if possible.
 		 */
-		Vector2D Absolute()
+		Vector4D Absolute()
 		{
 			if (x < 0)
 			{

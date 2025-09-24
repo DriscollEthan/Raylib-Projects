@@ -10,8 +10,8 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using aie::test::CustomAssert;
 using MathClasses::Vector2;
-using MathClasses::ApproximatelyEquals;
-using MathClasses::MAX_FLOAT_DELTA;
+using Driscoll::ApproximatelyEquals;
+using Driscoll::MAX_FLOAT_DELTA;
 
 namespace MathLibraryTests
 {
@@ -78,7 +78,7 @@ namespace MathLibraryTests
 		{
 			Vector2 v2a(13.5f, -48.23f);
 			float mag2 = v2a.Magnitude();
-			Assert::AreEqual(50.0838f, mag2, MathClasses::MAX_FLOAT_DELTA);
+			Assert::AreEqual(50.0838f, mag2, Driscoll::MAX_FLOAT_DELTA);
 		}
 
 		TEST_METHOD(Normalised)
