@@ -22,6 +22,6 @@ public:
 protected:
   Character* PlayerRef;
 
-  Enemy* EnemyRef;
+  Enemy* EnemyRefs;
 };
 

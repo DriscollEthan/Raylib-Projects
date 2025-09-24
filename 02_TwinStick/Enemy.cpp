@@ -8,6 +8,37 @@ Enemy::Enemy(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vec
   RandomMoveToLocation = {};
 }
 
+Enemy::Enemy(const Enemy& _other)
+{
+  E_Position = _other.E_Position;
+  E_Texture = _other.E_Texture.GetData();
+  E_Origin = _other.E_Origin;
+  E_Scale = _other.E_Scale;
+  E_Radius = _other.E_Radius;
+  E_MovementVector = _other.E_MovementVector;
+  E_Speed = _other.E_Speed;
+  E_Rotation = _other.E_Rotation;
+  Turret = nullptr;
+  PlayerRef = nullptr;
+  ShootingTimer = _other.ShootingTimer;
+}
+
+Enemy Enemy::operator=(const Enemy& _other)
+{
+  E_Position = _other.E_Position;
+  E_Texture = _other.E_Texture.GetData();
+  E_Origin = _other.E_Origin;
+  E_Scale = _other.E_Scale;
+  E_Radius = _other.E_Radius;
+  E_MovementVector = _other.E_MovementVector;
+  E_Speed = _other.E_Speed;
+  E_Rotation = _other.E_Rotation;
+  Turret = nullptr;
+  PlayerRef = nullptr;
+  ShootingTimer = _other.ShootingTimer;
+  return *this;
+}
+
 Enemy::~Enemy()
 {
   if (Turret)
@@ -61,7 +92,6 @@ void Enemy::Update()
 void Enemy::Draw()
 {
   Entity::Draw();
-
   Turret->Draw();
 }
 

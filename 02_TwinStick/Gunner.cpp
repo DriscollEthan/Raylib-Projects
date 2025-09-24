@@ -26,7 +26,7 @@ Gunner::Gunner(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture;
+	E_Texture = _other.E_Texture.GetData();
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -44,7 +44,7 @@ Gunner Gunner::operator=(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture;
+	E_Texture = _other.E_Texture.GetData();
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;

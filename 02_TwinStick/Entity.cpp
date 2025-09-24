@@ -28,7 +28,7 @@ Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 Entity::Entity(const Entity& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture;
+	E_Texture = _other.E_Texture.GetData();
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -41,7 +41,7 @@ Entity::Entity(const Entity& _other)
 Entity Entity::operator=(const Entity& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture;
+	E_Texture = _other.E_Texture.GetData();
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;

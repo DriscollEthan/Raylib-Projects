@@ -14,7 +14,7 @@ Bullet::Bullet(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 Bullet::Bullet(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture;
+	E_Texture = _other.E_Texture.GetData();
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -30,7 +30,7 @@ Bullet::Bullet(const Bullet& _other)
 Bullet Bullet::operator=(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture;
+	E_Texture = _other.E_Texture.GetData();
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;

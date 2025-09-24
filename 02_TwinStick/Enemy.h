@@ -73,6 +73,10 @@ public:
 			*/
 	Enemy(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
+	Enemy(const Enemy& _other);
+
+	Enemy operator = (const Enemy& _other);
+
   ~Enemy();
 
   virtual void BeginPlay() override;
