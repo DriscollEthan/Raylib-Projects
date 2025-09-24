@@ -137,5 +137,12 @@ namespace MathLibraryTests
 			actual = YELLOW;
 			Assert::AreEqual(Color(255, 255, 0, 255), actual);
 		}
+
+		TEST_METHOD(Char8ToInt32)
+		{
+			Color actual = (94, 0, 0, 0);
+
+			Assert::AreEqual(Color(1577058304), actual);
+		}
 	};
 }

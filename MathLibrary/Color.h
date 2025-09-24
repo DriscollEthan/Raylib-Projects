@@ -29,6 +29,11 @@ namespace Driscoll
 			r = g = b = a = 0;
 		}
 
+		Color(int32_t _rgba)
+		{
+			rgba = _rgba;
+		}
+
 		Color(char8_t red, char8_t green, char8_t blue, char8_t alpha)
 		{
 			r = red;
