@@ -15,7 +15,7 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Gunner(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f, int _maxBulletsInPool = 0, raylib::Image _bulletImage = {});
+	Gunner(Driscoll::Vector2D _position = { 0,0 }, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f, int _maxBulletsInPool = 0, size_t _bulletTexturePosition = 0);
 	
 	Gunner(const Gunner& _other);
 
@@ -35,7 +35,7 @@ protected:
 
 	Driscoll::Vector2D ScaleMult;
 
-	raylib::Image BulletImage;
+	size_t BulletTexturePosition;
 
 public:
 	/* FUNCTIONS */

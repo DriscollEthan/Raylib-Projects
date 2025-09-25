@@ -26,7 +26,7 @@ struct Timer
 		CurrentTimer = _other.CurrentTimer;
 	}
 
-	Timer operator =(const Timer& _other)
+	Timer& operator =(const Timer& _other)
 	{
 		TimerLength = _other.TimerLength;
 		TimerDeviation = _other.TimerDeviation;
@@ -71,11 +71,11 @@ public:
 			* Rotation as a Float								| Default: 0.0
 			* Speed as a flaot									| Default: 1.0
 			*/
-	Enemy(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Enemy(Driscoll::Vector2D _position = { 0,0 }, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	Enemy(const Enemy& _other);
 
-	Enemy operator = (const Enemy& _other);
+	Enemy& operator = (const Enemy& _other);
 
   ~Enemy();
 

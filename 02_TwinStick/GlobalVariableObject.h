@@ -13,7 +13,7 @@ public:
 	GlobalVariableObject operator=(const GlobalVariableObject& _other) { return *this; }
 protected:
 	//GLOABL VARIABLES:
-	const Driscoll::Vector2D GlobalScreenSize = Driscoll::Vector2D(1000.0f, 600.0f);
+	const Driscoll::Vector2D GlobalScreenSize = Driscoll::Vector2D(1500.0f, 900.0f);
 
 	int GlobalX = GlobalScreenSize.x;
 	int GlobalY = GlobalScreenSize.y;

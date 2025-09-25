@@ -4,7 +4,7 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
+Character::Character(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
 {
 	Turret = nullptr;
 }
@@ -12,27 +12,31 @@ Character::Character(Driscoll::Vector2D _position, raylib::Image _texture, Drisc
 //Copy Constructor
 Character::Character(const Character& _other)
 {
+	Turret = nullptr;
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
 }
 
 //Copy Assignment
 Character Character::operator=(const Character& _other)
 {
+	Turret = nullptr;
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
 	return *this;
 }
 
@@ -53,12 +57,8 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	raylib::Image turretImage;
-	turretImage.Load("Resources/Turret.png");
-	raylib::Image bulletImage; 
-	bulletImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-
-	Turret = new Gunner(E_Position, turretImage, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, bulletImage);
+	Turret = new Gunner(E_Position, 1, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, 0);
+	Turret->SetTextureManagerRef(GetTextureManagerRef());
 
 	//Setup Input Keybinds
 	{

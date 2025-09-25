@@ -3,7 +3,7 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Bullet::Bullet(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
+Bullet::Bullet(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
 {
 	CurrentState = None;
 	TimeAlive = 0.0f;
@@ -14,7 +14,7 @@ Bullet::Bullet(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::V
 Bullet::Bullet(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -24,13 +24,14 @@ Bullet::Bullet(const Bullet& _other)
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
 	TimeToLive = _other.TimeToLive;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
 }
 
 //Copy Assignment
 Bullet Bullet::operator=(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -40,6 +41,7 @@ Bullet Bullet::operator=(const Bullet& _other)
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
 	TimeToLive = _other.TimeToLive;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
 	return *this;
 }
 
@@ -62,7 +64,7 @@ void Bullet::BeginPlay()
 	//Init Vars
 	SetCurrentState(None);
 	E_Origin = { 0.5f, 0.5f };
-	E_Radius = E_Texture.GetWidth();
+	E_Radius = GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED

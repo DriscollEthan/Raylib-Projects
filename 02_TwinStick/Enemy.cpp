@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
+Enemy::Enemy(Driscoll::Vector2D _position, size_t _textureLocation, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _textureLocation, _origin, _scale, _radius, _rotation, _speed)
 {
   Turret = nullptr;
   PlayerRef = nullptr;
@@ -11,7 +11,7 @@ Enemy::Enemy(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vec
 Enemy::Enemy(const Enemy& _other)
 {
   E_Position = _other.E_Position;
-  E_Texture = _other.E_Texture.GetData();
+  E_TextureLocation = _other.E_TextureLocation;
   E_Origin = _other.E_Origin;
   E_Scale = _other.E_Scale;
   E_Radius = _other.E_Radius;
@@ -21,12 +21,13 @@ Enemy::Enemy(const Enemy& _other)
   Turret = nullptr;
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
+  E_TextureManagerRef = _other.E_TextureManagerRef;
 }
 
-Enemy Enemy::operator=(const Enemy& _other)
+Enemy& Enemy::operator=(const Enemy& _other)
 {
   E_Position = _other.E_Position;
-  E_Texture = _other.E_Texture.GetData();
+  E_TextureLocation = _other.E_TextureLocation;
   E_Origin = _other.E_Origin;
   E_Scale = _other.E_Scale;
   E_Radius = _other.E_Radius;
@@ -36,6 +37,7 @@ Enemy Enemy::operator=(const Enemy& _other)
   Turret = nullptr;
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
+  E_TextureManagerRef = _other.E_TextureManagerRef;
   return *this;
 }
 
@@ -51,11 +53,8 @@ void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
   //Init Vars
-  raylib::Image turretImage;
-  turretImage.Load("Resources/Turret.png");
-  raylib::Image bulletImage;
-  //bulletImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-  Turret = new Gunner(E_Position, turretImage, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 3, bulletImage);
+  Turret = new Gunner(E_Position, 1, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 3, 2);
+  Turret->SetTextureManagerRef(GetTextureManagerRef());
 
   Turret->BeginPlay();
 }

@@ -4,21 +4,13 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Gunner::Gunner(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed, int _maxBulletsInPool, raylib::Image _bulletImage) : Player(_position, _texture, _origin, _scale, _radius, _rotation, _speed)
+Gunner::Gunner(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed, int _maxBulletsInPool, size_t _bulletTexturePosition) : Player(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
 {
 	WhichBulletToUse = 0;
 	ScaleMult = _scale;
 	BulletsInPool = nullptr;
 	MAX_BULLETS_IN_POOL = _maxBulletsInPool;
-	if (_bulletImage.IsValid())
-	{
-		BulletImage = _bulletImage;
-	}
-	else
-	{
-		BulletImage.Load("Resources/DEFAULT.png"); 
-			std::cout << "\033[1;31mWARNING: A GUNNER WAS CONSTRUCTED WITHOUT A VALID IMAGE FOR THE BULLET, USING DEFAULT IMAGE \033[0m\n";
-	}
+	BulletTexturePosition = _bulletTexturePosition;
 }
 
 //Copy Constructor
@@ -26,7 +18,7 @@ Gunner::Gunner(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -36,7 +28,8 @@ Gunner::Gunner(const Gunner& _other)
 	WhichBulletToUse = _other.WhichBulletToUse;
 	ScaleMult = _other.E_Scale;
 	MAX_BULLETS_IN_POOL = _other.MAX_BULLETS_IN_POOL;
-	BulletImage = _other.BulletImage;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
+	BulletTexturePosition = _other.BulletTexturePosition;
 }
 
 //Copy Assignment
@@ -44,7 +37,7 @@ Gunner Gunner::operator=(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -54,7 +47,7 @@ Gunner Gunner::operator=(const Gunner& _other)
 	WhichBulletToUse = _other.WhichBulletToUse;
 	ScaleMult = _other.E_Scale;
 	MAX_BULLETS_IN_POOL = _other.MAX_BULLETS_IN_POOL;
-	BulletImage = _other.BulletImage;
+	BulletTexturePosition = _other.BulletTexturePosition;
 	return *this;
 }
 
@@ -82,8 +75,9 @@ void Gunner::BeginPlay()
 
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
+		BulletsInPool[i].SetTexturePosition(BulletTexturePosition);
+		BulletsInPool[i].SetTextureManagerRef(GetTextureManagerRef());
 		BulletsInPool[i].BeginPlay();
-		BulletsInPool[i].SetTexture(BulletImage);
 	}
 
 }
@@ -127,8 +121,8 @@ void Gunner::Shoot(float _speed, float _lifetime)
 {
 	//Shoot Function
 	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
-	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((E_Texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
-		((E_Texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
+	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
+		((GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;

@@ -13,9 +13,9 @@ public:
 		* Texture as an Image								| Default: Default Constructor
 		* Radius as a Float									| Default: 0.0
 		* Rotation as a Float								| Default: 0.0
-		* Speed as a flaot									| Default: 1.0
+		* Speed as a Float									| Default: 1.0
 		*/
-	Character(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Character(Driscoll::Vector2D _position = { 0,0 }, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Character(const Character& _other);

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Object.h"
-#include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
 #include "Vector2D.h"
 #include "GlobalVariableObject.h"
+#include "TextureManager.h"
 
 class Entity : public Object
 {
@@ -18,7 +18,7 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Entity(Driscoll::Vector2D _position = { 0,0 }, raylib::Image _texture = {}, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Entity(Driscoll::Vector2D _position = { 0,0 }, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Entity(const Entity& _other);
@@ -35,7 +35,7 @@ protected:
 
 	Driscoll::Vector2D E_Position;
 
-	raylib::Texture E_Texture;
+	size_t E_TextureLocation;
 
 	float E_Radius;
 
@@ -49,6 +49,8 @@ protected:
 	Driscoll::Vector2D E_Origin;
 
 	Driscoll::Vector2D E_Scale;
+
+	TextureManager* E_TextureManagerRef;
 
 public:
 	/* FUNCTIONS */
@@ -75,13 +77,6 @@ public:
 	Driscoll::Vector2D GetPosition();
 
 	 /**
-	 * Get Texture
-	 * MUST BE CHECKED FOR NULLPTR ON CALLING
-	 *Returns Pointer To Current Texture
-	 */
-	raylib::Texture GetTexture();
-
-	 /**
 	 * Get Radius:
 	 *Returns Current Radius in a float
 	 */
@@ -100,13 +95,15 @@ public:
 	//Set Position
 	virtual void SetPosition(Driscoll::Vector2D _newPosition);
 
+	//Set Scale
 	virtual void SetScale(Driscoll::Vector2D _newScale);
-
-	//Set Texture BY IMAGE Only
-	void SetTexture(raylib::Image _textureImage);
 
 	//Set Radius
 	void SetRadius(float _newRadius);
+
+	void SetTextureManagerRef(TextureManager* _newRef);
+
+	void SetTexturePosition(size_t _newPosition);
 
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
@@ -117,5 +114,6 @@ public:
 
 	Driscoll::Vector2D Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max);
 	
+	TextureManager* GetTextureManagerRef();
 };
 

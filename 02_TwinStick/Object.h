@@ -1,4 +1,5 @@
 #pragma once
+#include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
 #include "Utils.h"
 
 class Object

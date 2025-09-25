@@ -4,50 +4,45 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Entity::Entity(Driscoll::Vector2D _position, raylib::Image _texture, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed)
+Entity::Entity(Driscoll::Vector2D _position, size_t _textureLocation, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed)
 {
 	E_Position = _position;
-	if (_texture.IsValid())
-	{
-		E_Texture = _texture;
-	}
-	else
-	{
-		E_Texture.Load("Resources/DEFAULT.png"); \
-			std::cout << "\033[1;31mWARNING: AN ENTITY WAS CONSTRUCTED WITHOUT A VALID IMAGE, USING DEFAULT IMAGE \033[0m\n";
-	}
+	E_TextureLocation = _textureLocation;
 	E_Origin = _origin;
 	E_Scale = _scale;
 	E_Radius = _radius;
 	E_MovementVector = Driscoll::Vector2D();
 	E_Rotation = _rotation;
 	E_Speed = _speed;
+	E_TextureManagerRef = nullptr;
 }
 
 //Copy Constructor
 Entity::Entity(const Entity& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
 }
 
 //Copy Assignment
 Entity Entity::operator=(const Entity& _other)
 {
 	E_Position = _other.E_Position;
-	E_Texture = _other.E_Texture.GetData();
+	E_TextureLocation = _other.E_TextureLocation;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
+	E_TextureManagerRef = _other.E_TextureManagerRef;
 	return *this;
 }
 
@@ -86,10 +81,9 @@ void Entity::Draw()
 	//	E_Texture->Draw(E_Position - offset, E_Rotation);
 	//
 	//	std::cout << E_Position - offset << std::endl;
-
-		E_Texture.Draw(raylib::Rectangle(0, 0, (float)E_Texture.GetWidth(), (float)E_Texture.GetHeight()),						// SourceRec
-			raylib::Rectangle(E_Position.x, E_Position.y, (float)E_Texture.GetWidth() * E_Scale.x, (float)E_Texture.GetHeight() * E_Scale.y),	// DestRec
-			Driscoll::Vector2D((float)E_Texture.GetWidth() * E_Origin.x * E_Scale.x, (float)E_Texture.GetHeight() * E_Origin.y * E_Scale.y),		// Origin
+	GetTextureManagerRef()->GetTexture(E_TextureLocation).Draw(raylib::Rectangle(0, 0, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth(), (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight()),						// SourceRec
+			raylib::Rectangle(E_Position.x, E_Position.y, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * E_Scale.y),	// DestRec
+			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * E_Origin.x * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * E_Origin.y * E_Scale.y),		// Origin
 			E_Rotation,	// Rotation
 			raylib::Color::White() // Tint
 		);
@@ -102,12 +96,6 @@ void Entity::Draw()
 Driscoll::Vector2D Entity::GetPosition()
 {
 	return E_Position;
-}
-
-//Get Texture
-raylib::Texture Entity::GetTexture()
-{
-	return E_Texture;
 }
 
 //Get Radius
@@ -133,15 +121,10 @@ void Entity::SetPosition(Driscoll::Vector2D _newPosition)
 	E_Position = _newPosition;
 }
 
+//Set Scale
 void Entity::SetScale(Driscoll::Vector2D _newScale)
 {
 	E_Scale = _newScale;
-}
-
-//Set Texture BY IMAGE only
-void Entity::SetTexture(raylib::Image _textureImage)
-{
-	E_Texture = _textureImage;
 }
 
 //Set Radius
@@ -150,9 +133,19 @@ void Entity::SetRadius(float _newRadius)
 	E_Radius = _newRadius;
 }
 
+void Entity::SetTextureManagerRef(TextureManager* _newRef)
+{
+	E_TextureManagerRef = _newRef;
+}
+
+void Entity::SetTexturePosition(size_t _newPosition)
+{
+	E_TextureLocation = _newPosition;
+}
+
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
-/* PLAYER ONLY FUNCTIONS */
+/* ENTITY ONLY FUNCTIONS */
 //Move Entity
 void Entity::Move()
 {
@@ -241,4 +234,13 @@ Driscoll::Vector2D Entity::Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vec
 	}
 
 	return _currentVector;
+}
+
+TextureManager* Entity::GetTextureManagerRef()
+{
+	if (!E_TextureManagerRef)
+	{
+		std::cout << "[1;31mWARNING: NO TEXTURE MANAGER REF SET IN ENTITY: RETURN NULLPTR \033[0m" << std::endl;
+	}
+	return E_TextureManagerRef;
 }
