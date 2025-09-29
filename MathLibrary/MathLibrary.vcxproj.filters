@@ -36,5 +36,8 @@
     <ClInclude Include="Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

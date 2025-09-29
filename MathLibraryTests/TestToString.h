@@ -11,9 +11,9 @@
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
 	using MathClasses::Vector2;
 	using MathClasses::Vector3;
-//	using MathClasses::Vector4;
+  using MathClasses::Vector4;
 	using MathClasses::Matrix3;
-//	using MathClasses::Matrix4;
+	using MathClasses::Matrix4;
 	using MathClasses::Color;
 
 	namespace Detail
@@ -56,19 +56,19 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
 		return ss.str();
 	}
 
-	//template<> inline std::wstring ToString<Vector4>(const Vector4& t)
-	//{
-	//	auto ss = Detail::MakeWideStringStreamForFloats();
-	//
-	//	constexpr auto delimiter = L", ";
-	//	ss << L"("
-	//		<< t.x << delimiter
-	//		<< t.y << delimiter
-	//		<< t.z << delimiter
-	//		<< t.w << L")";
-	//
-	//	return ss.str();
-	//}
+	template<> inline std::wstring ToString<Vector4>(const Vector4& t)
+	{
+		auto ss = Detail::MakeWideStringStreamForFloats();
+	
+		constexpr auto delimiter = L", ";
+		ss << L"("
+			<< t.x << delimiter
+			<< t.y << delimiter
+			<< t.z << delimiter
+			<< t.w << L")";
+	
+		return ss.str();
+	}
 
 	template<> inline std::wstring ToString<Matrix3>(const Matrix3& t)
 	{
@@ -84,20 +84,20 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
 		return ss.str();
 	}
 
-	//template<> inline std::wstring ToString<Matrix4>(const Matrix4& t)
-	//{
-	//	auto ss = Detail::MakeWideStringStreamForFloats();
-	//
-	//	// Print each column as a vector.
-	//	constexpr auto delimiter = L", ";
-	//	ss << L"["
-	//		<< ToString(Vector4{ t.mm[0][0], t.mm[0][1], t.mm[0][2], t.mm[0][3] }) << delimiter
-	//		<< ToString(Vector4{ t.mm[1][0], t.mm[1][1], t.mm[1][2], t.mm[1][3] }) << delimiter
-	//		<< ToString(Vector4{ t.mm[2][0], t.mm[2][1], t.mm[2][2], t.mm[2][3] }) << delimiter
-	//		<< ToString(Vector4{ t.mm[3][0], t.mm[3][1], t.mm[3][2], t.mm[3][3] }) << L"]";
-	//
-	//	return ss.str();
-	//}
+	template<> inline std::wstring ToString<Matrix4>(const Matrix4& t)
+	{
+		auto ss = Detail::MakeWideStringStreamForFloats();
+	
+		// Print each column as a vector.
+		constexpr auto delimiter = L", ";
+		ss << L"["
+			<< ToString(Vector4{ t.mm[0][0], t.mm[0][1], t.mm[0][2], t.mm[0][3] }) << delimiter
+			<< ToString(Vector4{ t.mm[1][0], t.mm[1][1], t.mm[1][2], t.mm[1][3] }) << delimiter
+			<< ToString(Vector4{ t.mm[2][0], t.mm[2][1], t.mm[2][2], t.mm[2][3] }) << delimiter
+			<< ToString(Vector4{ t.mm[3][0], t.mm[3][1], t.mm[3][2], t.mm[3][3] }) << L"]";
+	
+		return ss.str();
+	}
 
 	template<> inline std::wstring ToString<Color>(const Color& t)
 	{

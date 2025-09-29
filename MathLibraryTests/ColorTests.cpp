@@ -140,9 +140,16 @@ namespace MathLibraryTests
 
 		TEST_METHOD(Char8ToInt32)
 		{
-			Color actual = (94, 0, 0, 0);
+			Color actual = { 94, 0, 0, 0 };
 
 			Assert::AreEqual(Color(1577058304), actual);
+		}
+
+		TEST_METHOD(Subscript)
+		{
+			Color actual = {80, 90, 100, 110};
+
+			Assert::AreEqual(Color(80, 90, 100, 110), Color(actual[0], actual[1], actual[2], actual[3]));
 		}
 	};
 }

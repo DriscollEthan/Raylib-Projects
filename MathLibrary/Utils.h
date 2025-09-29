@@ -8,13 +8,13 @@ namespace Driscoll
 	 *
 	 * @details Equivalent to "1.e-4f". Read as "1 times 10 to the power of -4".
 	 */
-	constexpr float MAX_FLOAT_DELTA = 0.0001f;
+	constexpr float MAX_FLOAT_DELTA = 0.0003f;
 	/* The former is a constant equivalent to Unreal Engine's default threshold.
 	 *
 	 * We can ensure this is applicable to our environment by using a
 	 * static_assert, which is checked at compile time.
 	 */
-	static_assert((1.e-4f) == MAX_FLOAT_DELTA);
+	static_assert((3.e-4f) == MAX_FLOAT_DELTA);
 
 	template<typename T>
 	inline T ApproximatelyEquals(const T& a, const T& b, const T& Threshold = MAX_FLOAT_DELTA)

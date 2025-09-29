@@ -163,6 +163,9 @@
     <ClCompile Include="ColorTests.cpp" />
     <ClCompile Include="MathLibraryTests.cpp" />
     <ClCompile Include="Matrix3Tests.cpp" />
+    <ClCompile Include="Matrix3TransformTests.cpp" />
+    <ClCompile Include="Matrix4Tests.cpp" />
+    <ClCompile Include="Matrix4TransformTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -171,6 +174,7 @@
     </ClCompile>
     <ClCompile Include="Vector2Tests.cpp" />
     <ClCompile Include="Vector3Tests.cpp" />
+    <ClCompile Include="Vector4Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathLibraryTests.h" />

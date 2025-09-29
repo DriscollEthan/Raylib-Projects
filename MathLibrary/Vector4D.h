@@ -45,6 +45,30 @@ namespace Driscoll
 			w = _otherVector.w;
 		}
 
+		Vector4D operator =(const Vector4D& _otherVector)
+		{
+			x = _otherVector.x;
+			y = _otherVector.y;
+			z = _otherVector.z;
+			w = _otherVector.w;
+		}
+
+		Vector4D(const Vector3D& _otherVector)
+		{
+			x = _otherVector.x;
+			y = _otherVector.y;
+			z = _otherVector.z;
+			w = 1.0f;
+		}
+
+		Vector4D operator =(const Vector3D& _otherVector)
+		{
+			x = _otherVector.x;
+			y = _otherVector.y;
+			z = _otherVector.z;
+			w = 1.0f;
+		}
+
 		//FUNCTIONS:
 
 		/*
@@ -54,7 +78,11 @@ namespace Driscoll
 		 */
 		float Magnitude() const
 		{
-			return sqrtf((x * x) + (y * y) + (z * z));
+			if (w == 0)
+			{
+				return sqrtf((x * x) + (y * y) + (z * z));
+			}
+			return (w * sqrtf((x * x) + (y * y) + (z * z)));
 		}
 
 		/*
@@ -64,7 +92,11 @@ namespace Driscoll
 		 */
 		float MagnitudeSqr() const
 		{
-			return ((x * x) + (y * y) + (z * z));
+			if (w == 0)
+			{
+				return ((x * x) + (y * y) + (z * z));
+			}
+			return (w * w * ((x * x) + (y * y) + (z * z)));
 		}
 
 		/*
@@ -75,7 +107,7 @@ namespace Driscoll
 		 */
 		float Dot(const Vector4D& _otherVector) const
 		{
-			return ((x * _otherVector.x) + (y * _otherVector.y) + (y + _otherVector.y));
+			return ((x * _otherVector.x) + (y * _otherVector.y) + (z * _otherVector.z) + (w * _otherVector.w));
 		}
 
 		/*
@@ -102,7 +134,7 @@ namespace Driscoll
 
 			tempVector.x = (y * _otherVector.z) - (z * _otherVector.y);
 			tempVector.y = (z * _otherVector.x) - (x * _otherVector.z);
-			tempVector.y = (x * _otherVector.y) - (y * _otherVector.x);
+			tempVector.z = (x * _otherVector.y) - (y * _otherVector.x);
 
 			return tempVector;
 		}
@@ -130,9 +162,10 @@ namespace Driscoll
 		{
 			float mag = this->Magnitude();
 
-			x /= mag;
-			y /= mag;
-			z /= mag;
+			x = (x / mag) * w;
+			y = (y / mag) * w;
+			z = (z / mag) * w;
+			w = (w / mag) * w;
 
 			return;
 		}
@@ -200,6 +233,10 @@ namespace Driscoll
 			{
 				z *= -1;
 			}
+			if (w < 0)
+			{
+				w *= -1;
+			}
 
 			return *this;
 		}
@@ -213,10 +250,10 @@ namespace Driscoll
 		 */
 		bool NearlyEquals(const Vector4D& _otherVector, float _tolerance = MAX_FLOAT_DELTA) const
 		{
-			Vector4D distance = { x - _otherVector.x, y - _otherVector.y, z - _otherVector.z };
+			Vector4D distance = { x - _otherVector.x, y - _otherVector.y, z - _otherVector.z, w - _otherVector.w };
 			distance.Absolute();
 
-			return ((distance.x < _tolerance) && (distance.y < _tolerance) && (distance.z < _tolerance));
+			return ((distance.x < _tolerance) && (distance.y < _tolerance) && (distance.z < _tolerance) && (distance.w < _tolerance));
 		}
 
 		/*
@@ -227,7 +264,7 @@ namespace Driscoll
 		 */
 		bool Equals(const Vector4D& _otherVector) const
 		{
-			return (x == _otherVector.x && y == _otherVector.y && z == _otherVector.z);
+			return (x == _otherVector.x && y == _otherVector.y && z == _otherVector.z && w == _otherVector.w);
 		}
 
 		/*
@@ -296,7 +333,7 @@ namespace Driscoll
 		 */
 		std::string ToString() const
 		{
-			return "x: " + std::to_string(x) + ", y: " + std::to_string(y) + ", z: " + std::to_string(z);
+			return "x: " + std::to_string(x) + ", y: " + std::to_string(y) + ", z: " + std::to_string(z) + "w: " + std::to_string(w);
 		}
 
 		//OPERATORS:
@@ -314,6 +351,7 @@ namespace Driscoll
 			temp.x += _otherVector.x;
 			temp.y += _otherVector.y;
 			temp.z += _otherVector.z;
+			temp.w += _otherVector.w;
 
 			return temp;
 		}
@@ -330,6 +368,7 @@ namespace Driscoll
 			x += _otherVector.x;
 			y += _otherVector.y;
 			z += _otherVector.z;
+			w += _otherVector.w;
 
 			return *this;
 		}
@@ -347,6 +386,7 @@ namespace Driscoll
 			temp.x -= _otherVector.x;
 			temp.y -= _otherVector.y;
 			temp.z -= _otherVector.z;
+			temp.w -= _otherVector.w;
 
 			return temp;
 		}
@@ -363,6 +403,7 @@ namespace Driscoll
 			x -= _otherVector.x;
 			y -= _otherVector.y;
 			z -= _otherVector.z;
+			w -= _otherVector.w;
 
 			return *this;
 		}
@@ -379,6 +420,7 @@ namespace Driscoll
 			temp.x *= _otherFloat;
 			temp.y *= _otherFloat;
 			temp.z *= _otherFloat;
+			temp.w *= _otherFloat;
 
 			return temp;
 		}
@@ -394,6 +436,7 @@ namespace Driscoll
 			x *= _otherFloat;
 			y *= _otherFloat;
 			z *= _otherFloat;
+			w *= _otherFloat;
 
 			return *this;
 		}
@@ -412,6 +455,7 @@ namespace Driscoll
 			temp.x /= _otherFloat;
 			temp.y /= _otherFloat;
 			temp.z /= _otherFloat;
+			temp.w /= _otherFloat;
 
 			return temp;
 		}
@@ -427,6 +471,7 @@ namespace Driscoll
 			x /= _otherFloat;
 			y /= _otherFloat;
 			z /= _otherFloat;
+			w /= _otherFloat;
 
 			return *this;
 		}

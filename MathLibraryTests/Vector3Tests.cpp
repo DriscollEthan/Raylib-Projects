@@ -222,23 +222,23 @@ namespace MathLibraryTests
 	};
 }
 
-//namespace MathLibraryTests_OPTIONAL
-//{
-//	TEST_CLASS(Vector3Tests_Optional)
-//	{
-//		TEST_METHOD(SafeNormalise)
-//		{
-//			Vector3 v3b(0, 0, 0);
-//			v3b.SafeNormalise();
-//			CustomAssert::AreEqualsMember(Vector3(0, 0, 0), v3b);
-//		}
-//
-//		TEST_METHOD(SafeNormalised)
-//		{
-//			Vector3 v3b(0, 0, 0);
-//			CustomAssert::AreEqualsMember(Vector3(0, 0, 0), v3b.SafeNormalised());
-//		}
-//	};
+namespace MathLibraryTests_OPTIONAL
+{
+	TEST_CLASS(Vector3Tests_Optional)
+	{
+		TEST_METHOD(SafeNormalise)
+		{
+			Vector3 v3b(0, 0, 0);
+			v3b.SafeNormalise();
+			CustomAssert::AreEqualsMember(Vector3(0, 0, 0), v3b);
+		}
+
+		TEST_METHOD(SafeNormalised)
+		{
+			Vector3 v3b(0, 0, 0);
+			CustomAssert::AreEqualsMember(Vector3(0, 0, 0), v3b.SafeNormalised());
+		}
+	};
 //
 //	TEST_CLASS(Vector3Tests_Optional_Operator)
 //	{
@@ -276,5 +276,5 @@ namespace MathLibraryTests
 //			Assert::AreEqual(ptrConst[1], 2.f);
 //			Assert::AreEqual(ptrConst[2], 6.f);
 //		}
-//	};
-//}
+	}
+

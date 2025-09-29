@@ -25,8 +25,8 @@ namespace MathClasses
 
 	using Vector2 = Driscoll::Vector2D;
 	using Vector3 = Driscoll::Vector3D;
-	// using Vector4 = YourVector4;
+	using Vector4 = Driscoll::Vector4D;
 	using Matrix3 = Driscoll::Matrix3;
-	// using Matrix4 = YourMatrix4;
+	using Matrix4 = Driscoll::Matrix4;
 	using Color = Driscoll::Color;
 }

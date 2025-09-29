@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Utils.h"
-#include "Vector3D.h"
-#include "Vector2D.h"
+#include "DriscollMathUtils.h"
 
 namespace Driscoll
 {
@@ -20,7 +18,11 @@ namespace Driscoll
 		 * m2 m5 m8
 		 * m3 m6 m9
 		 */
-
+		/*	m1 m5 m9  m13
+			* m2 m6 m10 m14
+			* m3 m7 m11 m15
+			* m4	m8 m12 m16
+			* */
 
 		union
 		{
@@ -47,7 +49,9 @@ namespace Driscoll
 		 * @param _inM8 Value for M8	| Default = 0
 		 * @param _inM9 Value for M9	| Default = 0
 		 */
-		Matrix3(float _inM1 = 0.0f, float _inM2 = 0.0f, float _inM3 = 0.0f, float _inM4 = 0.0f, float _inM5 = 0.0f, float _inM6 = 0.0f, float _inM7 = 0.0f, float _inM8 = 0.0f, float _inM9 = 0.0f)
+		Matrix3(float _inM1 = 0.0f, float _inM2 = 0.0f, float _inM3 = 0.0f, 
+			float _inM4 = 0.0f, float _inM5 = 0.0f, float _inM6 = 0.0f, 
+			float _inM7 = 0.0f, float _inM8 = 0.0f, float _inM9 = 0.0f)
 		{
 			m1 = _inM1;
 			m2 = _inM2;
@@ -292,7 +296,10 @@ namespace Driscoll
 
 			* @return The translation matrix.
 			*/
-		static Matrix3 MakeTranslation(float x, float y);
+		static Matrix3 MakeTranslation(float x, float y)
+		{
+			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(Vector3D(x, y, 0)), Vector3D(0.0f, 1.0f, 0.0f).Dot(Vector3D(x, y, 0)), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*
 		 * Creates a translation matrix that translates on the given X and Y
@@ -303,7 +310,10 @@ namespace Driscoll
 		 * @param vec A Vector containing the amount to translate by on the X, Y, and Z axes.
 		 * @return The translation matrix.
 		 */
-		static Matrix3 MakeTranslation(Vector2D vec);
+		static Matrix3 MakeTranslation(Vector2D vec)
+		{
+			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(Vector3D(vec.x, vec.y, 0)), Vector3D(0.0f, 1.0f, 0.0f).Dot(Vector3D(vec.x, vec.y, 0)), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*
 		 * Creates a translation matrix that translates on the given X, Y, and
@@ -316,7 +326,10 @@ namespace Driscoll
 		 * @param z Amount to translate by on the Z-axis.
 		 * @return The translation matrix.
 		 */
-		static Matrix3 MakeTranslation(float x, float y, float z);
+		static Matrix3 MakeTranslation(float x, float y, float z)
+		{
+			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(Vector3D(x, y, z)), Vector3D(0.0f, 1.0f, 0.0f).Dot(Vector3D(x, y, z)), Vector3D(0.0f, 0.0f, 1.0f).Dot(Vector3D(x, y, z)), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*
 		 * Creates a translation matrix that translates on the given X, Y, and
@@ -327,7 +340,10 @@ namespace Driscoll
 		 * @param vec A Vector containing the amount to translate by on the X, Y, and Z axes.
 		 * @return The translation matrix.
 		 */
-		static Matrix3 MakeTranslation(Vector3D vec);
+		static Matrix3 MakeTranslation(Vector3D vec)
+		{
+			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(vec), Vector3D(0.0f, 1.0f, 0.0f).Dot(vec), Vector3D(0.0f, 0.0f, 1.0f).Dot(vec), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*
 		 * Creates a rotation matrix that rotates around the X-axis
@@ -335,7 +351,10 @@ namespace Driscoll
 		 * @param Rotation around the X-axis, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix3 MakeRotateX(float a);
+		static Matrix3 MakeRotateX(float a)
+		{
+			return Matrix3(1.0f, 0.0f, 0.0f, 0.0f, cosf(a), sinf(a), 0.0f, -sinf(a), cosf(a));
+		}
 
 		/*
 		 * Creates a rotation matrix that rotates around the Y-axis
@@ -343,7 +362,10 @@ namespace Driscoll
 		 * @param Rotation around the Y-axis, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix3 MakeRotateY(float a);
+		static Matrix3 MakeRotateY(float a)
+		{
+			return Matrix3(cosf(a), 0.0f, sinf(a), 0.0f, 1.0f, 0.0f, -sinf(a), 0.0f, cosf(a));
+		}
 
 		/*
 		 * Creates a rotation matrix that rotates around the Z-axis
@@ -351,7 +373,10 @@ namespace Driscoll
 		 * @param Rotation around the Z-axis, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix3 MakeRotateZ(float a);
+		static Matrix3 MakeRotateZ(float a)
+		{
+			return Matrix3(cosf(a), -sinf(a), 0.0f, sinf(a), cosf(a), 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*
 		 * Creates a rotation matrix that applies a pitch, yaw, roll rotation
@@ -363,7 +388,14 @@ namespace Driscoll
 		 * @param roll	Amount to roll, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix3 MakeEuler(float pitch, float yaw, float roll);
+		static Matrix3 MakeEuler(float pitch, float yaw, float roll)
+		{
+			Matrix3 x = MakeRotateX(pitch);
+			Matrix3 y = MakeRotateY(yaw);
+			Matrix3 z = MakeRotateZ(roll);
+
+			return (z * y * x);
+		}
 
 		/*
 		 * Creates a rotation matrix that applies a pitch, yaw, roll rotation
@@ -372,7 +404,14 @@ namespace Driscoll
 		 * @param rot Vector containing how much to pitch (X), yaw (Y), and roll (Z)
 		 * @return The rotation matrix.
 		 */
-		static Matrix3 MakeEuler(Vector3D rot);
+		static Matrix3 MakeEuler(Vector3D rot)
+		{
+			Matrix3 x = MakeRotateX(rot.x);
+			Matrix3 y = MakeRotateY(rot.y);
+			Matrix3 z = MakeRotateZ(rot.z);
+
+			return (z * y * x);
+		}
 
 		/*
 		 * Creates a scaling matrix that applies to the X and Y axes.
@@ -385,7 +424,10 @@ namespace Driscoll
 		 * @param yScale Scalar for the Y-axis.
 		 * @return The scaling matrix.
 		 */
-		static Matrix3 MakeScale(float xScale, float yScale);
+		static Matrix3 MakeScale(float xScale, float yScale)
+		{
+			return Matrix3(xScale, 0, 0, 0, yScale, 0, 0, 0, 1);
+		}
 
 		/*
 		 * Creates a scaling matrix that applies to the X, Y, and Z axis with
@@ -397,7 +439,10 @@ namespace Driscoll
 		 * @param yScale Scalar for the Y-axis.
 		 * @return The scaling matrix.
 		 */
-		static Matrix3 MakeScale(float xScale, float yScale, float zScale);
+		static Matrix3 MakeScale(float xScale, float yScale, float zScale)
+		{
+			return Matrix3(xScale, 0, 0, 0, yScale, 0, 0, 0, zScale);
+		}
 
 		/*
 		 * Creates a scaling matrix that applies to the X, Y, and Z axis with
@@ -410,7 +455,10 @@ namespace Driscoll
 		 * @param scale Scale factor expressed as a Vector.
 		 * @return The scaling matrix.
 		 */
-		static Matrix3 MakeScale(Vector3D scale);
+		static Matrix3 MakeScale(Vector3D scale)
+		{
+			return Matrix3(scale.x, 0, 0, 0, scale.y, 0, 0, 0, scale.z);
+		}
 
 		/*
 		 * OPTIONAL
@@ -424,7 +472,13 @@ namespace Driscoll
 			*
 			* @return The transposed matrix.
 			*/
-		Matrix3 Transposed() const;
+		Matrix3 Transposed() const
+		{
+			// m1 m4 m7
+			// m2 m5 m8
+			// m3 m6 m9
+			return Matrix3(m1, m4, m7, m2, m5, m8, m3, m6, m9);
+		}
 
 		/*
 		 * Accesses the matrix as though it were an array of floats in columns.

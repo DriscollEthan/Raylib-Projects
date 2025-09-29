@@ -1,8 +1,7 @@
 #pragma once
 
 #include <cassert>  // For asserts
-#include <cstdint>  // for int_32_t
-
+#include <cstdint>  // For int_32_t
 #include <string>		// std::ToString
 
 namespace Driscoll
@@ -13,7 +12,7 @@ namespace Driscoll
     {
       struct
       {
-        char8_t r, g, b, a;
+				char8_t a, b, g, r;
       };
 
       char8_t v[4];
@@ -122,7 +121,17 @@ namespace Driscoll
 			*/
 		char8_t& operator [](int dim)
 		{
-			return v[dim];
+			switch (dim)
+			{
+			case 0:
+				return v[3];
+			case 1:
+				return v[2];
+			case 2:
+				return v[1];
+			case 3:
+				return v[0];
+			}
 		}
 
 		/*
@@ -138,7 +147,17 @@ namespace Driscoll
 		 */
 		char8_t operator [](int dim) const
 		{
-			return v[dim];
+			switch (dim)
+			{
+			case 0:
+				return v[3];
+			case 1:
+				return v[2];
+			case 2:
+				return v[1];
+			case 3:
+				return v[0];
+			}
 		}
 
 		inline static Color Red() { return Color(255, 0, 0, 255); }

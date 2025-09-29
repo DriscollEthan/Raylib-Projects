@@ -7,6 +7,7 @@
 #include "Vector3D.h"
 #include "Vector4D.h"
 #include "Matrix3.h"
+#include "Matrix4.h"
 #include "Color.h"
 
 namespace Driscoll
