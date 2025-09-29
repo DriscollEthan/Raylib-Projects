@@ -288,7 +288,10 @@ namespace Driscoll
 
 		 * @return The translation matrix.
 		 */
-		static Matrix4 MakeTranslation(float x, float y, float z);
+		static Matrix4 MakeTranslation(float x, float y, float z)
+		{
+			return Matrix4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, x, y, z, 1.0f);
+		}
 
 		/**
 		 * Creates a translation matrix that translates on the given X, Y, and Z
@@ -299,7 +302,10 @@ namespace Driscoll
 		 * @param vec Vector whose X, Y, and Z elements correspond to translation along those axes.
 		 * @return The translation matrix.
 		 */
-		static Matrix4 MakeTranslation(Vector3D vec);
+		static Matrix4 MakeTranslation(Vector3D vec)
+		{
+			return Matrix4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, vec.x, vec.y, vec.z, 1.0f);
+		}
 
 		/**
 		 * Creates a rotation matrix that rotates around the X-axis
@@ -307,7 +313,17 @@ namespace Driscoll
 		 * @param Rotation around the X-axis, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix4 MakeRotateX(float a);
+		static Matrix4 MakeRotateX(float a)
+		{
+			/*
+			 *	1   0   0   0
+			 *	0  cos -sin 0
+			 *	0  sin cos  0
+			 *	0   0   0   1
+			 */
+
+			return Matrix4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, cosf(a), sinf(a), 0.0f, 0.0f, -sinf(a), cosf(a), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/**
 		 * Creates a rotation matrix that rotates around the Y-axis
@@ -315,7 +331,17 @@ namespace Driscoll
 		 * @param Rotation around the Y-axis, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix4 MakeRotateY(float a);
+		static Matrix4 MakeRotateY(float a)
+		{
+			/*
+			 * cos  0   sin   0
+			 *	0   1   0   0
+			 * -sin 0  cos  0
+			 *	0   0   0   1
+			 */
+
+			return Matrix4(cosf(a), 0.0f, -sinf(a), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, sinf(a), 0.0f, cosf(a), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/**
 		 * Creates a rotation matrix that rotates around the Z-axis
@@ -323,7 +349,17 @@ namespace Driscoll
 		 * @param Rotation around the Z-axis, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix4 MakeRotateZ(float a);
+		static Matrix4 MakeRotateZ(float a)
+		{
+			/*
+			 * cos -sin 0   0
+			 * sin cos  0   0
+			 *	0   0   1   0
+			 *	0   0   0   1
+			 */
+
+			return Matrix4(cosf(a), sinf(a), 0.0f, 0.0f, -sinf(a), cosf(a), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/**
 		 * Creates a rotation matrix that applies a pitch, yaw, roll rotation
@@ -335,7 +371,14 @@ namespace Driscoll
 		 * @param roll	Amount to roll, expressed in radians.
 		 * @return The rotation matrix.
 		 */
-		static Matrix4 MakeEuler(float pitch, float yaw, float roll);
+		static Matrix4 MakeEuler(float pitch, float yaw, float roll)
+		{
+			Matrix4 x = MakeRotateX(pitch);
+			Matrix4 y = MakeRotateY(yaw);
+			Matrix4 z = MakeRotateZ(roll);
+
+			return (z * y * x);
+		}
 
 		/**
 		 * Creates a rotation matrix that applies a pitch, yaw, roll rotation
@@ -344,7 +387,14 @@ namespace Driscoll
 		 * @param rot Vector containing how much to pitch (X), yaw (Y), and roll (Z)
 		 * @return The rotation matrix.
 		 */
-		static Matrix4 MakeEuler(Vector3D rot);
+		static Matrix4 MakeEuler(Vector3D rot)
+		{
+			Matrix4 x = MakeRotateX(rot.x);
+			Matrix4 y = MakeRotateY(rot.y);
+			Matrix4 z = MakeRotateZ(rot.z);
+
+			return (z * y * x);
+		}
 
 		/**
 		 * Creates a scaling matrix that applies to the X and Y axes.
@@ -358,7 +408,16 @@ namespace Driscoll
 		 * @param zScale Scalar for the Z-axis.
 		 * @return The scaling matrix.
 		 */
-		static Matrix4 MakeScale(float xScale, float yScale, float zScale);
+		static Matrix4 MakeScale(float xScale, float yScale, float zScale)
+		{
+			/*
+			 * xScale 0      0      0
+			 * 0      yScale 0      0
+			 * 0      0      zScale 0
+			 * 0      0      0      1
+			 */
+			return Matrix4(xScale, 0.0f, 0.0f, 0.0f, 0.0f, yScale, 0.0f, 0.0f, 0.0f, 0.0f, zScale, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/**
 		 * Creates a scaling matrix that applies to the X, Y, and Z axis with
@@ -371,7 +430,10 @@ namespace Driscoll
 		 * @param scale Scale factor expressed as a Vector.
 		 * @return The scaling matrix.
 		 */
-		static Matrix4 MakeScale(Vector3D scale);
+		static Matrix4 MakeScale(Vector3D scale)
+		{
+			return Matrix4(scale.x, 0.0f, 0.0f, 0.0f, 0.0f, scale.y, 0.0f, 0.0f, 0.0f, 0.0f, scale.z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+		}
 
 		/*
 		 * OPTIONAL
@@ -385,7 +447,25 @@ namespace Driscoll
 			*
 			* @return The transposed matrix.
 			*/
-		Matrix4 Transposed() const;
+		Matrix4 Transposed() const
+		{
+			Matrix4 temp = (*this);
+
+			temp.m2 = m5;
+			temp.m3 = m9;
+			temp.m4 = m13;
+			temp.m5 = m2;
+			temp.m7 = m10;
+			temp.m8 = m14;
+			temp.m9 = m3;
+			temp.m10 = m7;
+			temp.m12 = m15;
+			temp.m13 = m4;
+			temp.m14 = m8;
+			temp.m15 = m12;
+
+			return temp;
+		}
 
 		/**
 		 * Accesses the matrix as though it were an array of floats in columns.
@@ -393,7 +473,10 @@ namespace Driscoll
 		 * @param dim The index (accessed by "columns").
 		 * @return Returns a reference to the element at the requested index.
 		 */
-		float& operator [](int dim);
+		float& operator [](int dim)
+		{
+			return v[dim];
+		}
 
 		/**
 		 * Accesses the matrix as though it were an array of floats in columns.
@@ -401,20 +484,29 @@ namespace Driscoll
 		 * @param dim The index (accessed by "columns").
 		 * @return Returns a const reference to the element at the requested index.
 		 */
-		const float& operator [](int dim) const;
+		const float& operator [](int dim) const
+		{
+			return v[dim];
+		}
 
 		/**
 		 * Casts the matrix as though it were an array of floats in columns.
 		 *
 		 * @return Returns a float* pointing to the first element of the "array".
 		 */
-		operator float* ();
+		operator float* ()
+		{
+			return &v[0];
+		}
 
 		/**
 		 * Casts the matrix as though it were an array of floats in columns.
 		 *
 		 * @return Returns a const float* pointing to the first element of the "array".
 		 */
-		operator const float* () const;
+		operator const float* () const
+		{
+			return &v[0];
+		}
 	};
 }	

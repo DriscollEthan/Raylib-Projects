@@ -22,7 +22,13 @@ namespace Driscoll
 			* m2 m6 m10 m14
 			* m3 m7 m11 m15
 			* m4	m8 m12 m16
-			* */
+			* 
+			* m1  m2  m3  m4
+			* m5  m6  m7  m8
+			* m9  m10 m11 m12
+			* m13 m14 m15 m16
+			* 
+			*/
 
 		union
 		{
@@ -328,7 +334,7 @@ namespace Driscoll
 		 */
 		static Matrix3 MakeTranslation(float x, float y, float z)
 		{
-			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(Vector3D(x, y, z)), Vector3D(0.0f, 1.0f, 0.0f).Dot(Vector3D(x, y, z)), Vector3D(0.0f, 0.0f, 1.0f).Dot(Vector3D(x, y, z)), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+			return Matrix3(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, x, y, z);
 		}
 
 		/*
@@ -342,7 +348,7 @@ namespace Driscoll
 		 */
 		static Matrix3 MakeTranslation(Vector3D vec)
 		{
-			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(vec), Vector3D(0.0f, 1.0f, 0.0f).Dot(vec), Vector3D(0.0f, 0.0f, 1.0f).Dot(vec), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+			return Matrix3(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, vec.x, vec.y, vec.z);
 		}
 
 		/*
