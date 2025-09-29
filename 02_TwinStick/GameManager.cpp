@@ -27,15 +27,15 @@ void GameManager::BeginPlay()
   TextureManagerRef = new TextureManager(3);
   //Set Textures
   {
+    raylib::Image DefaultImage; DefaultImage.Load("Resources/Default.png");
+    TextureManagerRef->SetTexture(DefaultImage, 0);
     raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
-    TextureManagerRef->SetTexture(PlayerImage, 0);
+    TextureManagerRef->SetTexture(PlayerImage, 2);
     raylib::Image TurretImage; TurretImage.Load("Resources/Turret.png");
     TextureManagerRef->SetTexture(TurretImage, 1);
-    raylib::Image DefaultImage; DefaultImage.Load("Resources/Default.png");
-    TextureManagerRef->SetTexture(DefaultImage, 2);
   }
 
-  PlayerRef = new Character(Driscoll::Vector2D(500, 300), 0, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 2.5f);
+  PlayerRef = new Character(Driscoll::Vector2D(500, 300), 2, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 3.5f);
   PlayerRef->SetTextureManagerRef(TextureManagerRef);
   PlayerRef->BeginPlay();
   EnemyRefs = new Enemy[10];
