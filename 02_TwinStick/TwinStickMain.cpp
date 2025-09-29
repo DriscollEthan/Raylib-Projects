@@ -12,7 +12,6 @@ int main()
 		raylib::Window Window(GVO.GetScreenSize().x, GVO.GetScreenSize().y, "Twin Stick Shooter");
 
 		//Player Setup
-		raylib::Image PlayerImage; PlayerImage.Load("Resources/Dollar-Gold-Coin-PNG.png");
 		GameManager* GameMode = new GameManager();
 
 		//Others
