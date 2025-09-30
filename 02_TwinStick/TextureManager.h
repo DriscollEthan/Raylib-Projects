@@ -1,6 +1,7 @@
 #pragma once
-#include "Object.h"
-class TextureManager : public Object
+#include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
+
+class TextureManager
 {
 public:
   TextureManager(size_t _amountOfTextures);
