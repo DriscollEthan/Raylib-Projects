@@ -2,10 +2,6 @@
 
 #include "MathLibraryTests.h"
 #include "MathUnitTestAssert.h"
-#include "TestToString.h"
-
-#include "Utils.h"
-#include "Matrix3.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using aie::test::CustomAssert;
@@ -236,18 +232,6 @@ namespace MathLibraryTests
 
 	TEST_CLASS(Matrix3Tests_Operator)
 	{
-		// mat3 * vec
-		TEST_METHOD(MultiplyMat3Vec3)
-		{
-			Matrix3 m3b(-0.188076824f, 0.f, 0.982154310f,
-				0.f, 1.f, 0.f,
-				-0.982154310f, 0.f, -0.188076824f);
-
-			Vector3 v3a(13.5f, -48.23f, 862);
-			Vector3 v3b = m3b * v3a;
-
-			CustomAssert::AreEqualsMember(Vector3(-849.156067f, -48.23f, -148.863144f), v3b);
-		}
 		// mat3 * mat3
 		TEST_METHOD(MultiplyMat3Mat3)
 		{
@@ -268,6 +252,50 @@ namespace MathLibraryTests
 
 			CustomAssert::AreEqualsMember(Matrix3(28, 28, 28, 33, 31, 33, 29, 31, 29), m3a);
 		}
+		// mat3 * vec
+		TEST_METHOD(MultiplyMat3Vec3)
+		{
+			Matrix3 m3b(-0.188076824f, 0.f, 0.982154310f,
+				0.f, 1.f, 0.f,
+				-0.982154310f, 0.f, -0.188076824f);
+
+			Vector3 v3a(13.5f, -48.23f, 862);
+			Vector3 v3b = m3b * v3a;
+
+			CustomAssert::AreEqualsMember(Vector3(-849.156067f, -48.23f, -148.863144f), v3b);
+		}
+
+		TEST_METHOD(MultiplyMat3Vec2)
+		{
+			Matrix3 m3b(1,0,0, 0,1,0, 10,11,1);
+
+			Vector2 v2a(13.5f, -48.23f);
+			Vector2 v2b = m3b * v2a;
+
+			CustomAssert::AreEqualsMember(Vector2(23.5f, -37.23f), v2b);
+		}
+
+		TEST_METHOD(MultiplyMat3Vec2_2)
+		{
+			// effectively rotates by 90 degrees (or PI/2)
+			Matrix3 m3b(
+			0.0,
+			1.0,
+			0.0,
+
+			-1.0,
+			0,
+			0.0,
+
+			0.0,
+			0.0,
+			1.0);
+
+			Vector2 v2a(1.0f, 0.0f);
+			Vector2 v2b = m3b * v2a;
+
+			CustomAssert::AreEqualsMember(Vector2(0.0f, 1.0f), v2b);
+		}
 	};
 }
 
@@ -280,10 +308,10 @@ namespace MathLibraryTests_OPTIONAL
 			Matrix3 m3a(1, 2, 3,
 				4, 5, 6,
 				7, 8, 9);
-	
+
 			m3a = m3a.Transposed();
-	
-			CustomAssert::AreEqualsMember(Matrix3(1, 4, 7, 2, 5, 8, 3, 6, 9), m3a);
+
+			Assert::AreEqual(Matrix3(1, 4, 7, 2, 5, 8, 3, 6, 9), m3a);
 		}
 	};
 
@@ -334,6 +362,7 @@ namespace MathLibraryTests_OPTIONAL
 				3, 2, 3);
 
 			float* ptrMutable = (float*)m3a;
+			m3a[0] = m3a[0];
 			Assert::AreEqual(ptrMutable[0], 1.f);
 			Assert::AreEqual(ptrMutable[1], 4.f);
 			Assert::AreEqual(ptrMutable[2], 1.f);

@@ -53,6 +53,13 @@ void GameManager::BeginPlay()
 
 void GameManager::Update()
 {
+  for (int i = 0; i < 10; ++i)
+  {
+    PlayerRef->GetTurretRef()->BulletCollisionCheck(&EnemyRefs[i]);
+    
+    EnemyRefs[i].GetTurretRef()->BulletCollisionCheck(PlayerRef);
+  }
+
   PlayerRef->Update();
   for (int i = 0; i < 10; ++i)
   {

@@ -2,10 +2,6 @@
 
 #include "MathLibraryTests.h"
 #include "MathUnitTestAssert.h"
-#include "TestToString.h"
-
-#include "Utils.h"
-#include "Matrix4.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using aie::test::CustomAssert;
@@ -78,16 +74,73 @@ namespace MathLibraryTests
 					0, 0, 0, 1), actual);
 		}
 
+		/*
+		 * Test that rotation around the x axis is right-handed.
+		 */
+		TEST_METHOD(MakeRotateXIsRightHanded)
+		{
+			// Construct a rotation of 90 degrees around the x axis.
+			const auto angle = std::acos(0.0f);
+			const auto rotation = Matrix3::MakeRotateX(angle);
+
+			// Apply the rotation to the +ve y axis.
+			const auto rotatedVector = rotation * Vector3{ 0, 1, 0 };
+
+			// If the coordinate system is right-handed, the result
+			// should align with the +ve z axis.
+			const auto expectedVector = Vector3{ 0, 0, 1 };
+
+			CustomAssert::AreEqualsMember(expectedVector, rotatedVector);
+		}
+
+		/*
+		 * Test that rotation around the y axis is right-handed.
+		 */
+		TEST_METHOD(MakeRotateYIsRightHanded)
+		{
+			// Construct a rotation of 90 degrees around the y axis.
+			const auto angle = std::acos(0.0f);
+			const auto rotation = Matrix3::MakeRotateY(angle);
+
+			// Apply the rotation to the +ve x axis.
+			const auto rotatedVector = rotation * Vector3{ 1, 0, 0 };
+
+			// If the coordinate system is right-handed, the result
+			// should align with the -ve z axis.
+			const auto expectedVector = Vector3{ 0, 0, -1 };
+
+			CustomAssert::AreEqualsMember(expectedVector, rotatedVector);
+		}
+
+		/*
+		 * Test that rotation around the z axis is right - handed.
+		 */
+		TEST_METHOD(MakeRotateZIsRightHanded)
+		{
+			// Construct a rotation of 90 degrees around the z axis.
+			const auto angle = std::acos(0.0f);
+			const auto rotation = Matrix3::MakeRotateZ(angle);
+
+			// Apply the rotation to the +ve x axis.
+			const auto rotatedVector = rotation * Vector3{ 1, 0, 0 };
+
+			// If the coordinate system is right-handed, the result
+			// should align with the +ve y axis.
+			const auto expectedVector = Vector3{ 0, 1, 0 };
+
+			CustomAssert::AreEqualsMember(expectedVector, rotatedVector);
+		}
+
 		// make rot from euler (floats)
 		TEST_METHOD(MakeRotateEulerFloat)
 		{
 			Matrix4 actual = Matrix4::MakeEuler(Vector3(1.0f, 2.0f, 3.0f));
 
 			CustomAssert::AreEqualsMember(
-				Matrix4(0.411982f, -0.058727f, -0.909297f, 0.0f,
-					-0.833738f, -0.426918f, -0.350175f, 0.0f,
-					-0.367630f, 0.902382f, -0.224845f,0.0f, 
-					0.0f, 0.0f, 0.0f, 1.0f),
+				Matrix4(0.411982f, -0.058727f, -0.909297f, 0.f,
+					-0.833738f, -0.426918f, -0.350176f, 0.f,
+					-0.367631f, 0.902382f, -0.224845f, 0.f,
+					0.f, 0.f, 0.f, 1.f),
 				actual);
 		}
 
@@ -97,10 +150,10 @@ namespace MathLibraryTests
 			Matrix4 actual = Matrix4::MakeEuler(Vector3(1.0f, 2.0f, 3.0f));
 
 			CustomAssert::AreEqualsMember(
-				Matrix4(0.411982f, -0.058727f, -0.909297f, 0.0f,
-					-0.833738f, -0.426918f, -0.350175f, 0.0f,
-					-0.367630f, 0.902382f, -0.224845f, 0.0f,
-					0.0f, 0.0f, 0.0f, 1.0f),
+				Matrix4(0.411982f, -0.058727f, -0.909297f, 0.f,
+					-0.833738f, -0.426918f, -0.350176f, 0.f,
+					-0.367631f, 0.902382f, -0.224845f, 0.f,
+					0.f, 0.f, 0.f, 1.f),
 				actual);
 		}
 

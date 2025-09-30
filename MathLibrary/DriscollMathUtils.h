@@ -13,13 +13,13 @@
 namespace Driscoll
 {
 //Macro Color Calls:
-#define RED Driscoll::Color::Red();
-#define GREEN Driscoll::Color::Green();
-#define BLUE Driscoll::Color::Blue();
-#define WHITE Driscoll::Color::White();
-#define BLACK Driscoll::Color::Black();
-#define CLEAR Driscoll::Color::CLear();
-#define ORANGE Driscoll::Color::Orange();
-#define PINK Driscoll::Color::Pink();
-#define YELLOW Driscoll::Color::Yellow();
+#define RED Color::Red();
+#define GREEN Color::Green();
+#define BLUE Color::Blue();
+#define WHITE Color::White();
+#define BLACK Color::Black();
+#define CLEAR Color::Clear();
+#define ORANGE Color::Orange();
+#define PINK Color::Pink();
+#define YELLOW Color::Yellow();
 }

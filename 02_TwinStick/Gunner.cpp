@@ -105,14 +105,17 @@ void Gunner::Draw()
 	}
 }
 
-void Gunner::BulletCollisionCheck(Entity& _enemy)
+void Gunner::BulletCollisionCheck(Entity* _enemy)
 {
-	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	if (_enemy)
 	{
-		if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].CollisionCheck(_enemy))
+		for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 		{
-			BulletsInPool[i].SetCurrentState(Inactive);
-			_enemy.GotHit();
+			if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].CollisionCheck(_enemy))
+			{
+				BulletsInPool[i].SetCurrentState(Inactive);
+  				_enemy->GotHit();
+			}
 		}
 	}
 }

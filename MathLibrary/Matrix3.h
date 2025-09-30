@@ -179,16 +179,14 @@ namespace Driscoll
 		 */
 		Vector2D operator *(Vector2D rhs) const
 		{
-			Vector3D temp = {};
+			Vector2D temp = {};
 
 			//Create Row Vector 3s from First Matrix
 			Vector3D Row1 = { m1, m4, m7 };
 			Vector3D Row2 = { m2, m5, m8 };
-			Vector3D Row3 = { m3, m6, m9 };
 
 			temp.x = Row1.Dot(Vector3D(rhs, 1.0f));
 			temp.y = Row2.Dot(Vector3D(rhs, 1.0f));
-			temp.z = Row3.Dot(Vector3D(rhs, 1.0f));
 
 			return Vector2D(temp.x, temp.y);
 		}
@@ -421,6 +419,11 @@ namespace Driscoll
 		static Matrix3 MakeScale(float xScale, float yScale)
 		{
 			return Matrix3(xScale, 0, 0, 0, yScale, 0, 0, 0, 1);
+		}
+
+		static Matrix3 MakeScale(Vector2D scale)
+		{
+			return Matrix3(scale.x, 0, 0, 0, scale.y, 0, 0, 0, 1);
 		}
 
 		/*

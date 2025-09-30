@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "DriscollMathUtils.h"
 #include <iostream>
 
 /* CONSTRUCTORS & DESTRUCTORS */
@@ -74,23 +75,27 @@ void Entity::Update()
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Entity::Draw()
 {
-	Object::Draw();
-	//	Driscoll::Vector2D offset = {};
-	//	offset.x -= E_Texture->GetWidth() / 2.0f;
-	//	offset.y -= E_Texture->GetHeight() / 2.0f;
-	//	E_Texture->Draw(E_Position - offset, E_Rotation);
-	//
-	//	std::cout << E_Position - offset << std::endl;
-	GetTextureManagerRef()->GetTexture(E_TextureLocation).Draw(raylib::Rectangle(0, 0, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth(), (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight()),						// SourceRec
+	if (bIsAlive)
+	{
+		Object::Draw();
+		//	Driscoll::Vector2D offset = {};
+		//	offset.x -= E_Texture->GetWidth() / 2.0f;
+		//	offset.y -= E_Texture->GetHeight() / 2.0f;
+		//	E_Texture->Draw(E_Position - offset, E_Rotation);
+		//
+		//	std::cout << E_Position - offset << std::endl;
+		GetTextureManagerRef()->GetTexture(E_TextureLocation).Draw(raylib::Rectangle(0, 0, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth(), (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight()),						// SourceRec
 			raylib::Rectangle(E_Position.x, E_Position.y, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * E_Scale.y),	// DestRec
 			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * E_Origin.x * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * E_Origin.y * E_Scale.y),		// Origin
 			E_Rotation,	// Rotation
 			Driscoll::Color::White() // Tint
 		);
+	}
 }
 
 void Entity::GotHit()
 {
+	std::cout << "thing \n";
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -108,12 +113,12 @@ float Entity::GetRadius()
 	return E_Radius;
 }
 
-bool Entity::CollisionCheck(Entity& _otherObject)
+bool Entity::CollisionCheck(Entity* _otherObject)
 {
-	if (CheckCollisionCircles(E_Position, E_Radius, _otherObject.E_Position, _otherObject.E_Radius))
+	if (CheckCollisionCircles(E_Position, E_Radius, _otherObject->E_Position, _otherObject->E_Radius))
 	{
 		GotHit();
-		_otherObject.GotHit();
+		_otherObject->GotHit();
 		return true;
 	}
 	return false;

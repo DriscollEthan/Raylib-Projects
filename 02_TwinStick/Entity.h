@@ -90,7 +90,7 @@ public:
 		* Takes in Another Entity to Check Collision With
 		*Returns bool Is Colliding
 		*/
-	virtual bool CollisionCheck(Entity& _otherObject);
+	virtual bool CollisionCheck(Entity* _otherObject);
 
 	bool GetIsAlive();
 
@@ -111,7 +111,6 @@ public:
 	void SetTexturePosition(size_t _newPosition);
 
 	void SetIsAlive(bool _isAlive);
-
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 	/* ENTITY SPECIFC FUNCTIONS */

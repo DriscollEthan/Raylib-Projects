@@ -53,7 +53,7 @@ public:
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
 
-	virtual bool CollisionCheck(Entity& _otherObject) override;
+	virtual bool CollisionCheck(Entity* _otherObject) override;
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

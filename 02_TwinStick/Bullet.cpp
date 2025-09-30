@@ -109,7 +109,7 @@ void Bullet::Draw()
 	}
 }
 
-bool Bullet::CollisionCheck(Entity& _otherObject)
+bool Bullet::CollisionCheck(Entity* _otherObject)
 {
 	switch (CurrentState)
 	{
@@ -117,7 +117,11 @@ bool Bullet::CollisionCheck(Entity& _otherObject)
 		return false;
 		break;
 	case Active:
-		return CheckCollisionCircles(E_Position, E_Radius, _otherObject.GetPosition(), _otherObject.GetRadius());
+		if (_otherObject == nullptr)
+		{
+			std::cout << "NULLPTR DETECTED \n";
+		}
+		return CheckCollisionCircles(E_Position, E_Radius, _otherObject->GetPosition(), _otherObject->GetRadius());
 		break;
 	case Inactive:
 		return false;

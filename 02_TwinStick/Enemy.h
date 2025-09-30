@@ -85,6 +85,8 @@ public:
 
   virtual void Draw() override;
 
+	virtual void GotHit() override;
+
 	void SetPlayerRef(Entity* _playerRef);
 
 	void SetTimer(Timer _newTimer);
@@ -92,6 +94,8 @@ public:
 	void SetRandomLocation();
 
 	void MoveToRandomLocation();
+
+	Gunner* GetTurretRef();
 
 protected:
 	Gunner* Turret;

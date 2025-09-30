@@ -24,10 +24,10 @@ public:
 	//DESTRUCTOR
 	virtual ~Gunner();
 
+	class Bullet* BulletsInPool;
 protected:
 	/* VARIABLES */
 	//Array of Bullets || USE OBJECT POOLING WITH HEAP MEMORY
-	class Bullet* BulletsInPool;
 
 	int MAX_BULLETS_IN_POOL; //MAX_BULLETS_IN_POOL Should Equal: (Limetime * 10) + 10  ||  For adding a minor buffer from obtainably max by about 5 and not having too many objects spawned, based on speed clicking.  
 
@@ -50,12 +50,12 @@ public:
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
 
-	void BulletCollisionCheck(Entity& _enemy);
+	void BulletCollisionCheck(Entity* _enemy);
 
 	void Shoot(float _speed, float _lifetime);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
-
+	
 	/* Gunner SPECIFIC GET FUNCTIONS */
 
 

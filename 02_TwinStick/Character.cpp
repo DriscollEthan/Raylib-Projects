@@ -91,12 +91,6 @@ void Character::Update()
 	//Call Parent Update
 	Player::Update();
 
-	//Check Collision
-	for (int i = 0; i < EnemyCount; ++i)
-	{
-		Turret->BulletCollisionCheck(EnemyRefs[i]);
-	}
-
 	//Get Movement Input
 	for (int i = 0; i < 8; ++i)
 	{
@@ -156,12 +150,18 @@ void Character::Draw()
 
 void Character::GotHit()
 {
-
+	std::cout << "PlayerHit \n";
+	SetIsAlive(false);
 }
 
-bool Character::BulletHitEnemy(Entity& _enemy)
+bool Character::BulletHitEnemy(Entity* _enemy)
 {
 	return Turret->CollisionCheck(_enemy);
+}
+
+Gunner* Character::GetTurretRef()
+{
+	return Turret;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

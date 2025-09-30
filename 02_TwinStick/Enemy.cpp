@@ -61,37 +61,49 @@ void Enemy::BeginPlay()
 
 void Enemy::Update()
 {
-  Entity::Update();
-
-  if (PlayerRef)
+  if (bIsAlive)
   {
-    Turret->Rotate(PlayerRef->GetPosition().AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f);
+    Entity::Update();
+
+    if (PlayerRef)
+    {
+      Turret->Rotate(PlayerRef->GetPosition().AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f);
+    }
+
+
+    ShootingTimer.TimerUpdate();
+
+    if (ShootingTimer.TimerOver())
+    {
+      Turret->Shoot(3.0f, 3.5f);
+      ShootingTimer.ResetTimer();
+    }
+
+
+    //Movement for Enemy using a Random Position On Screen
+    MoveToRandomLocation();
+
+    //Turret Position and Scale
+    Turret->SetPosition(E_Position);
+    Turret->SetScale(E_Scale);
+
+    Turret->Update();
   }
-
-
-  ShootingTimer.TimerUpdate();
-
-  if (ShootingTimer.TimerOver())
-  {
-    Turret->Shoot(3.0f, 3.5f);
-    ShootingTimer.ResetTimer();
-  }
-
-
-  //Movement for Enemy using a Random Position On Screen
-  MoveToRandomLocation();
-
-  //Turret Position and Scale
-  Turret->SetPosition(E_Position);
-  Turret->SetScale(E_Scale);
-
-  Turret->Update();
 }
 
 void Enemy::Draw()
 {
-  Entity::Draw();
-  Turret->Draw();
+  if (bIsAlive)
+  {
+    Entity::Draw();
+    Turret->Draw();
+  }
+}
+
+void Enemy::GotHit()
+{
+  std::cout << "Hit \n";
+  SetIsAlive(false);
 }
 
 void Enemy::SetPlayerRef(Entity* _playerRef)
@@ -120,4 +132,9 @@ void Enemy::MoveToRandomLocation()
   E_MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f) };
 
   Move();
+}
+
+Gunner* Enemy::GetTurretRef()
+{
+  return Turret;
 }
