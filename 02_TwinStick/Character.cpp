@@ -4,44 +4,37 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Character::Character(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
+Character::Character(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed, float _bulletLifetime, float _bulletSpeed) : Player(_localData, _textureLocation, _origin, _hitbox, _speed)
 {
 	Turret = nullptr;
-	EnemyRefs = nullptr;
-	EnemyCount = 0;
+	BulletSpeed = _bulletSpeed;
+	BulletLifetime = _bulletLifetime;
 }
 
 //Copy Constructor
 Character::Character(const Character& _other)
 {
 	Turret = nullptr;
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+	LocalData = _other.LocalData;
 	Origin = _other.Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
-	E_Rotation = _other.E_Rotation;
-	TextureManagerRef = _other.TextureManagerRef;
-	EnemyRefs = _other.EnemyRefs;
-	EnemyCount = _other.EnemyCount;
+	BulletSpeed = _other.BulletSpeed;
+	BulletLifetime = _other.BulletLifetime;
 }
 
 //Copy Assignment
 Character Character::operator=(const Character& _other)
 {
 	Turret = nullptr;
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+	LocalData = _other.LocalData;
 	Origin = _other.Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
-	E_Rotation = _other.E_Rotation;
-	TextureManagerRef = _other.TextureManagerRef;
-	EnemyCount = _other.EnemyCount;
+	BulletSpeed = _other.BulletSpeed;
+	BulletLifetime = _other.BulletLifetime;
 	return *this;
 }
 
@@ -62,7 +55,8 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	Turret = new Gunner(E_Position, 1, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, 2);
+	/* @todo: UPDATE GUNNER NEXT! */
+	Turret = new Gunner(GetWorldPosition(), 1, { 0.5f, 1 }, { (GetWorldScale() / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, 2);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 
 	//Setup Input Keybinds
@@ -132,12 +126,8 @@ void Character::Update()
 	//Update Turret Vars
 	//Look
 	Driscoll::Vector2D mousePosition = GetMousePosition();
-	Turret->SetLocalRotation((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
-
-	//Turret Position and Scale
-	Turret->SetLocalPosition(E_Position);
-	Turret->SetScale(E_Scale);
-
+	Turret->SetLocalRotation((Driscoll::AngleFrom2DDegVec(mousePosition - GetWorldPosition())) + 90.0f);
+	
 	Turret->Update();
 }
 
@@ -154,11 +144,6 @@ void Character::GotHit()
 	SetIsAlive(false);
 }
 
-bool Character::BulletHitEnemy(Entity* _enemy)
-{
-	return Turret->CollisionCheck(_enemy);
-}
-
 Gunner* Character::GetTurretRef()
 {
 	return Turret;
@@ -171,9 +156,3 @@ Gunner* Character::GetTurretRef()
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Character SPECIFIC SET FUNCTIONS */
-
-void Character::SetEnemyRefs(Entity* _enemyRefs, size_t _count)
-{
-	EnemyRefs = _enemyRefs;
-	EnemyCount = _count;
-}

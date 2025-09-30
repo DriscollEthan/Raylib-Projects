@@ -47,11 +47,10 @@ public:
 	/**
 		* DEFAULT CONSTRUCTOR:
 		* Parameters:
-		* Position as a Driscoll::Vector2D	| Default: 0,0
-		* Texture as an Image								| Default: Default Constructor
-		* Radius as a Float									| Default: 0.0
-		* Rotation as a Float								| Default: 0.0
-		* Speed as a flaot									| Default: 1.0
+		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
+		* Texture as an Image									| Default: Default Constructor
+		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
+		* Speed as a float										| Default: 1.0
 		*/
 	Player (LocalData2D _localData = {}, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f);
 

@@ -9,13 +9,14 @@ public:
 	/**
 		* DEFAULT CONSTRUCTOR:
 		* Parameters:
-		* Position as a Driscoll::Vector2D	| Default: 0,0
-		* Texture as an Image								| Default: Default Constructor
-		* Radius as a Float									| Default: 0.0
-		* Rotation as a Float								| Default: 0.0
-		* Speed as a Float									| Default: 1.0
+		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
+		* Texture as an Image									| Default: Default Constructor
+		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
+		* Speed as a float										| Default: 1.0
+		* BulletSpeed as a float							| Default 0.0
+		* BulletLifetime as a float						| Default 0.0
 		*/
-	Character(Driscoll::Vector2D _position = { 0,0 }, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Character(LocalData2D _localData = {}, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f, float _bulletLifetime = 0.0f, float _bulletSpeed = 0.0f);
 
 	//COPY CONSTRUCTOR
 	Character(const Character& _other);
@@ -31,8 +32,8 @@ protected:
 	//TURRET POINTER
 	Gunner* Turret;
 
-	float BulletSpeed = 5.0f;
-	float BulletLifetime = 5.0f;
+	float BulletSpeed;
+	float BulletLifetime;
 
 	//Input Arrays:
 		//Movement: (WASD), (ARROW KEYS)
@@ -40,10 +41,6 @@ protected:
 
 		//Shoot: (Left Click) (Space Bar)
 		FInput ShootInput[2];
-
-	//Enemy Refs
-		Entity* EnemyRefs;
-		size_t EnemyCount;
 
 public:
 	/* FUNCTIONS */
@@ -60,19 +57,14 @@ public:
 
 	virtual void GotHit() override;
 
-	bool BulletHitEnemy(Entity* _enemy);
-
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC GET FUNCTIONS */
 	Gunner* GetTurretRef();
 
-
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC SET FUNCTIONS */
-
-	void SetEnemyRefs(Entity* _enemyRefs, size_t _count);
 
 };
 

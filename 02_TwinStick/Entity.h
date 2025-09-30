@@ -95,9 +95,8 @@ public:
 		* Parameters:
 		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
 		* Texture as an Image									| Default: Default Constructor
-		* Radius as a Float										| Default: 0.0
-		* Rotation as a Float									| Default: 0.0
-		* Speed as a flaot										| Default: 1.0
+		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
+		* Speed as a float										| Default: 1.0
 		*/
 	Entity(LocalData2D _localData = {}, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f);
 
@@ -180,6 +179,24 @@ public:
 	 */
 	Driscoll::Matrix3 GetWorldMatrix();
 
+	/*
+	 *	Get My World Position:
+	 *	Returns a Vector2D of my World Position
+	 */
+	Driscoll::Vector2D GetWorldPosition();
+
+	/*
+	 *	Get My World Matrix:
+	 *	Returns a Float of my World Rotation
+	 */
+	float GetWorldRotation();
+
+	/*
+	 *	Get My World Matrix:
+	 *	Returns a Vector2D of my World Scale
+	 */
+	Driscoll::Vector2D GetWorldScale();
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* ENTITY SPECIFIC SET FUNCTION */
@@ -206,6 +223,8 @@ public:
 	//Other
 		//SetIsAlive
 		void SetIsAlive(bool _isAlive);
+		//Set Parent
+		void SetParent(Entity* _newParent);
 
 };
 

@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "DriscollMathUtils.h"
+
 namespace Driscoll
 {
 	/* Maximum tolerance for comparing floats
@@ -43,6 +45,16 @@ namespace Driscoll
 	inline float AngleFrom2DDeg(float x, float y)
 	{
 		return atan2(y, x) * Rad2Deg;
+	}
+
+	inline float AngleFrom2DVec(Vector2D vec)
+	{
+		AngleFrom2D(vec.x, vec.y);
+	}
+
+	inline float AngleFrom2DDegVec(Vector2D vec)
+	{
+		AngleFrom2DDeg(vec.x, vec.y);
 	}
 
 	template<typename T, typename A>

@@ -66,22 +66,11 @@ void Entity::Draw()
 	if (bIsAlive)
 	{
 		Object::Draw();
-		//Get World Data from World Matrix
-			// World Matrix:
-			Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
-		//Get Position, Rotation, and Scale From World Matrix
-			//World Position
-			Driscoll::Vector2D WorldPosition = { WorldMatrix.m7, WorldMatrix.m8 };
-			//World Rotation
-			float WorldRotation = Driscoll::AngleFrom2DDeg(WorldMatrix.m1, WorldMatrix.m2);
-			//World Scale
-			Driscoll::Vector2D WorldScale = { WorldMatrix.axis[0].Magnitude(), WorldMatrix.axis[1].Magnitude() };
-
 
 		GetTextureManagerRef()->GetTexture(TextureIndex).Draw(raylib::Rectangle(0, 0, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth(), (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight()),						// SourceRec
-			raylib::Rectangle(WorldPosition.x, WorldPosition.y, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * WorldScale.x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * WorldScale.y),	// DestRec
-			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * Origin.x * WorldScale.x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * Origin.y * WorldScale.y),		// Origin
-			WorldRotation,	// Rotation
+			raylib::Rectangle(GetWorldPosition().x, GetWorldPosition().y, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * GetWorldScale().x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * GetWorldScale().y),	// DestRec
+			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * Origin.x * GetWorldScale().x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * Origin.y * GetWorldScale().y),		// Origin
+			GetWorldRotation(),	// Rotation
 			Driscoll::Color::White() // Tint
 		);
 	}
@@ -131,6 +120,36 @@ Driscoll::Matrix3 Entity::GetWorldMatrix()
 	}
 }
 
+Driscoll::Vector2D Entity::GetWorldPosition()
+{
+	//Get World Data from World Matrix
+		// World Matrix:
+		Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
+
+	//World Position
+	return Driscoll::Vector2D(WorldMatrix.m7, WorldMatrix.m8);
+}
+
+float Entity::GetWorldRotation()
+{
+	//Get World Data from World Matrix
+		// World Matrix:
+	Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
+
+	//World Rotation
+	return Driscoll::AngleFrom2DDeg(WorldMatrix.m1, WorldMatrix.m2);
+}
+
+Driscoll::Vector2D Entity::GetWorldScale()
+{
+	//Get World Data from World Matrix
+		// World Matrix:
+	Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
+
+	//World Scale
+	return Driscoll::Vector2D(WorldMatrix.axis[0].Magnitude(), WorldMatrix.axis[1].Magnitude());
+}
+
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
@@ -163,6 +182,11 @@ void Entity::SetHitboxLocation(Driscoll::Vector2D _newPosition)
 void Entity::SetIsAlive(bool _isAlive)
 {
 	bIsAlive = _isAlive;
+}
+
+void Entity::SetParent(Entity* _newParent)
+{
+	Parent = _newParent;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
