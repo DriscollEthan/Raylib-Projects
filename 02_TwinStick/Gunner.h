@@ -9,13 +9,14 @@ public:
 	/**
 		* DEFAULT CONSTRUCTOR:
 		* Parameters:
-		* Position as a Driscoll::Vector2D	| Default: 0,0
-		* Texture as an Image								| Default: Default Constructor
-		* Radius as a Float									| Default: 0.0
-		* Rotation as a Float								| Default: 0.0
-		* Speed as a flaot									| Default: 1.0
+		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
+		* TextureIndex as size_t							| Default: 0
+		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
+		* Speed as a float										| Default: 1.0
+		* MaxBulletsInPool as size_t					| Default 0
+		* BulletTextureIndex as a size_t			|	Default 0
 		*/
-	Gunner(Driscoll::Vector2D _position = { 0,0 }, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f, int _maxBulletsInPool = 0, size_t _bulletTexturePosition = 0);
+	Gunner(LocalData2D _localData = {}, size_t _textureIndex = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f, size_t _maxBulletsInPool = 0, size_t _bulletTextureIndex = 0);
 	
 	Gunner(const Gunner& _other);
 
@@ -24,18 +25,17 @@ public:
 	//DESTRUCTOR
 	virtual ~Gunner();
 
-	class Bullet* BulletsInPool;
 protected:
 	/* VARIABLES */
 	//Array of Bullets || USE OBJECT POOLING WITH HEAP MEMORY
-
-	int MAX_BULLETS_IN_POOL; //MAX_BULLETS_IN_POOL Should Equal: (Limetime * 10) + 10  ||  For adding a minor buffer from obtainably max by about 5 and not having too many objects spawned, based on speed clicking.  
+	class Bullet* BulletsInPool;
+	
+	//MAX_BULLETS_IN_POOL Should Equal: (Limetime * 10) + 10  ||  For adding a minor buffer from obtainably max by about 5 and not having too many objects spawned, based on speed clicking. 
+	size_t MAX_BULLETS_IN_POOL;  
 
 	int WhichBulletToUse;
 
-	Driscoll::Vector2D ScaleMult;
-
-	size_t BulletTexturePosition;
+	size_t BulletTextureIndex;
 
 public:
 	/* FUNCTIONS */
@@ -50,10 +50,6 @@ public:
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
 
-	void BulletCollisionCheck(Entity* _enemy);
-
-	void Shoot(float _speed, float _lifetime);
-
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 	
 	/* Gunner SPECIFIC GET FUNCTIONS */
@@ -63,7 +59,15 @@ public:
 
 	/* Gunner SPECIFIC SET FUNCTIONS */
 
-	virtual void SetScale(Driscoll::Vector2D _newScale) override;
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+
+	/* Gunner SPECIFIC FUNCTIONS */
+
+	//BulletCollisionCheck: Checks every active Bullet against the Collision Object.
+	void BulletCollisionCheck(Entity* _enemy);
+
+	//Shoot: Shoots the next available Bullet
+	void Shoot(float _speed, float _lifetime);
 
 };
 

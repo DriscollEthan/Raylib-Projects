@@ -10,7 +10,7 @@ public:
 		* DEFAULT CONSTRUCTOR:
 		* Parameters:
 		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
-		* Texture as an Image									| Default: Default Constructor
+		* TextureIndex as size_t							| Default: 0
 		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
 		* Speed as a float										| Default: 1.0
 		* BulletSpeed as a float							| Default 0.0

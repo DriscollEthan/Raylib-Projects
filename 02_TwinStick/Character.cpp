@@ -56,8 +56,9 @@ void Character::BeginPlay()
 
 	//Init Vars
 	/* @todo: UPDATE GUNNER NEXT! */
-	Turret = new Gunner(GetWorldPosition(), 1, { 0.5f, 1 }, { (GetWorldScale() / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 60, 2);
+	Turret = new Gunner(LocalData2D(), HitboxData(), 0, 60, 2);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
+	Turret->SetParent(this);
 
 	//Setup Input Keybinds
 	{
@@ -82,60 +83,66 @@ void Character::BeginPlay()
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
 void Character::Update()
 {
-	//Call Parent Update
-	Player::Update();
-
-	//Get Movement Input
-	for (int i = 0; i < 8; ++i)
+	if (bIsAlive)
 	{
-		FInputReturnStruct inputReturn = Input(MovementInput[i]);
-		if (inputReturn.bIsInput)
+		//Call Parent Update
+		Player::Update();
+
+		//Get Movement Input
+		for (int i = 0; i < 8; ++i)
 		{
-			switch (inputReturn.Index)
+			FInputReturnStruct inputReturn = Input(MovementInput[i]);
+			if (inputReturn.bIsInput)
 			{
-			case 0:
-				MovementVector.y -= 1;
-				break;
-			case 1:
-				MovementVector.y += 1;
-				break;
-			case 2:
-				MovementVector.x -= 1;
-				break;
-			case 3:
-				MovementVector.x += 1;
+				switch (inputReturn.Index)
+				{
+				case 0:
+					MovementVector.y -= 1;
+					break;
+				case 1:
+					MovementVector.y += 1;
+					break;
+				case 2:
+					MovementVector.x -= 1;
+					break;
+				case 3:
+					MovementVector.x += 1;
+					break;
+				}
+			}
+		}
+
+		//Get Shoot Input
+		for (int i = 0; i < 2; ++i)
+		{
+			FInputReturnStruct inputReturn = Input(ShootInput[i]);
+			if (inputReturn.bIsInput)
+			{
+				Turret->Shoot(BulletSpeed, BulletLifetime);
 				break;
 			}
 		}
+
+		//Using the newly Updated Movement Vector, call movement.
+		Move();
+
+		//Update Turret Vars
+		//Look
+		Driscoll::Vector2D mousePosition = GetMousePosition();
+		Turret->SetLocalRotation((Driscoll::AngleFrom2DDegVec(mousePosition - GetWorldPosition())) + 90.0f);
+
+		Turret->Update();
 	}
-
-	//Get Shoot Input
-	for (int i = 0; i < 2; ++i)
-	{
-		FInputReturnStruct inputReturn = Input(ShootInput[i]);
-		if (inputReturn.bIsInput)
-		{
-			Turret->Shoot(BulletSpeed, BulletLifetime);
-			break;
-		}
-	}
-
-	//Using the newly Updated Movement Vector, call movement.
-	Move();
-
-	//Update Turret Vars
-	//Look
-	Driscoll::Vector2D mousePosition = GetMousePosition();
-	Turret->SetLocalRotation((Driscoll::AngleFrom2DDegVec(mousePosition - GetWorldPosition())) + 90.0f);
-	
-	Turret->Update();
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Character::Draw()
 {
-	Player::Draw();
-	Turret->Draw();
+	if (bIsAlive)
+	{
+		Player::Draw();
+		Turret->Draw();
+	}
 }
 
 void Character::GotHit()
