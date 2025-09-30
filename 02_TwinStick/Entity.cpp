@@ -9,7 +9,7 @@ Entity::Entity(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector
 {
 	LocalData = _localData;
 	Origin = _origin;
-	Hitbox = _other.Hitbox;
+	Hitbox = _hitbox;
 	MovementVector = Driscoll::Vector2D();
 	Speed = _speed;
 }

@@ -3,7 +3,7 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Player::Player(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
+Player::Player(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed) : Entity(_localData, _textureLocation, _origin, _hitbox, _speed)
 {
 
 }
@@ -11,29 +11,21 @@ Player::Player(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::
 //Copy Constructor
 Player::Player(const Player& _other) 
 {
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+	LocalData = _other.LocalData;
 	Origin = _other.Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
-	E_Rotation = _other.E_Rotation;
-	TextureManagerRef = _other.TextureManagerRef;
 }
 
 //Copy Assignment
 Player Player::operator=(const Player& _other)
 {
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+	LocalData = _other.LocalData;
 	Origin = _other.Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
-	E_Rotation = _other.E_Rotation;
-	TextureManagerRef = _other.TextureManagerRef;
 	return *this;
 }
 
@@ -79,6 +71,11 @@ void Player::Update()
 void Player::Draw()
 {
 	Entity::Draw();
+}
+
+void Player::GotHit()
+{
+	Entity::GotHit();
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

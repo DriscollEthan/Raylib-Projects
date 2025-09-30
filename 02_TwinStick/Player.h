@@ -53,7 +53,7 @@ public:
 		* Rotation as a Float								| Default: 0.0
 		* Speed as a flaot									| Default: 1.0
 		*/
-	Player(Driscoll::Vector2D _position = { 0,0 }, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Player (LocalData2D _localData = {}, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f);
 
 	Player(const Player& _other);
 
@@ -79,6 +79,9 @@ public:
 
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
+
+	//Collided: Called when Collision is detected.
+	virtual void GotHit() override;
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
