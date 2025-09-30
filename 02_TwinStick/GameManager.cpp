@@ -47,6 +47,8 @@ void GameManager::BeginPlay()
     EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);
     EnemyRefs[i].BeginPlay();
   }
+
+  PlayerRef->SetEnemyRefs(EnemyRefs, 10);
 }
 
 void GameManager::Update()
