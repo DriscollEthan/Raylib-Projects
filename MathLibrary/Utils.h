@@ -16,6 +16,19 @@ namespace Driscoll
 	 */
 	static_assert((3.e-4f) == MAX_FLOAT_DELTA);
 
+	/* Constant for Pi
+ *
+ * @details Prefer C++ STDLIB (see https://en.cppreference.com/w/cpp/numeric/constants)
+ */
+	[[deprecated]]
+	constexpr float Pi = 3.14159265358979323846264338327950288f;
+
+	// Deg2Rad
+	constexpr float Rad2Deg = Pi / 180.0f;
+
+	// Rad2Deg
+	constexpr float Deg2Rad = 1.0f / Rad2Deg;
+
 	template<typename T>
 	inline T ApproximatelyEquals(const T& a, const T& b, const T& Threshold = MAX_FLOAT_DELTA)
 	{
@@ -27,25 +40,17 @@ namespace Driscoll
 		return atan2(y, x);
 	}
 
+	inline float AngleFrom2DDeg(float x, float y)
+	{
+		return atan2(y, x) * Rad2Deg;
+	}
+
 	template<typename T, typename A>
 	T Lerp(const T& Start, const T& End, const A& Alpha)
 	{
 		T Dist = End - Start;
 		return Start + Dist * Alpha;
 	}
-
-	/* Constant for Pi
-	 *
-	 * @details Prefer C++ STDLIB (see https://en.cppreference.com/w/cpp/numeric/constants)
-	 */
-	[[deprecated]]
-	constexpr float Pi = 3.14159265358979323846264338327950288f;
-
-	// Deg2Rad
-	constexpr float Rad2Deg = Pi / 180.0f;
-
-	// Rad2Deg
-	constexpr float Deg2Rad = 1.0f / Rad2Deg;
 
 	template<typename T>
 	inline T CosDeg(T _x)

@@ -5,6 +5,87 @@
 #include "GlobalVariableObject.h"
 #include "TextureManager.h"
 
+//STRUCT OF LOCAL DATA
+struct LocalData2D
+{
+	Driscoll::Vector2D LocalPosition;
+	float LocalRotation;
+	Driscoll::Vector2D LocalScale;
+
+	LocalData2D()
+	{
+		LocalPosition = { 0, 0 };
+		LocalRotation = 0;
+		LocalScale = { 1, 1 };
+	}
+
+	LocalData2D(Driscoll::Vector2D _position, float _rotation, Driscoll::Vector2D _scale)
+	{
+		LocalPosition = _position;
+		LocalRotation = _rotation;
+		LocalScale = _scale;
+	}
+
+	LocalData2D(const LocalData2D& _other)
+	{
+		LocalPosition = _other.LocalPosition;
+		LocalRotation = _other.LocalRotation;
+		LocalScale = _other.LocalScale;
+	}
+
+	LocalData2D operator =(const LocalData2D& _other)
+	{
+		LocalPosition = _other.LocalPosition;
+		LocalRotation = _other.LocalRotation;
+		LocalScale = _other.LocalScale;
+		return *this;
+	}
+};
+
+struct HitboxData
+{
+	Driscoll::Vector2D Position;
+	float HitboxRadius;
+
+	HitboxData()
+	{
+		Position = {};
+		HitboxRadius = 0.f;
+	}
+
+	HitboxData(const HitboxData& _other)
+	{
+		Position = _other.Position;
+		HitboxRadius = _other.HitboxRadius;
+	}
+
+	HitboxData operator =(const HitboxData& _other)
+	{
+		Position = _other.Position;
+		HitboxRadius = _other.HitboxRadius;
+		return *this;
+	}
+
+	void SetHitbox(Driscoll::Vector2D _position, float _radius)
+	{
+		Position = _position;
+		HitboxRadius = _radius;
+	}
+
+#ifdef RAYLIB_H
+	// implicit Collision Checks with Raylib
+	bool CheckCollision(HitboxData& _other)
+	{
+		return CheckCollisionCircles(Position, HitboxRadius, _other.Position, _other.HitboxRadius);
+	}
+
+	bool CheckCollision(HitboxData& _lhs, HitboxData& _rhs)
+	{
+		return _lhs.CheckCollision(_rhs);
+	}
+#endif
+};
+
 class Entity : public Object
 {
 public:
@@ -18,7 +99,7 @@ public:
 		* Rotation as a Float									| Default: 0.0
 		* Speed as a flaot										| Default: 1.0
 		*/
-	Entity(Driscoll::LocalData2D _localData = {}, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, float _radius = 0.0f, float _speed = 1.0f);
+	Entity(LocalData2D _localData = {}, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Entity(const Entity& _other);
@@ -31,18 +112,24 @@ public:
 	
 protected:
 	/* VARIABLES */
-	Driscoll::LocalData2D LocalData;
 
-	Driscoll::Vector2D E_MovementVector;
+	//Draw Data
+		LocalData2D LocalData;
+		//Origin Offset (0-1)
+		Driscoll::Vector2D Origin;
 
-	float Radius;
+	//Collision Data
+		HitboxData Hitbox;
 
-	float E_Speed;
+	//Movement Data
+		Driscoll::Vector2D MovementVector;
+		float Speed;
 
-	bool bIsAlive = true;
+	//Parent Data
+		Entity* Parent;
 
-	//Origin Offset (0-1)
-	Driscoll::Vector2D E_Origin;
+	//Other Data
+		bool bIsAlive = true;
 
 public:
 	/* FUNCTIONS */
@@ -63,43 +150,62 @@ public:
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* ENTITY SPECIFIC GET FUNCTIONS */
-	/**
-	 * Get Position
-	 *Returns Current Position in a Vector2D
-	 */
-	Driscoll::Vector2D GetPosition();
 
 	 /**
 	 * Get Radius:
 	 *Returns Current Radius in a float
 	 */
-	float GetRadius();
+	HitboxData GetHitbox();
 
 	/**
 		* Collision Check
 		* Takes in Another Entity to Check Collision With
 		*Returns bool Is Colliding
 		*/
-	virtual bool CollisionCheck(Entity* _otherObject);
+	virtual bool CollisionCheck(HitboxData& _otherHitbox);
 
+	//Is this Entity 'Alive'
 	bool GetIsAlive();
+
+	/*
+	 *	Get My Local Matrix:
+	 *	Returns Local Matrix in a Matrix3
+	 *	Multiplies My Translation Matrix, by My RotationZ Matrix, by my Scale Matrix.
+	 */
+	Driscoll::Matrix3 GetLocalMatrix();
+
+	/*
+	 *	Get My World Matrix:
+	 *	Returns My Local Matrix * My Parent Matrix in a Matrix3 || My Local Matrix3 if I don't have a Parent
+	 */
+	Driscoll::Matrix3 GetWorldMatrix();
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* ENTITY SPECIFIC SET FUNCTION */
-	//Set Position
-	virtual void SetPosition(Driscoll::Vector2D _newPosition);
 
-	//Set Scale
-	virtual void SetScale(Driscoll::Vector2D _newScale);
+	//Draw Data
+		//Set Local Position
+		void SetLocalPosition(Driscoll::Vector2D _newPosition);
+		//Set Local Scale
+		void SetLocalScale(Driscoll::Vector2D _newScale);
+		//Set Local Rotation
+		void SetLocalRotation(float _newRotation);
 
-	//Set Radius
-	void SetRadius(float _newRadius);
 
-	void SetIsAlive(bool _isAlive);
+	//Set Hitbox
+		//Set Hitbox Radius
+		void SetHitboxRadius(float _newRadius);
+		//Set Hitbox Location
+		void SetHitboxLocation(Driscoll::Vector2D _newPosition);
 
-	void Move();
+	//Movement
+		//Move
+		void Move();
 
-	void Rotate(float _newRotation);
+	//Other
+		//SetIsAlive
+		void SetIsAlive(bool _isAlive);
+
 };
 

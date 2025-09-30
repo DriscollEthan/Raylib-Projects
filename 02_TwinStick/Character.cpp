@@ -17,11 +17,11 @@ Character::Character(const Character& _other)
 	Turret = nullptr;
 	E_Position = _other.E_Position;
 	TextureIndex = _other.TextureIndex;
-	E_Origin = _other.E_Origin;
+	Origin = _other.Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	E_Rotation = _other.E_Rotation;
 	TextureManagerRef = _other.TextureManagerRef;
 	EnemyRefs = _other.EnemyRefs;
@@ -34,11 +34,11 @@ Character Character::operator=(const Character& _other)
 	Turret = nullptr;
 	E_Position = _other.E_Position;
 	TextureIndex = _other.TextureIndex;
-	E_Origin = _other.E_Origin;
+	Origin = _other.Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	E_Rotation = _other.E_Rotation;
 	TextureManagerRef = _other.TextureManagerRef;
 	EnemyCount = _other.EnemyCount;
@@ -100,16 +100,16 @@ void Character::Update()
 			switch (inputReturn.Index)
 			{
 			case 0:
-				E_MovementVector.y -= 1;
+				MovementVector.y -= 1;
 				break;
 			case 1:
-				E_MovementVector.y += 1;
+				MovementVector.y += 1;
 				break;
 			case 2:
-				E_MovementVector.x -= 1;
+				MovementVector.x -= 1;
 				break;
 			case 3:
-				E_MovementVector.x += 1;
+				MovementVector.x += 1;
 				break;
 			}
 		}
@@ -132,10 +132,10 @@ void Character::Update()
 	//Update Turret Vars
 	//Look
 	Driscoll::Vector2D mousePosition = GetMousePosition();
-	Turret->Rotate((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
+	Turret->SetLocalRotation((atan2f((mousePosition.y - E_Position.y), (mousePosition.x - E_Position.x)) * Driscoll::Deg2Rad) + 90.0f);
 
 	//Turret Position and Scale
-	Turret->SetPosition(E_Position);
+	Turret->SetLocalPosition(E_Position);
 	Turret->SetScale(E_Scale);
 
 	Turret->Update();

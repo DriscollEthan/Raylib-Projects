@@ -12,11 +12,11 @@ Enemy::Enemy(const Enemy& _other)
 {
   E_Position = _other.E_Position;
   TextureIndex = _other.TextureIndex;
-  E_Origin = _other.E_Origin;
+  Origin = _other.Origin;
   E_Scale = _other.E_Scale;
   E_Radius = _other.E_Radius;
-  E_MovementVector = _other.E_MovementVector;
-  E_Speed = _other.E_Speed;
+  MovementVector = _other.MovementVector;
+  Speed = _other.Speed;
   E_Rotation = _other.E_Rotation;
   Turret = nullptr;
   PlayerRef = nullptr;
@@ -28,11 +28,11 @@ Enemy& Enemy::operator=(const Enemy& _other)
 {
   E_Position = _other.E_Position;
   TextureIndex = _other.TextureIndex;
-  E_Origin = _other.E_Origin;
+  Origin = _other.Origin;
   E_Scale = _other.E_Scale;
   E_Radius = _other.E_Radius;
-  E_MovementVector = _other.E_MovementVector;
-  E_Speed = _other.E_Speed;
+  MovementVector = _other.MovementVector;
+  Speed = _other.Speed;
   E_Rotation = _other.E_Rotation;
   Turret = nullptr;
   PlayerRef = nullptr;
@@ -67,7 +67,7 @@ void Enemy::Update()
 
     if (PlayerRef)
     {
-      Turret->Rotate(PlayerRef->GetPosition().AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f);
+      Turret->SetLocalRotation(PlayerRef->GetPosition().AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f);
     }
 
 
@@ -84,7 +84,7 @@ void Enemy::Update()
     MoveToRandomLocation();
 
     //Turret Position and Scale
-    Turret->SetPosition(E_Position);
+    Turret->SetLocalPosition(E_Position);
     Turret->SetScale(E_Scale);
 
     Turret->Update();
@@ -129,7 +129,7 @@ void Enemy::MoveToRandomLocation()
     SetRandomLocation();
   }
 
-  E_MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f) };
+  MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f) };
 
   Move();
 }

@@ -22,42 +22,4 @@ namespace Driscoll
 #define ORANGE Color::Orange();
 #define PINK Color::Pink();
 #define YELLOW Color::Yellow();
-
-
-  //STRUCT OF LOCAL DATA
-  struct LocalData2D
-  {
-    Vector2D LocalPosition;
-    float LocalRotation;
-    Vector2D LocalScale;
-
-    LocalData2D()
-    {
-      LocalPosition = { 0, 0 };
-      LocalRotation = 0;
-      LocalScale = { 1, 1 };
-    }
-
-    LocalData2D(Vector2D _position, float _rotation, Vector2D _scale)
-    {
-      LocalPosition = _position;
-      LocalRotation = _rotation;
-      LocalScale = _scale;
-    }
-
-    LocalData2D(const LocalData2D& _other)
-    {
-      LocalPosition = _other.LocalPosition;
-      LocalRotation = _other.LocalRotation;
-      LocalScale = _other.LocalScale;
-    }
-
-    LocalData2D operator =(const LocalData2D& _other)
-    {
-      LocalPosition = _other.LocalPosition;
-      LocalRotation = _other.LocalRotation;
-      LocalScale = _other.LocalScale;
-      return *this;
-    }
-  };
 }

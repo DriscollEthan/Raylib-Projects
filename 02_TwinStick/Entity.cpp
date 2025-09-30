@@ -5,32 +5,33 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Entity::Entity(Driscoll::LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, float _radius, float _speed)
+Entity::Entity(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed)
 {
 	LocalData = _localData;
-	E_Origin = _origin;
-	Radius = _radius;
-	E_MovementVector = Driscoll::Vector2D();
-	E_Speed = _speed;
+	Origin = _origin;
+	Hitbox = _other.Hitbox;
+	MovementVector = Driscoll::Vector2D();
+	Speed = _speed;
 }
 
 //Copy Constructor
 Entity::Entity(const Entity& _other)
 {
-
-	E_Origin = _other.E_Origin;
-	Radius = _other.Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	LocalData = _other.LocalData;
+	Origin = _other.Origin;
+	Hitbox = _other.Hitbox;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 }
 
 //Copy Assignment
 Entity Entity::operator=(const Entity& _other)
 {
-	E_Origin = _other.E_Origin;
-	Radius = _other.Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	LocalData = _other.LocalData;
+	Origin = _other.Origin;
+	Hitbox = _other.Hitbox;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	return *this;
 }
 
@@ -55,6 +56,8 @@ void Entity::BeginPlay()
 void Entity::Update()
 {
 	Object::Update();
+
+	Hitbox.Position = { GetWorldMatrix().m7, GetWorldMatrix().m8 };
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
@@ -63,16 +66,22 @@ void Entity::Draw()
 	if (bIsAlive)
 	{
 		Object::Draw();
-		//	Driscoll::Vector2D offset = {};
-		//	offset.x -= E_Texture->GetWidth() / 2.0f;
-		//	offset.y -= E_Texture->GetHeight() / 2.0f;
-		//	E_Texture->Draw(E_Position - offset, E_Rotation);
-		//
-		//	std::cout << E_Position - offset << std::endl;
+		//Get World Data from World Matrix
+			// World Matrix:
+			Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
+		//Get Position, Rotation, and Scale From World Matrix
+			//World Position
+			Driscoll::Vector2D WorldPosition = { WorldMatrix.m7, WorldMatrix.m8 };
+			//World Rotation
+			float WorldRotation = Driscoll::AngleFrom2DDeg(WorldMatrix.m1, WorldMatrix.m2);
+			//World Scale
+			Driscoll::Vector2D WorldScale = { WorldMatrix.axis[0].Magnitude(), WorldMatrix.axis[1].Magnitude() };
+
+
 		GetTextureManagerRef()->GetTexture(TextureIndex).Draw(raylib::Rectangle(0, 0, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth(), (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight()),						// SourceRec
-			raylib::Rectangle(E_Position.x, E_Position.y, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * E_Scale.y),	// DestRec
-			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * E_Origin.x * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * E_Origin.y * E_Scale.y),		// Origin
-			E_Rotation,	// Rotation
+			raylib::Rectangle(WorldPosition.x, WorldPosition.y, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * WorldScale.x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * WorldScale.y),	// DestRec
+			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * Origin.x * WorldScale.x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * Origin.y * WorldScale.y),		// Origin
+			WorldRotation,	// Rotation
 			Driscoll::Color::White() // Tint
 		);
 	}
@@ -86,32 +95,40 @@ void Entity::GotHit()
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* ENTITY SPECIFIC GET FUNCTIONS */	
-//Get Position
-Driscoll::Vector2D Entity::GetPosition()
-{
-	return E_Position;
-}
 
 //Get Radius
-float Entity::GetRadius()
+HitboxData Entity::GetHitbox()
 {
-	return E_Radius;
+	return Hitbox;
 }
 
-bool Entity::CollisionCheck(Entity* _otherObject)
+bool Entity::CollisionCheck(HitboxData& _otherHitbox)
 {
-	if (CheckCollisionCircles(E_Position, E_Radius, _otherObject->E_Position, _otherObject->E_Radius))
-	{
-		GotHit();
-		_otherObject->GotHit();
-		return true;
-	}
-	return false;
+	return Hitbox.CheckCollision(_otherHitbox);
 }
 
 bool Entity::GetIsAlive()
 {
 	return bIsAlive;
+}
+
+Driscoll::Matrix3 Entity::GetLocalMatrix()
+{
+	return Driscoll::Matrix3().MakeTranslation(LocalData.LocalPosition)
+		* Driscoll::Matrix3().MakeRotateZ(LocalData.LocalRotation)
+		* Driscoll::Matrix3().MakeScale(LocalData.LocalPosition);
+}
+
+Driscoll::Matrix3 Entity::GetWorldMatrix()
+{
+	if (Parent == nullptr)
+	{
+		return GetLocalMatrix();
+	}
+	else
+	{
+		return Parent->GetWorldMatrix() * GetLocalMatrix();
+	}
 }
 
 
@@ -121,21 +138,26 @@ bool Entity::GetIsAlive()
 
 
 //Set Position
-void Entity::SetPosition(Driscoll::Vector2D _newPosition)
+void Entity::SetLocalPosition(Driscoll::Vector2D _newPosition)
 {
-	E_Position = _newPosition;
+	LocalData.LocalPosition = _newPosition;
 }
 
 //Set Scale
-void Entity::SetScale(Driscoll::Vector2D _newScale)
+void Entity::SetLocalScale(Driscoll::Vector2D _newScale)
 {
-	E_Scale = _newScale;
+	LocalData.LocalScale = _newScale;
 }
 
 //Set Radius
-void Entity::SetRadius(float _newRadius)
+void Entity::SetHitboxRadius(float _newRadius)
 {
-	E_Radius = _newRadius;
+	LocalData.LocalRotation = _newRadius;
+}
+
+void Entity::SetHitboxLocation(Driscoll::Vector2D _newPosition)
+{
+	Hitbox.Position = _newPosition;
 }
 
 void Entity::SetIsAlive(bool _isAlive)
@@ -149,12 +171,12 @@ void Entity::SetIsAlive(bool _isAlive)
 //Move Entity
 void Entity::Move()
 {
-	E_Position += E_MovementVector.SafeNormalised() * (E_Speed * GetFrameTime() * 100.0f);
-	E_Position = Driscoll::Vector2D::WrapVector2D(E_Position, Driscoll::Vector2D(0, 0), GVO.GetScreenSize());
+	LocalData.LocalPosition += MovementVector.SafeNormalised() * (Speed * GetFrameTime() * 100.0f);
+	LocalData.LocalPosition = Driscoll::Vector2D::WrapVector2D(LocalData.LocalPosition, Driscoll::Vector2D(0, 0), GlobalVariables.ScreenSize);
 }
 
 //Rotate Entity
-void Entity::Rotate(float _newRotation)
+void Entity::SetLocalRotation(float _newRotation)
 {
-	E_Rotation = _newRotation;
+	LocalData.LocalRotation = _newRotation;
 }

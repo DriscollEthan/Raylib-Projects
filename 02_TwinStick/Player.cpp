@@ -13,11 +13,11 @@ Player::Player(const Player& _other)
 {
 	E_Position = _other.E_Position;
 	TextureIndex = _other.TextureIndex;
-	E_Origin = _other.E_Origin;
+	Origin = _other.Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	E_Rotation = _other.E_Rotation;
 	TextureManagerRef = _other.TextureManagerRef;
 }
@@ -27,11 +27,11 @@ Player Player::operator=(const Player& _other)
 {
 	E_Position = _other.E_Position;
 	TextureIndex = _other.TextureIndex;
-	E_Origin = _other.E_Origin;
+	Origin = _other.Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	E_Rotation = _other.E_Rotation;
 	TextureManagerRef = _other.TextureManagerRef;
 	return *this;
@@ -67,7 +67,7 @@ void Player::Update()
 	Entity::Update();
 
 	//Rest Vars
-	E_MovementVector.Zero();
+	MovementVector.Zero();
 
 	//Get Movement Input
 

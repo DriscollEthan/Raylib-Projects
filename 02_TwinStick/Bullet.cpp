@@ -15,11 +15,11 @@ Bullet::Bullet(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
 	TextureIndex = _other.TextureIndex;
-	E_Origin = _other.E_Origin;
+	Origin = _other.Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	E_Rotation = _other.E_Rotation;
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
@@ -32,11 +32,11 @@ Bullet Bullet::operator=(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
 	TextureIndex = _other.TextureIndex;
-	E_Origin = _other.E_Origin;
+	Origin = _other.Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
-	E_MovementVector = _other.E_MovementVector;
-	E_Speed = _other.E_Speed;
+	MovementVector = _other.MovementVector;
+	Speed = _other.Speed;
 	E_Rotation = _other.E_Rotation;
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
@@ -63,7 +63,7 @@ void Bullet::BeginPlay()
 
 	//Init Vars
 	SetCurrentState(None);
-	E_Origin = { 0.5f, 0.5f };
+	Origin = { 0.5f, 0.5f };
 	E_Radius = GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth();
 }
 
@@ -160,8 +160,8 @@ void Bullet::SetTimeToLive(float _newTimeToLive)
 void Bullet::SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _movementVector, float _speed, float _timeToLive)
 {
 	E_Position = _spawnPosition;
-	E_MovementVector = _movementVector;
-	E_Speed = _speed;
+	MovementVector = _movementVector;
+	Speed = _speed;
 	SetTimeToLive(_timeToLive);
 	SetCurrentState(Active);
 	TimeAlive = 0.0f;
