@@ -12,13 +12,13 @@ public:
 	/**
 		* DEFAULT CONSTRUCTOR: 
 		* Parameters:
-		* Position as a Driscoll::Vector2D	| Default: 0,0
-		* Texture as an Image								| Default: Default Constructor
-		* Radius as a Float									| Default: 0.0
-		* Rotation as a Float								| Default: 0.0
-		* Speed as a flaot									| Default: 1.0
+		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
+		* Texture as an Image									| Default: Default Constructor
+		* Radius as a Float										| Default: 0.0
+		* Rotation as a Float									| Default: 0.0
+		* Speed as a flaot										| Default: 1.0
 		*/
-	Entity(Driscoll::Vector2D _position = { 0,0 }, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Entity(Driscoll::LocalData2D _localData = {}, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, float _radius = 0.0f, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Entity(const Entity& _other);
@@ -31,15 +31,11 @@ public:
 	
 protected:
 	/* VARIABLES */
-	class GlobalVariables GVO;
-
-	Driscoll::Vector2D E_Position;
-
-	float E_Radius;
+	Driscoll::LocalData2D LocalData;
 
 	Driscoll::Vector2D E_MovementVector;
 
-	float E_Rotation = 0.0f;
+	float Radius;
 
 	float E_Speed;
 
@@ -47,8 +43,6 @@ protected:
 
 	//Origin Offset (0-1)
 	Driscoll::Vector2D E_Origin;
-
-	Driscoll::Vector2D E_Scale;
 
 public:
 	/* FUNCTIONS */

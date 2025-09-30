@@ -5,45 +5,32 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Entity::Entity(Driscoll::Vector2D _position, size_t _textureLocation, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed)
+Entity::Entity(Driscoll::LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, float _radius, float _speed)
 {
-	E_Position = _position;
-	TextureIndex = _textureLocation;
+	LocalData = _localData;
 	E_Origin = _origin;
-	E_Scale = _scale;
-	E_Radius = _radius;
+	Radius = _radius;
 	E_MovementVector = Driscoll::Vector2D();
-	E_Rotation = _rotation;
 	E_Speed = _speed;
-	TextureManagerRef = nullptr;
 }
 
 //Copy Constructor
 Entity::Entity(const Entity& _other)
 {
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+
 	E_Origin = _other.E_Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Radius = _other.Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
-	E_Rotation = _other.E_Rotation;
-	TextureManagerRef = _other.TextureManagerRef;
 }
 
 //Copy Assignment
 Entity Entity::operator=(const Entity& _other)
 {
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Radius = _other.Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
-	E_Rotation = _other.E_Rotation;
-	TextureManagerRef = _other.TextureManagerRef;
 	return *this;
 }
 
@@ -62,8 +49,6 @@ Entity::~Entity()
 void Entity::BeginPlay()
 {
 	Object::BeginPlay();
-
-	GVO = GlobalVariables();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED

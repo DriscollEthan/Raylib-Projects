@@ -24,8 +24,10 @@ GameManager::~GameManager()
 
 void GameManager::BeginPlay()
 {
+  //CREATE TEXTURE MANAGER
   TextureManagerRef = new TextureManager(3);
-  //Set Textures
+
+  //SET TEXTURES
   {
     raylib::Image DefaultImage; DefaultImage.Load("Resources/Default.png");
     TextureManagerRef->SetTexture(DefaultImage, 0);
@@ -35,9 +37,12 @@ void GameManager::BeginPlay()
     TextureManagerRef->SetTexture(TurretImage, 1);
   }
 
+  //CREATE PLAYER
   PlayerRef = new Character(Driscoll::Vector2D(500, 300), 2, Driscoll::Vector2D(0.5f, 0.5f), Driscoll::Vector2D(1, 1), 20.0f, 0.0f, 3.5f);
   PlayerRef->SetTextureManagerRef(TextureManagerRef);
   PlayerRef->BeginPlay();
+
+  //CREATE ENEMIES
   EnemyRefs = new Enemy[10];
   for (int i = 0; i < 10; ++i)
   { 
@@ -47,12 +52,11 @@ void GameManager::BeginPlay()
     EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);
     EnemyRefs[i].BeginPlay();
   }
-
-  PlayerRef->SetEnemyRefs(EnemyRefs, 10);
 }
 
 void GameManager::Update()
 {
+  //CHECK COLLISIONS
   for (int i = 0; i < 10; ++i)
   {
     PlayerRef->GetTurretRef()->BulletCollisionCheck(&EnemyRefs[i]);
@@ -60,7 +64,10 @@ void GameManager::Update()
     EnemyRefs[i].GetTurretRef()->BulletCollisionCheck(PlayerRef);
   }
 
+  //UPDATE PLAYER
   PlayerRef->Update();
+
+  //UPDATE ENEMIES
   for (int i = 0; i < 10; ++i)
   {
     EnemyRefs[i].Update();
@@ -69,7 +76,10 @@ void GameManager::Update()
 
 void GameManager::Draw()
 {
+  //DRAW PLAYER
   PlayerRef->Draw();
+
+  //DRAW ENEMIES
   for (int i = 0; i < 10; ++i)
   {
     EnemyRefs[i].Draw();

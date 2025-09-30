@@ -1,20 +1,22 @@
 #include <iostream>																//DEBUGGING
+
 #include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
-#include "Vector2D.h"															//CUSTOM VECTOR2D
+
+#include "DriscollMathUtils.h"										//CUSTOM Math Library
+
 #include "GlobalVariableObject.h"									//Global Variables Meant for Access in Multiple Classes
-#include "GameManager.h"																//Entity Class
+
+#include "GameManager.h"													//Game Manager Class
 
 int main()
 {
 	//Variable Initialization:
-		//RAYLIB WINDOW
-	GlobalVariables GVO = GlobalVariables();
-		raylib::Window Window(GVO.GetScreenSize().x, GVO.GetScreenSize().y, "Twin Stick Shooter");
+	//RAYLIB WINDOW
+	GlobalVariables GlobalVars = {};
+		raylib::Window Window(GlobalVars.ScreenX, GlobalVars.ScreenY, "Twin Stick Shooter");
 
-		//Player Setup
+	//Player Setup
 		GameManager* GameMode = new GameManager();
-
-		//Others
 
 	/*** *** ***/
 
@@ -48,6 +50,7 @@ int main()
 
 	//END OF MAIN GAME LOOP
 	delete GameMode;
+
 	/*** *** ***/
 
 	//END *** ***

@@ -1,6 +1,5 @@
 #pragma once
 #include "Object.h"
-#include "TextureManager.h"
 #include "Character.h" //For Player -- Player Manages it's Turret and Bullets
 #include "Enemy.h"     //For Enemy -- Enemy Manages it's Turret and Bullets
 
@@ -24,7 +23,5 @@ protected:
   Character* PlayerRef;
 
   Enemy* EnemyRefs;
-
-  TextureManager* TextureManagerRef;
 };
 
