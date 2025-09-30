@@ -1,28 +1,21 @@
 #pragma once
-#include "Object.h"
 #include "Vector2D.h"
 
 
-class GlobalVariableObject : public Object
+class GlobalVariables
 {
 public:
-	GlobalVariableObject() {}
+	GlobalVariables() {}
 
-	GlobalVariableObject(const GlobalVariableObject& _other) {}
+	GlobalVariables(const GlobalVariables& _other) {}
 
-	GlobalVariableObject operator=(const GlobalVariableObject& _other) { return *this; }
-protected:
+	GlobalVariables operator=(const GlobalVariables& _other) { return *this; }
+
 	//GLOABL VARIABLES:
-	const Driscoll::Vector2D GlobalScreenSize = Driscoll::Vector2D(1500.0f, 900.0f);
+	Driscoll::Vector2D ScreenSize = { 1500, 1000 };
 
-	int GlobalX = GlobalScreenSize.x;
-	int GlobalY = GlobalScreenSize.y;
+	float ScreenX = ScreenSize.x;
 
-public:
-	//GET GLOABL VARIABLES
-	const Driscoll::Vector2D GetScreenSize() { return GlobalScreenSize; }
-
-	int GetScreenSizeIntX() { return GlobalX; }
-	int GetScreenSizeIntY() { return GlobalY; }
+	float ScreenY = ScreenSize.y;
 };
 

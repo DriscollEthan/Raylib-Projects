@@ -18,7 +18,7 @@ Gunner::Gunner(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
-	E_TextureLocation = _other.E_TextureLocation;
+	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -28,7 +28,7 @@ Gunner::Gunner(const Gunner& _other)
 	WhichBulletToUse = _other.WhichBulletToUse;
 	ScaleMult = _other.E_Scale;
 	MAX_BULLETS_IN_POOL = _other.MAX_BULLETS_IN_POOL;
-	E_TextureManagerRef = _other.E_TextureManagerRef;
+	TextureManagerRef = _other.TextureManagerRef;
 	BulletTexturePosition = _other.BulletTexturePosition;
 }
 
@@ -37,7 +37,7 @@ Gunner Gunner::operator=(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	E_Position = _other.E_Position;
-	E_TextureLocation = _other.E_TextureLocation;
+	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -124,8 +124,8 @@ void Gunner::Shoot(float _speed, float _lifetime)
 {
 	//Shoot Function
 	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
-	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
-		((GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
+	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
+		((GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;

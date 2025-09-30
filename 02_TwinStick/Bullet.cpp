@@ -14,7 +14,7 @@ Bullet::Bullet(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::
 Bullet::Bullet(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
-	E_TextureLocation = _other.E_TextureLocation;
+	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -24,14 +24,14 @@ Bullet::Bullet(const Bullet& _other)
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
 	TimeToLive = _other.TimeToLive;
-	E_TextureManagerRef = _other.E_TextureManagerRef;
+	TextureManagerRef = _other.TextureManagerRef;
 }
 
 //Copy Assignment
 Bullet Bullet::operator=(const Bullet& _other)
 {
 	E_Position = _other.E_Position;
-	E_TextureLocation = _other.E_TextureLocation;
+	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
@@ -41,7 +41,7 @@ Bullet Bullet::operator=(const Bullet& _other)
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
 	TimeToLive = _other.TimeToLive;
-	E_TextureManagerRef = _other.E_TextureManagerRef;
+	TextureManagerRef = _other.TextureManagerRef;
 	return *this;
 }
 
@@ -64,7 +64,7 @@ void Bullet::BeginPlay()
 	//Init Vars
 	SetCurrentState(None);
 	E_Origin = { 0.5f, 0.5f };
-	E_Radius = GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth();
+	E_Radius = GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED

@@ -31,11 +31,9 @@ public:
 	
 protected:
 	/* VARIABLES */
-	class GlobalVariableObject GVO;
+	class GlobalVariables GVO;
 
 	Driscoll::Vector2D E_Position;
-
-	size_t E_TextureLocation;
 
 	float E_Radius;
 
@@ -51,8 +49,6 @@ protected:
 	Driscoll::Vector2D E_Origin;
 
 	Driscoll::Vector2D E_Scale;
-
-	TextureManager* E_TextureManagerRef;
 
 public:
 	/* FUNCTIONS */
@@ -106,20 +102,10 @@ public:
 	//Set Radius
 	void SetRadius(float _newRadius);
 
-	void SetTextureManagerRef(TextureManager* _newRef);
-
-	void SetTexturePosition(size_t _newPosition);
-
 	void SetIsAlive(bool _isAlive);
 
-	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
-	/* ENTITY SPECIFC FUNCTIONS */
 	void Move();
 
 	void Rotate(float _newRotation);
-
-	Driscoll::Vector2D Wrap(Driscoll::Vector2D _currentVector, Driscoll::Vector2D _min, Driscoll::Vector2D _max);
-	
-	TextureManager* GetTextureManagerRef();
 };
 

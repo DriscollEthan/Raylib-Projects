@@ -11,7 +11,7 @@ Enemy::Enemy(Driscoll::Vector2D _position, size_t _textureLocation, Driscoll::Ve
 Enemy::Enemy(const Enemy& _other)
 {
   E_Position = _other.E_Position;
-  E_TextureLocation = _other.E_TextureLocation;
+  TextureIndex = _other.TextureIndex;
   E_Origin = _other.E_Origin;
   E_Scale = _other.E_Scale;
   E_Radius = _other.E_Radius;
@@ -21,13 +21,13 @@ Enemy::Enemy(const Enemy& _other)
   Turret = nullptr;
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
-  E_TextureManagerRef = _other.E_TextureManagerRef;
+  TextureManagerRef = _other.TextureManagerRef;
 }
 
 Enemy& Enemy::operator=(const Enemy& _other)
 {
   E_Position = _other.E_Position;
-  E_TextureLocation = _other.E_TextureLocation;
+  TextureIndex = _other.TextureIndex;
   E_Origin = _other.E_Origin;
   E_Scale = _other.E_Scale;
   E_Radius = _other.E_Radius;
@@ -37,7 +37,7 @@ Enemy& Enemy::operator=(const Enemy& _other)
   Turret = nullptr;
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
-  E_TextureManagerRef = _other.E_TextureManagerRef;
+  TextureManagerRef = _other.TextureManagerRef;
   return *this;
 }
 

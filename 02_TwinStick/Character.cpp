@@ -16,14 +16,14 @@ Character::Character(const Character& _other)
 {
 	Turret = nullptr;
 	E_Position = _other.E_Position;
-	E_TextureLocation = _other.E_TextureLocation;
+	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
-	E_TextureManagerRef = _other.E_TextureManagerRef;
+	TextureManagerRef = _other.TextureManagerRef;
 	EnemyRefs = _other.EnemyRefs;
 	EnemyCount = _other.EnemyCount;
 }
@@ -33,14 +33,14 @@ Character Character::operator=(const Character& _other)
 {
 	Turret = nullptr;
 	E_Position = _other.E_Position;
-	E_TextureLocation = _other.E_TextureLocation;
+	TextureIndex = _other.TextureIndex;
 	E_Origin = _other.E_Origin;
 	E_Scale = _other.E_Scale;
 	E_Radius = _other.E_Radius;
 	E_MovementVector = _other.E_MovementVector;
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
-	E_TextureManagerRef = _other.E_TextureManagerRef;
+	TextureManagerRef = _other.TextureManagerRef;
 	EnemyCount = _other.EnemyCount;
 	return *this;
 }

@@ -8,7 +8,7 @@ int main()
 {
 	//Variable Initialization:
 		//RAYLIB WINDOW
-	GlobalVariableObject GVO = GlobalVariableObject();
+	GlobalVariables GVO = GlobalVariables();
 		raylib::Window Window(GVO.GetScreenSize().x, GVO.GetScreenSize().y, "Twin Stick Shooter");
 
 		//Player Setup

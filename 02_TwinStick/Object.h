@@ -1,6 +1,9 @@
 #pragma once
 #include "../raylib-cpp/include/raylib-cpp.hpp"		//RAYLIB CPP
-#include "Utils.h"
+#include "DriscollMathUtils.h"
+
+#include "TextureManager.h"
+#include "GlobalVariableObject.h"
 
 class Object
 {
@@ -20,6 +23,11 @@ public:
 
 protected:
 	/* VARIABLES */
+	TextureManager* TextureManagerRef;
+
+	size_t TextureIndex;
+
+	GlobalVariables GlobalVariables;
 
 public:
 	/* VIRTUAL FUNCTIONS */
@@ -31,5 +39,17 @@ public:
 
 	//Called Every Tick on the Draw Section.
 	virtual void Draw();
+
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+
+	/* OBJECT SPECIFIC SET FUNCTION */
+	void SetTextureManagerRef(TextureManager* _newRef);
+
+	void SetTextureIndex(size_t _newIndex);
+
+	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
+	
+	/* OBJECT SPECIFC FUNCTIONS */
+	TextureManager* GetTextureManagerRef();
 };
 
