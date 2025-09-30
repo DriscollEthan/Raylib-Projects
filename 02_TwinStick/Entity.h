@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Object.h"
-#include "Vector2D.h"
+#include "DriscollMathUtils.h"
 #include "GlobalVariableObject.h"
 #include "TextureManager.h"
 
@@ -45,6 +45,8 @@ protected:
 
 	float E_Speed;
 
+	bool bIsAlive = true;
+
 	//Origin Offset (0-1)
 	Driscoll::Vector2D E_Origin;
 
@@ -66,6 +68,7 @@ public:
 	virtual void Draw() override;
 
 	//Collided: Called when Collision is detected.
+	virtual void GotHit();
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
@@ -89,6 +92,8 @@ public:
 		*/
 	virtual bool CollisionCheck(Entity& _otherObject);
 
+	bool GetIsAlive();
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* ENTITY SPECIFIC SET FUNCTION */
@@ -104,6 +109,8 @@ public:
 	void SetTextureManagerRef(TextureManager* _newRef);
 
 	void SetTexturePosition(size_t _newPosition);
+
+	void SetIsAlive(bool _isAlive);
 
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/

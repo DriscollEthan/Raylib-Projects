@@ -85,8 +85,12 @@ void Entity::Draw()
 			raylib::Rectangle(E_Position.x, E_Position.y, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * E_Scale.y),	// DestRec
 			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetWidth() * E_Origin.x * E_Scale.x, (float)GetTextureManagerRef()->GetTexture(E_TextureLocation).GetHeight() * E_Origin.y * E_Scale.y),		// Origin
 			E_Rotation,	// Rotation
-			raylib::Color::White() // Tint
+			Driscoll::Color::White() // Tint
 		);
+}
+
+void Entity::GotHit()
+{
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -106,7 +110,18 @@ float Entity::GetRadius()
 
 bool Entity::CollisionCheck(Entity& _otherObject)
 {
-	return CheckCollisionCircles(E_Position, E_Radius, _otherObject.E_Position, _otherObject.E_Radius);
+	if (CheckCollisionCircles(E_Position, E_Radius, _otherObject.E_Position, _otherObject.E_Radius))
+	{
+		GotHit();
+		_otherObject.GotHit();
+		return true;
+	}
+	return false;
+}
+
+bool Entity::GetIsAlive()
+{
+	return bIsAlive;
 }
 
 
@@ -141,6 +156,11 @@ void Entity::SetTextureManagerRef(TextureManager* _newRef)
 void Entity::SetTexturePosition(size_t _newPosition)
 {
 	E_TextureLocation = _newPosition;
+}
+
+void Entity::SetIsAlive(bool _isAlive)
+{
+	bIsAlive = _isAlive;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

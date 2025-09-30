@@ -41,6 +41,10 @@ protected:
 		//Shoot: (Left Click) (Space Bar)
 		FInput ShootInput[2];
 
+	//Enemy Refs
+		Entity* EnemyRefs;
+		size_t EnemyCount;
+
 public:
 	/* FUNCTIONS */
 
@@ -54,6 +58,8 @@ public:
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
 
+	virtual void GotHit() override;
+
 	bool BulletHitEnemy(Entity& _enemy);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
@@ -64,6 +70,8 @@ public:
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC SET FUNCTIONS */
+
+	void SetEnemyRefs(Entity* _enemyRefs, size_t _count);
 
 };
 

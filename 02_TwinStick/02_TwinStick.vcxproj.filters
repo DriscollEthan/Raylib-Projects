@@ -48,13 +48,13 @@
     <ClCompile Include="TwinStickMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>Source Files\Derived Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files\Derived Classes</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,13 +80,13 @@
     <ClInclude Include="Bullet.h">
       <Filter>Header Files\Derived Classes</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>Header Files\Derived Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Header Files\Derived Classes</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
+      <Filter>Header Files\Base Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
       <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -49,8 +49,8 @@ namespace MathLibraryTests
 
 			CustomAssert::AreEqualsMember(
 				Matrix4(1, 0, 0, 0,
-					0, -0.210796f, 0.97753f, 0,
-					0, -0.97753f, -0.210796f, 0,
+					0, -0.210796f, -0.97753f, 0,
+					0, 0.97753f, -0.210796f, 0,
 					0, 0, 0, 1), actual);
 		}
 
@@ -60,9 +60,9 @@ namespace MathLibraryTests
 			Matrix4 actual = Matrix4::MakeRotateY(-2.6f);
 
 			CustomAssert::AreEqualsMember(
-				Matrix4(-0.856889f, 0, -0.515501f, 0,
+				Matrix4(-0.856889f, 0, 0.515501f, 0,
 					0, 1, 0, 0,
-					0.515501f, 0, -0.856889f, 0,
+					-0.515501f, 0, -0.856889f, 0,
 					0, 0, 0, 1), actual);
 		}
 
@@ -84,10 +84,10 @@ namespace MathLibraryTests
 			Matrix4 actual = Matrix4::MakeEuler(Vector3(1.0f, 2.0f, 3.0f));
 
 			CustomAssert::AreEqualsMember(
-				Matrix4(0.411982f, -0.058727f, 0.909297f, 0.0f,
-					-0.833738f, -0.426918f, 0.350175f, 0.0f,
-					0.367630f, -0.902382f, -0.224845f,
-					0.0f, 0.0f, 0.0f, 0.0f, 1.0f),
+				Matrix4(0.411982f, -0.058727f, -0.909297f, 0.0f,
+					-0.833738f, -0.426918f, -0.350175f, 0.0f,
+					-0.367630f, 0.902382f, -0.224845f,0.0f, 
+					0.0f, 0.0f, 0.0f, 1.0f),
 				actual);
 		}
 
@@ -97,10 +97,10 @@ namespace MathLibraryTests
 			Matrix4 actual = Matrix4::MakeEuler(Vector3(1.0f, 2.0f, 3.0f));
 
 			CustomAssert::AreEqualsMember(
-				Matrix4(0.411982f, -0.058727f, 0.909297f, 0.0f,
-					-0.833738f, -0.426918f, 0.350175f, 0.0f,
-					0.367630f, -0.902382f, -0.224845f,
-					0.0f, 0.0f, 0.0f, 0.0f, 1.0f),
+				Matrix4(0.411982f, -0.058727f, -0.909297f, 0.0f,
+					-0.833738f, -0.426918f, -0.350175f, 0.0f,
+					-0.367630f, 0.902382f, -0.224845f, 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f),
 				actual);
 		}
 

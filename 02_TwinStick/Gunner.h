@@ -50,7 +50,7 @@ public:
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
 
-	bool DidBulletHitEnemy(Entity& _enemy);
+	void BulletCollisionCheck(Entity& _enemy);
 
 	void Shoot(float _speed, float _lifetime);
 

@@ -7,6 +7,8 @@
 Character::Character(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Player(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
 {
 	Turret = nullptr;
+	EnemyRefs = nullptr;
+	EnemyCount = 0;
 }
 
 //Copy Constructor
@@ -22,6 +24,8 @@ Character::Character(const Character& _other)
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
 	E_TextureManagerRef = _other.E_TextureManagerRef;
+	EnemyRefs = _other.EnemyRefs;
+	EnemyCount = _other.EnemyCount;
 }
 
 //Copy Assignment
@@ -37,6 +41,7 @@ Character Character::operator=(const Character& _other)
 	E_Speed = _other.E_Speed;
 	E_Rotation = _other.E_Rotation;
 	E_TextureManagerRef = _other.E_TextureManagerRef;
+	EnemyCount = _other.EnemyCount;
 	return *this;
 }
 
@@ -85,6 +90,12 @@ void Character::Update()
 {
 	//Call Parent Update
 	Player::Update();
+
+	//Check Collision
+	for (int i = 0; i < EnemyCount; ++i)
+	{
+		Turret->BulletCollisionCheck(EnemyRefs[i]);
+	}
 
 	//Get Movement Input
 	for (int i = 0; i < 8; ++i)
@@ -143,6 +154,11 @@ void Character::Draw()
 	Turret->Draw();
 }
 
+void Character::GotHit()
+{
+
+}
+
 bool Character::BulletHitEnemy(Entity& _enemy)
 {
 	return Turret->CollisionCheck(_enemy);
@@ -155,3 +171,9 @@ bool Character::BulletHitEnemy(Entity& _enemy)
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Character SPECIFIC SET FUNCTIONS */
+
+void Character::SetEnemyRefs(Entity* _enemyRefs, size_t _count)
+{
+	EnemyRefs = _enemyRefs;
+	EnemyCount = _count;
+}

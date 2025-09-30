@@ -50,8 +50,8 @@ namespace MathLibraryTests
 			CustomAssert::AreEqualsMember(
 				Matrix3(
 					1,	0,					0,
-					0, -0.668648f,  0.743579f,
-					0, -0.743579f, -0.668648f),
+					0, -0.668648f,  -0.743579f,
+					0, 0.743579f, -0.668648f),
 				actual);
 		}
 
@@ -62,9 +62,9 @@ namespace MathLibraryTests
 
 			CustomAssert::AreEqualsMember(
 				Matrix3(
-					-0.188077f, 0, 0.982154f,
+					-0.188077f, 0, -0.982154f,
 					0, 1, 0,
-					-0.982154f, 0, -0.188077f),
+					0.982154f, 0, -0.188077f),
 				actual);
 		}
 
@@ -88,9 +88,9 @@ namespace MathLibraryTests
 
 			CustomAssert::AreEqualsMember(
 				Matrix3(
-					0.411982f, -0.058727f, 0.909297f,
-					-0.833738f, -0.426918f, 0.350175f,
-					0.367630f, -0.902382f, -0.224845f),
+					0.411982f, -0.058727f, -0.909297f,
+					-0.833738f, -0.426918f, -0.350175f,
+					-0.367630f, 0.902382f, -0.224845f),
 				actual);
 		}
 
@@ -101,9 +101,9 @@ namespace MathLibraryTests
 
 			CustomAssert::AreEqualsMember(
 				Matrix3(
-					0.411982f, -0.058727f, 0.909297f,
-					-0.833738f, -0.426918f, 0.350175f,
-					0.367630f, -0.902382f, -0.224845f),
+					0.411982f, -0.058727f, -0.909297f,
+					-0.833738f, -0.426918f, -0.350175f,
+					-0.367630f, 0.902382f, -0.224845f),
 				actual);
 
 		}

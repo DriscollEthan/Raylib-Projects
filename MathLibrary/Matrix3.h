@@ -358,7 +358,7 @@ namespace Driscoll
 		 */
 		static Matrix3 MakeRotateY(float a)
 		{
-			return Matrix3(cosf(a), 0.0f, sinf(a), 0.0f, 1.0f, 0.0f, -sinf(a), 0.0f, cosf(a));
+			return Matrix3(cosf(a), 0.0f, -sinf(a), 0.0f, 1.0f, 0.0f, sinf(a), 0.0f, cosf(a));
 		}
 
 		/*
@@ -369,7 +369,7 @@ namespace Driscoll
 		 */
 		static Matrix3 MakeRotateZ(float a)
 		{
-			return Matrix3(cosf(a), -sinf(a), 0.0f, sinf(a), cosf(a), 0.0f, 0.0f, 0.0f, 1.0f);
+			return Matrix3(cosf(a), sinf(a), 0.0f, -sinf(a), cosf(a), 0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
 		/*
