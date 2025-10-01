@@ -208,7 +208,7 @@ public:
 		void SetLocalPosition(Driscoll::Vector2D _newPosition);
 		//Set Local Scale
 		void SetLocalScale(Driscoll::Vector2D _newScale);
-		//Set Local Rotation
+		//Set Local Rotation IN RADIANS
 		void SetLocalRotation(float _newRotation);
 
 

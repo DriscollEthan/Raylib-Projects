@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <cmath>
 
 namespace Driscoll
@@ -38,6 +39,11 @@ namespace Driscoll
 	inline float AngleFrom2D(float x, float y)
 	{
 		return atan2(y, x);
+	}
+
+	inline float AngleFrom2DDeg(float x, float y)
+	{
+			return atan2(y, x) * Deg2Rad;
 	}
 
 	template<typename T, typename A>

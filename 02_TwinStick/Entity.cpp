@@ -79,11 +79,16 @@ void Entity::Draw()
 	{
 		Object::Draw();
 
-		GetTextureManagerRef()->GetTexture(TextureIndex).Draw(raylib::Rectangle(0, 0, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth(), (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight()),						// SourceRec
-			raylib::Rectangle(GetWorldPosition().x, GetWorldPosition().y, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * GetWorldScale().x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * GetWorldScale().y),	// DestRec
-			Driscoll::Vector2D((float)GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * Origin.x * GetWorldScale().x, (float)GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * Origin.y * GetWorldScale().y),		// Origin
+		raylib::Texture& texture = GetTextureManagerRef()->GetTexture(TextureIndex);
+
+		//Draw Texture:
+		texture.Draw
+		(
+			raylib::Rectangle(0, 0, (float)texture.GetWidth(), (float)texture.GetHeight()),																																								// SourceRec
+			raylib::Rectangle(GetWorldPosition().x, GetWorldPosition().y, (float)texture.GetWidth() * GetWorldScale().x, (float)texture.GetHeight() * GetWorldScale().y),	// DestRec
+			raylib::Vector2((float)texture.GetWidth() * Origin.x * GetWorldScale().x, (float)texture.GetHeight() * Origin.y * GetWorldScale().y),											// Origin
 			GetWorldRotation(),	// Rotation
-			Driscoll::Color::White() // Tint
+			Driscoll::WHITE // Tint
 		);
 	}
 }
@@ -141,7 +146,7 @@ Driscoll::Vector2D Entity::GetWorldPosition()
 float Entity::GetWorldRotation()
 {
 	//World Rotation
-	return (Driscoll::AngleFrom2D(WorldMatrix.m1, WorldMatrix.m2) * Driscoll::Deg2Rad);
+	return (Driscoll::AngleFrom2DDeg(WorldMatrix.m1, WorldMatrix.m2));
 }
 
 Driscoll::Vector2D Entity::GetWorldScale()
@@ -166,6 +171,12 @@ void Entity::SetLocalPosition(Driscoll::Vector2D _newPosition)
 void Entity::SetLocalScale(Driscoll::Vector2D _newScale)
 {
 	LocalData.LocalScale = _newScale;
+}
+
+//Rotate Entity
+void Entity::SetLocalRotation(float _newRotation)
+{
+	LocalData.LocalRotation = _newRotation;
 }
 
 //Set Radius
@@ -197,10 +208,4 @@ void Entity::Move()
 {
 	LocalData.LocalPosition += MovementVector.SafeNormalised() * (Speed * GetFrameTime() * 100.0f);
 	LocalData.LocalPosition = Driscoll::Vector2D::WrapVector2D(LocalData.LocalPosition, Driscoll::Vector2D(0, 0), GlobalVariables.ScreenSize);
-}
-
-//Rotate Entity
-void Entity::SetLocalRotation(float _newRotation)
-{
-	LocalData.LocalRotation = _newRotation;
 }
