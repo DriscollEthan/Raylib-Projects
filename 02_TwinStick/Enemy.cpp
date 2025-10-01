@@ -55,8 +55,9 @@ void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
   //Init Vars
-  Turret = new Gunner(LocalData2D(), 1, { 0.5f, 1.f }, HitboxData(), 3, 0);
+  Turret = new Gunner(LocalData2D({ 0, 0 }, 0, { 0.5f, 1.0f }), 1, { 0.5f, 1.f }, HitboxData(), 3, 0);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
+  Turret->SetParent(this);
 
   Turret->BeginPlay();
 }
@@ -69,7 +70,7 @@ void Enemy::Update()
 
     if (PlayerRef)
     {
-      Turret->SetLocalRotation(PlayerRef->GetWorldPosition().AngleBetween(GetWorldPosition()) * Driscoll::Deg2Rad + 90.0f);
+      Turret->SetLocalRotation(GetWorldPosition().AngleBetween(PlayerRef->GetWorldPosition()) - 1.45f);
     }
 
 
@@ -83,7 +84,7 @@ void Enemy::Update()
 
 
     //Movement for Enemy using a Random Position On Screen
-    MoveToRandomLocation();
+    //MoveToRandomLocation();
 
     Turret->Update();
   }
