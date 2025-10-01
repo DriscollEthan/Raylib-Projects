@@ -42,6 +42,10 @@ protected:
 		//Shoot: (Left Click) (Space Bar)
 		FInput ShootInput[2];
 
+	//Health
+		int Health;
+
+
 public:
 	/* FUNCTIONS */
 
@@ -60,11 +64,15 @@ public:
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC GET FUNCTIONS */
+
 	Gunner* GetTurretRef();
+
+	float GetHealth();
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC SET FUNCTIONS */
+	void SetHealth(float _maxHealth);
 
 };
 

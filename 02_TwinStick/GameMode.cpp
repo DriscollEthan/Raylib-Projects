@@ -46,7 +46,7 @@ void GameMode::BeginPlay()
   }
 
   //CREATE PLAYER
-  PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 2, { 1, 1 }), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(), 5.0f, 10.0f, 4.5f);
+  PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(), 5.0f, 10.0f, 4.5f);
   PlayerRef->SetTextureManagerRef(TextureManagerRef);
   PlayerRef->SetHitboxRadius(20.0f);
   PlayerRef->BeginPlay();

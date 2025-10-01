@@ -61,6 +61,8 @@ void Character::BeginPlay()
 	Turret = new Gunner(LocalData2D({0, 0}, 0, {0.5f, 1.0f}), 1, {0.5f, 1.f}, HitboxData(), 60, 2);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
+	SetLocalRotation(0);
+	SetHealth(5);
 
 	//Setup Input Keybinds
 	{
@@ -114,6 +116,16 @@ void Character::Update()
 			}
 		}
 
+		//Using the newly Updated Movement Vector, call movement.
+		Move();
+		SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
+
+		//Update Turret Vars
+		//Turret Look in RADIANS
+		Driscoll::Vector2D mousePosition = GetMousePosition();
+		Turret->SetLocalRotation((Driscoll::AngleFrom2D(mousePosition.x - GetWorldPosition().x, mousePosition.y - GetWorldPosition().y)) + 1.571f);
+
+
 		//Get Shoot Input
 		for (int i = 0; i < 2; ++i)
 		{
@@ -125,13 +137,6 @@ void Character::Update()
 			}
 		}
 
-		//Using the newly Updated Movement Vector, call movement.
-		Move();
-
-		//Update Turret Vars
-		//Turret Look in RADIANS
-		Driscoll::Vector2D mousePosition = GetMousePosition();
-		Turret->SetLocalRotation((Driscoll::AngleFrom2D(mousePosition.x - GetWorldPosition().x, mousePosition.y - GetWorldPosition().y)) + 0.4f);
 
 		Turret->Update();
 	}
@@ -149,19 +154,31 @@ void Character::Draw()
 
 void Character::GotHit()
 {
-	std::cout << "PlayerHit \n";
-	SetIsAlive(false);
-}
-
-Gunner* Character::GetTurretRef()
-{
-	return Turret;
+	SetHealth(GetHealth() - 1);
+	if (GetHealth() <= 0)
+	{
+		SetIsAlive(false);
+	}
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Character SPECIFIC GET FUNCTIONS */
 
+Gunner* Character::GetTurretRef()
+{
+	return Turret;
+}
+
+float Character::GetHealth()
+{
+	return Health;
+}
+
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Character SPECIFIC SET FUNCTIONS */
+void Character::SetHealth(float _maxHealth)
+{
+	Health = _maxHealth;
+}

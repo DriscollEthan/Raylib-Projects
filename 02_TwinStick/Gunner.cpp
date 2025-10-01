@@ -91,7 +91,25 @@ void Gunner::Update()
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Gunner::Draw()
 {
-	Player::Draw();
+	//Player::Draw();
+
+	//Custom Draw so that My Local Rotation IS my World Rotation. Instead of using the built in Entity Draw.
+	if (bIsAlive)
+	{
+		Object::Draw();
+
+		raylib::Texture& texture = GetTextureManagerRef()->GetTexture(TextureIndex);
+
+		//Draw Texture:
+		texture.Draw
+		(
+			raylib::Rectangle(0, 0, (float)texture.GetWidth(), (float)texture.GetHeight()),																																								// SourceRec
+			raylib::Rectangle(GetWorldPosition().x, GetWorldPosition().y, (float)texture.GetWidth() * GetWorldScale().x, (float)texture.GetHeight() * GetWorldScale().y),	// DestRec
+			raylib::Vector2((float)texture.GetWidth() * Origin.x * GetWorldScale().x, (float)texture.GetHeight() * Origin.y * GetWorldScale().y),													// Origin
+			LocalData.LocalRotation * Driscoll::Rad2Deg,	// Rotation
+			Driscoll::WHITE // Tint
+		);
+	} 
 
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
@@ -114,9 +132,11 @@ void Gunner::BulletCollisionCheck(Entity& _enemy)
 void Gunner::Shoot(float _speed, float _lifetime)
 {
 	//Shoot Function
-	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(GetWorldRotation()), -Driscoll::CosDeg<float>(GetWorldRotation()) };
-	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * unitVectorBasedOnCurrentRotation.x) + GetWorldPosition().x),
-		((GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * unitVectorBasedOnCurrentRotation.y) + GetWorldPosition().y)};
+	raylib::Texture& texture = GetTextureManagerRef()->GetTexture(TextureIndex);
+
+	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(LocalData.LocalRotation * Driscoll::Rad2Deg), -Driscoll::CosDeg<float>(LocalData.LocalRotation * Driscoll::Rad2Deg) };
+	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + GetWorldPosition().x),
+		((texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + GetWorldPosition().y)};
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;

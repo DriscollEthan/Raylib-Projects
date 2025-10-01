@@ -58,6 +58,8 @@ void Enemy::BeginPlay()
   Turret = new Gunner(LocalData2D({ 0, 0 }, 0, { 0.5f, 1.0f }), 1, { 0.5f, 1.f }, HitboxData(), 3, 0);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
   Turret->SetParent(this);
+  SetLocalRotation(0);
+  SetHealth(2);
 
   Turret->BeginPlay();
 }
@@ -70,7 +72,7 @@ void Enemy::Update()
 
     if (PlayerRef)
     {
-      Turret->SetLocalRotation(GetWorldPosition().AngleBetween(PlayerRef->GetWorldPosition()) - 1.45f);
+      Turret->SetLocalRotation(GetWorldPosition().AngleBetween(PlayerRef->GetWorldPosition()) - 1.571);
     }
 
 
@@ -101,8 +103,11 @@ void Enemy::Draw()
 
 void Enemy::GotHit()
 {
-  std::cout << "Hit \n";
-  SetIsAlive(false);
+  SetHealth(GetHealth() - 1);
+  if (GetHealth() <= 0)
+  {
+    SetIsAlive(false);
+  }
 }
 
 void Enemy::SetPlayerRef(Entity* _playerRef)
@@ -128,7 +133,9 @@ void Enemy::MoveToRandomLocation()
     SetRandomLocation();
   }
 
-  MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(GetWorldPosition()) * Driscoll::Deg2Rad + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(GetWorldPosition()) * Driscoll::Deg2Rad + 90.0f) };
+  MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(GetWorldPosition()) * Driscoll::Rad2Deg + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(GetWorldPosition()) * Driscoll::Rad2Deg + 90.0f) };
+
+  SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
 
   Move();
 }
@@ -136,4 +143,14 @@ void Enemy::MoveToRandomLocation()
 Gunner* Enemy::GetTurretRef()
 {
   return Turret;
+}
+
+float Enemy::GetHealth()
+{
+  return Health;
+}
+
+void Enemy::SetHealth(float _maxHealth)
+{
+  Health = _maxHealth;
 }

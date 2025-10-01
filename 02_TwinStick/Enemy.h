@@ -97,6 +97,10 @@ public:
 
 	Gunner* GetTurretRef();
 
+	float GetHealth();
+
+	void SetHealth(float _maxHealth);
+
 protected:
 	Gunner* Turret;
 
@@ -109,5 +113,7 @@ protected:
 	float BulletSpeed;
 	
 	float BulletLifetime;
+
+	float Health; 
 };
 

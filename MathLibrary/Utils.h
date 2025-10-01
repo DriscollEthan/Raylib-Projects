@@ -25,10 +25,10 @@ namespace Driscoll
 	constexpr float Pi = 3.14159265358979323846264338327950288f;
 
 	// Deg2Rad
-	constexpr float Rad2Deg = Pi / 180.0f;
+	constexpr float Deg2Rad = Pi / 180.0f;
 
 	// Rad2Deg
-	constexpr float Deg2Rad = 1.0f / Rad2Deg;
+	constexpr float Rad2Deg = 1.0f / Deg2Rad;
 
 	template<typename T>
 	inline T ApproximatelyEquals(const T& a, const T& b, const T& Threshold = MAX_FLOAT_DELTA)
@@ -43,7 +43,7 @@ namespace Driscoll
 
 	inline float AngleFrom2DDeg(float x, float y)
 	{
-			return atan2(y, x) * Deg2Rad;
+			return atan2(y, x) * Rad2Deg;
 	}
 
 	template<typename T, typename A>
@@ -56,12 +56,12 @@ namespace Driscoll
 	template<typename T>
 	inline T CosDeg(T _x)
 	{
-		return cos(_x * Rad2Deg);
+		return cos(_x * Deg2Rad);
 	}
 
 	template<typename T>
 	inline T SinDeg (T _x)
 	{
-				return sin(_x * Rad2Deg);
+				return sin(_x * Deg2Rad);
 	}
 }
