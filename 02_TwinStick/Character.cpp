@@ -16,6 +16,7 @@ Character::Character(const Character& _other)
 {
 	Turret = nullptr;
 	LocalData = _other.LocalData;
+	TextureIndex = _other.TextureIndex;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
@@ -29,6 +30,7 @@ Character Character::operator=(const Character& _other)
 {
 	Turret = nullptr;
 	LocalData = _other.LocalData;
+	TextureIndex = _other.TextureIndex;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
@@ -129,7 +131,7 @@ void Character::Update()
 		//Update Turret Vars
 		//Look
 		Driscoll::Vector2D mousePosition = GetMousePosition();
-		Turret->SetLocalRotation((Driscoll::AngleFrom2DDeg(mousePosition.x - GetWorldPosition().x, mousePosition.y - GetWorldPosition().y)) + 90.0f);
+		Turret->SetLocalRotation((Driscoll::AngleFrom2D(mousePosition.x - GetWorldPosition().x, mousePosition.y - GetWorldPosition().y) * Driscoll::Deg2Rad));
 
 		Turret->Update();
 	}

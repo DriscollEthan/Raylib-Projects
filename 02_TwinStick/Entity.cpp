@@ -10,6 +10,7 @@ Entity::Entity(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector
 	Parent = nullptr;
 	bIsAlive = true;
 	LocalData = _localData;
+	TextureIndex = _textureLocation;
 	Origin = _origin;
 	Hitbox = _hitbox;
 	MovementVector = Driscoll::Vector2D();
@@ -21,6 +22,7 @@ Entity::Entity(const Entity& _other)
 {
 	Parent = _other.Parent;
 	LocalData = _other.LocalData;
+	TextureIndex = _other.TextureIndex;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
@@ -32,6 +34,7 @@ Entity Entity::operator=(const Entity& _other)
 {
 	Parent = _other.Parent;
 	LocalData = _other.LocalData;
+	TextureIndex = _other.TextureIndex;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
@@ -131,21 +134,18 @@ Driscoll::Matrix3 Entity::GetWorldMatrix()
 
 Driscoll::Vector2D Entity::GetWorldPosition()
 {
-	WorldMatrix = GetWorldMatrix();
 	//World Position
 	return Driscoll::Vector2D(WorldMatrix.m7, WorldMatrix.m8);
 }
 
 float Entity::GetWorldRotation()
 {
-	WorldMatrix = GetWorldMatrix();
 	//World Rotation
-	return Driscoll::AngleFrom2DDeg(WorldMatrix.m1, WorldMatrix.m2);
+	return (Driscoll::AngleFrom2D(WorldMatrix.m1, WorldMatrix.m2) * Driscoll::Deg2Rad);
 }
 
 Driscoll::Vector2D Entity::GetWorldScale()
 {
-	WorldMatrix = GetWorldMatrix();
 	//World Scale
 	return Driscoll::Vector2D(WorldMatrix.axis[0].Magnitude(), WorldMatrix.axis[1].Magnitude());
 }

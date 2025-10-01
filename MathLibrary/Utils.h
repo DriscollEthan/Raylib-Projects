@@ -40,22 +40,6 @@ namespace Driscoll
 		return atan2(y, x);
 	}
 
-	inline float AngleFrom2DDeg(float x, float y)
-	{
-		return atan2(y, x) * Rad2Deg;
-	}
-
-#ifdef Vector2D
-	inline float AngleFrom2DVec(Vector2D vec)
-	{
-		AngleFrom2D(vec.x, vec.y);
-	}
-
-	inline float AngleFrom2DDegVec(Vector2D vec)
-	{
-		AngleFrom2DDeg(vec.x, vec.y);
-	}
-#endif
 	template<typename T, typename A>
 	T Lerp(const T& Start, const T& End, const A& Alpha)
 	{

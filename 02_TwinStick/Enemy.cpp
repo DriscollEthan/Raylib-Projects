@@ -14,6 +14,7 @@ Enemy::Enemy(const Enemy& _other)
 {
   Turret = nullptr;
   LocalData = _other.LocalData;
+  TextureIndex = _other.TextureIndex;
   Origin = _other.Origin;
   Hitbox = _other.Hitbox;
   MovementVector = _other.MovementVector;
@@ -29,6 +30,7 @@ Enemy& Enemy::operator=(const Enemy& _other)
 {
   Turret = nullptr;
   LocalData = _other.LocalData;
+  TextureIndex = _other.TextureIndex;
   Origin = _other.Origin;
   Hitbox = _other.Hitbox;
   MovementVector = _other.MovementVector;

@@ -17,6 +17,7 @@ Gunner::Gunner(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	LocalData = _other.LocalData;
+	TextureIndex = _other.TextureIndex;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
@@ -32,6 +33,7 @@ Gunner Gunner::operator=(const Gunner& _other)
 {
 	BulletsInPool = nullptr;
 	LocalData = _other.LocalData;
+	TextureIndex = _other.TextureIndex;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
@@ -101,7 +103,7 @@ void Gunner::BulletCollisionCheck(Entity& _enemy)
 {
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
-		if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
+		if (BulletsInPool[i].GetCurrentState() == Active && _enemy.GetIsAlive() && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
 		{
 			BulletsInPool[i].SetCurrentState(Inactive);
 			_enemy.GotHit();

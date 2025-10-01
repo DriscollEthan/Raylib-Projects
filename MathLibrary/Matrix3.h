@@ -305,13 +305,7 @@ namespace Driscoll
 		 */
 		static Matrix3 MakeTranslation(Vector2D vec)
 		{
-			Matrix3 Ident = MakeIdentity();
-			Ident.m7 = vec.x;
-			Ident.m8 = vec.y;
-
-			return Ident;
-
-			return Matrix3(Vector3D(1.0f, 0.0f, 0.0f).Dot(Vector3D(vec.x, vec.y, 0)), Vector3D(0.0f, 1.0f, 0.0f).Dot(Vector3D(vec.x, vec.y, 0)), 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+			return Matrix3(1.0f, 0, 0, 0, 1.0f, 0, vec.x, vec.y, 1.0f);
 		}
 
 		/*
