@@ -163,6 +163,9 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resource File List.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -55,7 +55,7 @@ void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
   //Init Vars
-  Turret = new Gunner(LocalData2D({ 0, 0 }, 0, { 0.5f, 1.0f }), 1, { 0.5f, 1.f }, HitboxData(), 3, 0);
+  Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 0.5f, 1.0f }), 1, { 0.5f, 1.f }, HitboxData(), 3, 6);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
   Turret->SetParent(this);
   SetLocalRotation(0);
@@ -72,7 +72,7 @@ void Enemy::Update()
 
     if (PlayerRef)
     {
-      Turret->SetLocalRotation(GetWorldPosition().AngleBetween(PlayerRef->GetWorldPosition()) - 1.571);
+      Turret->SetLocalRotation(GetWorldPosition().AngleBetween(PlayerRef->GetWorldPosition()) - GetWorldRotation() - 1.571);
     }
 
 

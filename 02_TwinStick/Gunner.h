@@ -1,8 +1,8 @@
 #pragma once
-#include "Player.h"
+#include "Entity.h"
 #include "Bullet.h"
 
-class Gunner : public Player
+class Gunner : public Entity
 {
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */

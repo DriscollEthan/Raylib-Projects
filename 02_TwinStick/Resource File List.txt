@@ -1,0 +1,78 @@
+Resource Copy and Paste Link Section
+
+//Custom
+  Default:          Resoruces/DEFAULT.png
+  Gold Coin:        Resoruces/Dollar-Gold-Coin-PNG.png
+  Mouse Target:     Resoruces/target_round_b.png
+  Custom Turret:    Resoruces/Turret.png
+                  
+//Tanks           
+  TankBeige:        Resoruces/Tanks/tankBeige_outline.png
+  BarrleBeige:      Resoruces/Tanks/barrelBeige_outline.png
+                  
+  TankBlack:        Resoruces/Tanks/tankBlack_outline.png
+  BarrelBlack:      Resoruces/Tanks/barrelBlack_outline.png
+                  
+  TankBlue:         Resoruces/Tanks/tankBlue_outline.png
+  BarrelBlue:       Resoruces/Tanks/barrelBlue_outline.png
+                  
+  TankGreen:        Resoruces/Tanks/tankGreen_outline.png
+  BarrelGreen:      Resources/Tanks/barrelGreen_outline.png
+                  
+  TankRed:          Resoruces/Tanks/tankRed_outline.png
+  BarrelRed:        Resoruces/Tanks/barrelRed_outline.png
+                  
+  TracksLarge:      Resoruces/Tanks/tracksLarge.png
+  TrackSmall:       Resoruces/Tanks/tracksSmall.png
+                  
+//Smoke          
+  SmokeGrey0:       Resoruces/Smoke/smokeGrey0.png
+  SmokeGrey1:       Resoruces/Smoke/smokeGrey1.png
+  SmokeGrey2:       Resoruces/Smoke/smokeGrey2.png
+  SmokeGrey3:       Resoruces/Smoke/smokeGrey3.png
+  SmokeGrey4:       Resoruces/Smoke/smokeGrey4.png
+  SmokeGrey5:       Resoruces/Smoke/smokeGrey5.png
+                  
+  SmokeOrange0:     Resoruces/Smoke/smokeOrange0.png
+  SmokeOrange1:     Resoruces/Smoke/smokeOrange1.png
+  SmokeOrange2:     Resoruces/Smoke/smokeOrange2.png
+  SmokeOrange3:     Resoruces/Smoke/smokeOrange3.png
+  SmokeOrange4:     Resoruces/Smoke/smokeOrange4.png
+  SmokeOrange5:     Resoruces/Smoke/smokeOrange5.png
+                  
+  SmokeWhite0:      Resoruces/Smoke/smokeWhite0.png
+  SmokeWhite1:      Resoruces/Smoke/smokeWhite1.png
+  SmokeWhite2:      Resoruces/Smoke/smokeWhite2.png
+  SmokeWhite3:      Resoruces/Smoke/smokeWhite3.png
+  SmokeWhite4:      Resoruces/Smoke/smokeWhite4.png
+  SmokeWhite5:      Resoruces/Smoke/smokeWhite5.png
+                  
+  SmokeYellow0:     Resoruces/Smoke/smokeYellow0.png
+  SmokeYellow1:     Resoruces/Smoke/smokeYellow1.png
+  SmokeYellow2:     Resoruces/Smoke/smokeYellow2.png
+  SmokeYellow3:     Resoruces/Smoke/smokeYellow3.png
+  SmokeYellow4:     Resoruces/Smoke/smokeYellow4.png
+  SmokeYellow5:     Resoruces/Smoke/smokeYellow5.png
+                  
+//Obstacles       
+  BarrelGreenUp:    Resoruces/Obstacles/barrelGreen_up.png
+  BarrelRedUp:      Resoruces/Obstacles/barrelRed_up.png
+  BarrelGreyUp:     Resoruces/Obstacles/barrelGrey_up.png
+  Oil:              Resoruces/Obstacles/oil.png
+  SandBagBeige:     Resoruces/Obstacles/sandbagBeige.png
+  SandBagBrown      Resoruces/Obstacles/sandbagBrown.png
+                  
+//Environment     
+  Dirt:             Resoruces/Environment/dirt.png
+  Grass:            Resoruces/Environment/grass.png
+  Sand:             Resoruces/Environment/sand.png
+  TreeLarge:        Resoruces/Environment/treeLarge.png
+  TreeSmall:        Resoruces/Environment/treeSmall.png
+                  
+//Bullets         
+  Bullet Beige:     Resoruces/Bullets/bulletBeige_outline.png
+  Bullet Silver:    Resoruces/Bullets/bulletSilver_outline.png
+  Bullet Blue:      Resoruces/Bullets/bulletBlue_outline.png
+  Bullet Green:     Resoruces/Bullets/bulletGreen_outline.png
+  Bullet Red:       Resoruces/Bullets/bulletRed_outline.png
+  Bullet Yellow:    Resoruces/Bullets/bulletYellow_outline.png

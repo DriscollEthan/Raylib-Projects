@@ -58,7 +58,7 @@ void Character::BeginPlay()
 
 	//Init Vars
 	/* @todo: UPDATE GUNNER NEXT! */
-	Turret = new Gunner(LocalData2D({0, 0}, 0, {0.5f, 1.0f}), 1, {0.5f, 1.f}, HitboxData(), 60, 2);
+	Turret = new Gunner(LocalData2D({0, 0}, 0, {0.5f, 1.0f}), 2, {0.5f, 1.f}, HitboxData(), 60, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
 	SetLocalRotation(0);
@@ -83,7 +83,6 @@ void Character::BeginPlay()
 
 	Turret->BeginPlay();
 }
-
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
 void Character::Update()
 {
@@ -123,7 +122,8 @@ void Character::Update()
 		//Update Turret Vars
 		//Turret Look in RADIANS
 		Driscoll::Vector2D mousePosition = GetMousePosition();
-		Turret->SetLocalRotation((Driscoll::AngleFrom2D(mousePosition.x - GetWorldPosition().x, mousePosition.y - GetWorldPosition().y)) + 1.571f);
+		mousePosition -= GetWorldPosition();
+		Turret->SetLocalRotation(Driscoll::AngleFrom2D(mousePosition.x, mousePosition.y) + -GetWorldRotation() + 1.571f);
 
 
 		//Get Shoot Input
