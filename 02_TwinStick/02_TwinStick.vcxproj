@@ -143,6 +143,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="Gunner.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameMode.h" />
     <ClInclude Include="GlobalVariableObject.h" />
     <ClInclude Include="Gunner.h" />
     <ClInclude Include="Object.h" />

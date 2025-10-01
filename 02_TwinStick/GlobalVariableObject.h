@@ -12,7 +12,7 @@ public:
 	GlobalVariables operator=(const GlobalVariables& _other) { return *this; }
 
 	//GLOABL VARIABLES:
-	Driscoll::Vector2D ScreenSize = { 1000, 800 };
+	Driscoll::Vector2D ScreenSize = { 1200, 800 };
 
 	float ScreenX = ScreenSize.x;
 

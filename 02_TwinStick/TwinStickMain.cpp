@@ -6,7 +6,7 @@
 
 #include "GlobalVariableObject.h"									//Global Variables Meant for Access in Multiple Classes
 
-#include "GameManager.h"													//Game Manager Class
+#include "GameMode.h"															//Game Mode Class
 
 int main()
 {
@@ -16,16 +16,18 @@ int main()
 		raylib::Window Window(GlobalVars.ScreenX, GlobalVars.ScreenY, "Twin Stick Shooter");
 
 	//Player Setup
-		GameManager* GameMode = new GameManager();
+		GameMode* TankGameMode = new GameMode();
 
 	/*** *** ***/
 
 	SetTargetFPS(60);
 
+	HideCursor();
+
 	/*** *** ***/
 
 	//BEGIN PLAY
-	GameMode->BeginPlay();
+	TankGameMode->BeginPlay();
 	
 	/*** *** ***/
 
@@ -33,7 +35,7 @@ int main()
 	while (!Window.ShouldClose())
 	{
 		//Update
-		GameMode->Update();
+		TankGameMode->Update();
 
 		/*** *** ***/
 
@@ -42,17 +44,20 @@ int main()
 		{
 			Window.ClearBackground(DARKGRAY);
 
-			GameMode->Draw();
+			TankGameMode->Draw();
+
+			TankGameMode->GetTextureManagerRef()->GetTexture(3).Draw(GetMousePosition().x - 16.0f, GetMousePosition().y - 16.0f);
 		}
 	}
 
 	/*** *** ***/
 
 	//END OF MAIN GAME LOOP
-	delete GameMode;
+	delete TankGameMode;
 
 	/*** *** ***/
 
 	//END *** ***
+	ShowCursor();
 	return 0;
 }

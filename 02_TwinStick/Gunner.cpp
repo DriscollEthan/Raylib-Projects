@@ -103,7 +103,7 @@ void Gunner::BulletCollisionCheck(Entity& _enemy)
 {
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
-		if (BulletsInPool[i].GetCurrentState() == Active && _enemy.GetIsAlive() && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
+		if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
 		{
 			BulletsInPool[i].SetCurrentState(Inactive);
 			_enemy.GotHit();
