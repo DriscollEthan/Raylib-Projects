@@ -7,6 +7,8 @@
 //DEFAULT CONSTRUCTOR
 Entity::Entity(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed)
 {
+	Parent = nullptr;
+	bIsAlive = true;
 	LocalData = _localData;
 	Origin = _origin;
 	Hitbox = _hitbox;
@@ -17,6 +19,7 @@ Entity::Entity(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector
 //Copy Constructor
 Entity::Entity(const Entity& _other)
 {
+	Parent = _other.Parent;
 	LocalData = _other.LocalData;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
@@ -27,6 +30,7 @@ Entity::Entity(const Entity& _other)
 //Copy Assignment
 Entity Entity::operator=(const Entity& _other)
 {
+	Parent = _other.Parent;
 	LocalData = _other.LocalData;
 	Origin = _other.Origin;
 	Hitbox = _other.Hitbox;
@@ -50,6 +54,8 @@ Entity::~Entity()
 void Entity::BeginPlay()
 {
 	Object::BeginPlay();
+	LocalMatrix = GetLocalMatrix();
+	WorldMatrix = GetWorldMatrix();
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -57,7 +63,10 @@ void Entity::Update()
 {
 	Object::Update();
 
-	Hitbox.Position = { GetWorldMatrix().m7, GetWorldMatrix().m8 };
+	Hitbox.Position = GetWorldPosition();
+
+	LocalMatrix = GetLocalMatrix();
+	WorldMatrix = GetWorldMatrix();
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
@@ -86,7 +95,7 @@ void Entity::GotHit()
 /* ENTITY SPECIFIC GET FUNCTIONS */	
 
 //Get Radius
-HitboxData Entity::GetHitbox()
+HitboxData& Entity::GetHitbox()
 {
 	return Hitbox;
 }
@@ -105,7 +114,7 @@ Driscoll::Matrix3 Entity::GetLocalMatrix()
 {
 	return Driscoll::Matrix3().MakeTranslation(LocalData.LocalPosition)
 		* Driscoll::Matrix3().MakeRotateZ(LocalData.LocalRotation)
-		* Driscoll::Matrix3().MakeScale(LocalData.LocalPosition);
+		* Driscoll::Matrix3().MakeScale(LocalData.LocalScale);
 }
 
 Driscoll::Matrix3 Entity::GetWorldMatrix()
@@ -122,30 +131,21 @@ Driscoll::Matrix3 Entity::GetWorldMatrix()
 
 Driscoll::Vector2D Entity::GetWorldPosition()
 {
-	//Get World Data from World Matrix
-		// World Matrix:
-		Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
-
+	WorldMatrix = GetWorldMatrix();
 	//World Position
 	return Driscoll::Vector2D(WorldMatrix.m7, WorldMatrix.m8);
 }
 
 float Entity::GetWorldRotation()
 {
-	//Get World Data from World Matrix
-		// World Matrix:
-	Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
-
+	WorldMatrix = GetWorldMatrix();
 	//World Rotation
 	return Driscoll::AngleFrom2DDeg(WorldMatrix.m1, WorldMatrix.m2);
 }
 
 Driscoll::Vector2D Entity::GetWorldScale()
 {
-	//Get World Data from World Matrix
-		// World Matrix:
-	Driscoll::Matrix3 WorldMatrix = GetWorldMatrix();
-
+	WorldMatrix = GetWorldMatrix();
 	//World Scale
 	return Driscoll::Vector2D(WorldMatrix.axis[0].Magnitude(), WorldMatrix.axis[1].Magnitude());
 }

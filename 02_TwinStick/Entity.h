@@ -94,7 +94,7 @@ public:
 		* DEFAULT CONSTRUCTOR: 
 		* Parameters:
 		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
-		* Texture as an Image									| Default: Default Constructor
+		* TextureIndex as size_t							| Default: 0
 		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
 		* Speed as a float										| Default: 1.0
 		*/
@@ -116,6 +116,8 @@ protected:
 		LocalData2D LocalData;
 		//Origin Offset (0-1)
 		Driscoll::Vector2D Origin;
+		Driscoll::Matrix3 LocalMatrix;
+		Driscoll::Matrix3 WorldMatrix;
 
 	//Collision Data
 		HitboxData Hitbox;
@@ -154,14 +156,14 @@ public:
 	 * Get Radius:
 	 *Returns Current Radius in a float
 	 */
-	HitboxData GetHitbox();
+	HitboxData& GetHitbox();
 
 	/**
 		* Collision Check
 		* Takes in Another Entity to Check Collision With
 		*Returns bool Is Colliding
 		*/
-	virtual bool CollisionCheck(HitboxData& _otherHitbox);
+	bool CollisionCheck(HitboxData& _otherHitbox);
 
 	//Is this Entity 'Alive'
 	bool GetIsAlive();

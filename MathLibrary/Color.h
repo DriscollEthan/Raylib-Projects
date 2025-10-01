@@ -3,6 +3,7 @@
 #include <cassert>  // For asserts
 #include <cstdint>  // For int_32_t
 #include <string>		// std::ToString
+#include "utils.h"
 
 namespace Driscoll
 {

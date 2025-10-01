@@ -1,6 +1,8 @@
 #pragma once
 
-#include "DriscollMathUtils.h"
+#include "Matrix3.h"
+#include "Vector4D.h"
+#include "Vector3D.h"
 
 namespace Driscoll
 {

@@ -1,24 +1,25 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Driscoll::Vector2D _position, size_t _textureLocation, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _textureLocation, _origin, _scale, _radius, _rotation, _speed)
+Enemy::Enemy(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed, float _bulletLifetime, float _bulletSpeed) : Entity(_localData, _textureLocation, _origin, _hitbox, _speed)
 {
   Turret = nullptr;
   PlayerRef = nullptr;
   ShootingTimer = {};
   RandomMoveToLocation = {};
+  BulletSpeed = _bulletSpeed;
+  BulletLifetime = _bulletLifetime;
 }
 
 Enemy::Enemy(const Enemy& _other)
 {
-  E_Position = _other.E_Position;
-  TextureIndex = _other.TextureIndex;
+  Turret = nullptr;
+  LocalData = _other.LocalData;
   Origin = _other.Origin;
-  E_Scale = _other.E_Scale;
-  E_Radius = _other.E_Radius;
+  Hitbox = _other.Hitbox;
   MovementVector = _other.MovementVector;
   Speed = _other.Speed;
-  E_Rotation = _other.E_Rotation;
-  Turret = nullptr;
+  BulletSpeed = _other.BulletSpeed;
+  BulletLifetime = _other.BulletLifetime;
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
   TextureManagerRef = _other.TextureManagerRef;
@@ -26,15 +27,14 @@ Enemy::Enemy(const Enemy& _other)
 
 Enemy& Enemy::operator=(const Enemy& _other)
 {
-  E_Position = _other.E_Position;
-  TextureIndex = _other.TextureIndex;
+  Turret = nullptr;
+  LocalData = _other.LocalData;
   Origin = _other.Origin;
-  E_Scale = _other.E_Scale;
-  E_Radius = _other.E_Radius;
+  Hitbox = _other.Hitbox;
   MovementVector = _other.MovementVector;
   Speed = _other.Speed;
-  E_Rotation = _other.E_Rotation;
-  Turret = nullptr;
+  BulletSpeed = _other.BulletSpeed;
+  BulletLifetime = _other.BulletLifetime;
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
   TextureManagerRef = _other.TextureManagerRef;
@@ -53,7 +53,7 @@ void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
   //Init Vars
-  Turret = new Gunner(E_Position, 1, { 0.5f, 1 }, { (E_Scale.x / 2.0f), E_Scale.y }, 0, E_Rotation, 0, 3, 0);
+  Turret = new Gunner(LocalData2D(), 1, { 0.5f, 1.f }, HitboxData(), 3, 0);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
 
   Turret->BeginPlay();
@@ -67,7 +67,7 @@ void Enemy::Update()
 
     if (PlayerRef)
     {
-      Turret->SetLocalRotation(PlayerRef->GetPosition().AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f);
+      Turret->SetLocalRotation(PlayerRef->GetWorldPosition().AngleBetween(GetWorldPosition()) * Driscoll::Deg2Rad + 90.0f);
     }
 
 
@@ -82,10 +82,6 @@ void Enemy::Update()
 
     //Movement for Enemy using a Random Position On Screen
     MoveToRandomLocation();
-
-    //Turret Position and Scale
-    Turret->SetLocalPosition(E_Position);
-    Turret->SetScale(E_Scale);
 
     Turret->Update();
   }
@@ -118,18 +114,18 @@ void Enemy::SetTimer(Timer _newTimer)
 
 void Enemy::SetRandomLocation()
 {
-  RandomMoveToLocation = { GetRandomValue(0, GVO.GetScreenSizeIntX()), GetRandomValue(0, GVO.GetScreenSizeIntY()) };
+  RandomMoveToLocation = { GetRandomValue(0, GlobalVariables.ScreenX), GetRandomValue(0, GlobalVariables.ScreenY) };
 }
 
 void Enemy::MoveToRandomLocation()
 {
   //Early Exit to grab new location if already at RandomLocation.
-  if (E_Position.NearlyEquals(RandomMoveToLocation, 5))
+  if (GetWorldPosition().NearlyEquals(RandomMoveToLocation, 5))
   {
     SetRandomLocation();
   }
 
-  MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(E_Position) * Driscoll::Deg2Rad + 90.0f) };
+  MovementVector = { Driscoll::SinDeg<float>(RandomMoveToLocation.AngleBetween(GetWorldPosition()) * Driscoll::Deg2Rad + 90.0f), -Driscoll::CosDeg<float>(RandomMoveToLocation.AngleBetween(GetWorldPosition()) * Driscoll::Deg2Rad + 90.0f) };
 
   Move();
 }

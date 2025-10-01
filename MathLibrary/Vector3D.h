@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "utils.h"
 #include "Vector2D.h"
-#include "Utils.h"
 
 namespace Driscoll
 {

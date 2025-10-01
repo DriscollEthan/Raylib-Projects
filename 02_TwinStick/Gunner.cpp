@@ -4,7 +4,7 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Gunner::Gunner(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed, size_t _maxBulletsInPool, size_t _bulletTextureIndex) : Player(_localData, _textureLocation, _origin, _hitbox, _speed)
+Gunner::Gunner(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, size_t _maxBulletsInPool, size_t _bulletTextureIndex) : Player(_localData, _textureLocation, _origin, _hitbox)
 {
 	WhichBulletToUse = 0;
 	BulletsInPool = nullptr;
@@ -97,17 +97,14 @@ void Gunner::Draw()
 	}
 }
 
-void Gunner::BulletCollisionCheck(Entity* _enemy)
+void Gunner::BulletCollisionCheck(Entity& _enemy)
 {
-	if (_enemy)
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
-		for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+		if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
 		{
-			if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].CollisionCheck(_enemy))
-			{
-				BulletsInPool[i].SetCurrentState(Inactive);
-  				_enemy->GotHit();
-			}
+			BulletsInPool[i].SetCurrentState(Inactive);
+			_enemy.GotHit();
 		}
 	}
 }
@@ -115,9 +112,9 @@ void Gunner::BulletCollisionCheck(Entity* _enemy)
 void Gunner::Shoot(float _speed, float _lifetime)
 {
 	//Shoot Function
-	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(E_Rotation), -Driscoll::CosDeg<float>(E_Rotation) };
-	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * unitVectorBasedOnCurrentRotation.x) + E_Position.x),
-		((GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * unitVectorBasedOnCurrentRotation.y) + E_Position.y) };
+	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::SinDeg<float>(GetWorldRotation()), -Driscoll::CosDeg<float>(GetWorldRotation()) };
+	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * unitVectorBasedOnCurrentRotation.x) + GetWorldPosition().x),
+		((GetTextureManagerRef()->GetTexture(TextureIndex).GetHeight() * unitVectorBasedOnCurrentRotation.y) + GetWorldPosition().y)};
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;
@@ -136,8 +133,3 @@ void Gunner::Shoot(float _speed, float _lifetime)
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Gunner SPECIFIC SET FUNCTIONS */
-
-void Gunner::SetScale(Driscoll::Vector2D _newScale)
-{
-	E_Scale = ScaleMult * _newScale;
-}

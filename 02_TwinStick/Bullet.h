@@ -13,15 +13,15 @@ class Bullet : public Entity
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
 	/**
-		* DEFAULT CONSTRUCTOR:
+		/**
+		* DEFAULT CONSTRUCTOR: 
 		* Parameters:
-		* Position as a Driscoll::Vector2D	| Default: 0,0
-		* Texture as an Image								| Default: Default Constructor
-		* Radius as a Float									| Default: 0.0
-		* Rotation as a Float								| Default: 0.0
-		* Speed as a flaot									| Default: 1.0
+		* LocalData as a Driscoll::LocalData	| Default: Pos = 0,0; Rot = 0; Scale = 1,1;
+		* TextureIndex as size_t							| Default: 0
+		* Hitbox as a HitboxData							| Default: Position = 0, Radius = 0;
+		* Speed as a float										| Default: 1.0
 		*/
-	Bullet(Driscoll::Vector2D _position = { 0,0 }, size_t _texturePosition = 0, Driscoll::Vector2D _origin = { 0,0 }, Driscoll::Vector2D _scale = { 1,1 }, float _radius = 0.0f, float _rotation = 0.0f, float _speed = 1.0f);
+	Bullet(LocalData2D _localData = {}, size_t _textureLocation = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f);
 
 	//COPY CONSTRUCTOR
 	Bullet(const Bullet& _other);
@@ -52,8 +52,6 @@ public:
 
 	//Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 	virtual void Draw() override;
-
-	virtual bool CollisionCheck(Entity* _otherObject) override;
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

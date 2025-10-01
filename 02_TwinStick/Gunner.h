@@ -16,7 +16,7 @@ public:
 		* MaxBulletsInPool as size_t					| Default 0
 		* BulletTextureIndex as a size_t			|	Default 0
 		*/
-	Gunner(LocalData2D _localData = {}, size_t _textureIndex = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, float _speed = 1.0f, size_t _maxBulletsInPool = 0, size_t _bulletTextureIndex = 0);
+	Gunner(LocalData2D _localData = {}, size_t _textureIndex = 0, Driscoll::Vector2D _origin = { 0,0 }, HitboxData _hitbox = {}, size_t _maxBulletsInPool = 0, size_t _bulletTextureIndex = 0);
 	
 	Gunner(const Gunner& _other);
 
@@ -64,7 +64,7 @@ public:
 	/* Gunner SPECIFIC FUNCTIONS */
 
 	//BulletCollisionCheck: Checks every active Bullet against the Collision Object.
-	void BulletCollisionCheck(Entity* _enemy);
+	void BulletCollisionCheck(Entity& _enemy);
 
 	//Shoot: Shoots the next available Bullet
 	void Shoot(float _speed, float _lifetime);

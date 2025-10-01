@@ -1,5 +1,8 @@
 #pragma once
 
+#include "utils.h"
+#include "Vector3D.h"
+
 namespace Driscoll
 {
 	struct Vector4D

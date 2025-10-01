@@ -3,7 +3,7 @@
 /* CONSTRUCTORS & DESTRUCTORS */
 
 //DEFAULT CONSTRUCTOR
-Bullet::Bullet(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::Vector2D _origin, Driscoll::Vector2D _scale, float _radius, float _rotation, float _speed) : Entity(_position, _texturePosition, _origin, _scale, _radius, _rotation, _speed)
+Bullet::Bullet(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed) : Entity(_localData, _textureLocation, _origin, _hitbox, _speed)
 {
 	CurrentState = None;
 	TimeAlive = 0.0f;
@@ -13,14 +13,11 @@ Bullet::Bullet(Driscoll::Vector2D _position, size_t _texturePosition, Driscoll::
 //Copy Constructor
 Bullet::Bullet(const Bullet& _other)
 {
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+	LocalData = _other.LocalData;
 	Origin = _other.Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
-	E_Rotation = _other.E_Rotation;
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
 	TimeToLive = _other.TimeToLive;
@@ -30,14 +27,11 @@ Bullet::Bullet(const Bullet& _other)
 //Copy Assignment
 Bullet Bullet::operator=(const Bullet& _other)
 {
-	E_Position = _other.E_Position;
-	TextureIndex = _other.TextureIndex;
+	LocalData = _other.LocalData;
 	Origin = _other.Origin;
-	E_Scale = _other.E_Scale;
-	E_Radius = _other.E_Radius;
+	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
-	E_Rotation = _other.E_Rotation;
 	CurrentState = _other.CurrentState;
 	TimeAlive = _other.TimeAlive;
 	TimeToLive = _other.TimeToLive;
@@ -64,7 +58,7 @@ void Bullet::BeginPlay()
 	//Init Vars
 	SetCurrentState(None);
 	Origin = { 0.5f, 0.5f };
-	E_Radius = GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth();
+	Hitbox.SetHitbox(GetWorldPosition(), GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth());
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -109,26 +103,6 @@ void Bullet::Draw()
 	}
 }
 
-bool Bullet::CollisionCheck(Entity* _otherObject)
-{
-	switch (CurrentState)
-	{
-	case None:
-		return false;
-		break;
-	case Active:
-		if (_otherObject == nullptr)
-		{
-			std::cout << "NULLPTR DETECTED \n";
-		}
-		return CheckCollisionCircles(E_Position, E_Radius, _otherObject->GetPosition(), _otherObject->GetRadius());
-		break;
-	case Inactive:
-		return false;
-		break;
-	}
-}
-
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Bullet SPECIFIC GET FUNCTIONS */
@@ -159,7 +133,7 @@ void Bullet::SetTimeToLive(float _newTimeToLive)
 //Spawn Bullet
 void Bullet::SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _movementVector, float _speed, float _timeToLive)
 {
-	E_Position = _spawnPosition;
+	LocalData.LocalPosition = _spawnPosition;
 	MovementVector = _movementVector;
 	Speed = _speed;
 	SetTimeToLive(_timeToLive);
