@@ -84,7 +84,7 @@ void Enemy::Update()
 
 
     //Movement for Enemy using a Random Position On Screen
-    //MoveToRandomLocation();
+    MoveToRandomLocation();
 
     Turret->Update();
   }
