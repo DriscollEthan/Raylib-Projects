@@ -1,78 +1,78 @@
 Resource Copy and Paste Link Section
 
 //Custom
-  Default:          Resoruces/DEFAULT.png
-  Gold Coin:        Resoruces/Dollar-Gold-Coin-PNG.png
-  Mouse Target:     Resoruces/target_round_b.png
-  Custom Turret:    Resoruces/Turret.png
+  Default:          Resources/DEFAULT.png
+  Gold Coin:        Resources/Dollar-Gold-Coin-PNG.png
+  Mouse Target:     Resources/target_round_b.png
+  Custom Turret:    Resources/Turret.png
                   
 //Tanks           
-  TankBeige:        Resoruces/Tanks/tankBeige_outline.png
-  BarrleBeige:      Resoruces/Tanks/barrelBeige_outline.png
+  TankBeige:        Resources/Tanks/tankBeige_outline.png
+  BarrleBeige:      Resources/Tanks/barrelBeige_outline.png
                   
-  TankBlack:        Resoruces/Tanks/tankBlack_outline.png
-  BarrelBlack:      Resoruces/Tanks/barrelBlack_outline.png
+  TankBlack:        Resources/Tanks/tankBlack_outline.png
+  BarrelBlack:      Resources/Tanks/barrelBlack_outline.png
                   
-  TankBlue:         Resoruces/Tanks/tankBlue_outline.png
-  BarrelBlue:       Resoruces/Tanks/barrelBlue_outline.png
+  TankBlue:         Resources/Tanks/tankBlue_outline.png
+  BarrelBlue:       Resources/Tanks/barrelBlue_outline.png
                   
-  TankGreen:        Resoruces/Tanks/tankGreen_outline.png
+  TankGreen:        Resources/Tanks/tankGreen_outline.png
   BarrelGreen:      Resources/Tanks/barrelGreen_outline.png
                   
-  TankRed:          Resoruces/Tanks/tankRed_outline.png
-  BarrelRed:        Resoruces/Tanks/barrelRed_outline.png
+  TankRed:          Resources/Tanks/tankRed_outline.png
+  BarrelRed:        Resources/Tanks/barrelRed_outline.png
                   
-  TracksLarge:      Resoruces/Tanks/tracksLarge.png
-  TrackSmall:       Resoruces/Tanks/tracksSmall.png
+  TracksLarge:      Resources/Tanks/tracksLarge.png
+  TrackSmall:       Resources/Tanks/tracksSmall.png
                   
 //Smoke          
-  SmokeGrey0:       Resoruces/Smoke/smokeGrey0.png
-  SmokeGrey1:       Resoruces/Smoke/smokeGrey1.png
-  SmokeGrey2:       Resoruces/Smoke/smokeGrey2.png
-  SmokeGrey3:       Resoruces/Smoke/smokeGrey3.png
-  SmokeGrey4:       Resoruces/Smoke/smokeGrey4.png
-  SmokeGrey5:       Resoruces/Smoke/smokeGrey5.png
+  SmokeGrey0:       Resources/Smoke/smokeGrey0.png
+  SmokeGrey1:       Resources/Smoke/smokeGrey1.png
+  SmokeGrey2:       Resources/Smoke/smokeGrey2.png
+  SmokeGrey3:       Resources/Smoke/smokeGrey3.png
+  SmokeGrey4:       Resources/Smoke/smokeGrey4.png
+  SmokeGrey5:       Resources/Smoke/smokeGrey5.png
                   
-  SmokeOrange0:     Resoruces/Smoke/smokeOrange0.png
-  SmokeOrange1:     Resoruces/Smoke/smokeOrange1.png
-  SmokeOrange2:     Resoruces/Smoke/smokeOrange2.png
-  SmokeOrange3:     Resoruces/Smoke/smokeOrange3.png
-  SmokeOrange4:     Resoruces/Smoke/smokeOrange4.png
-  SmokeOrange5:     Resoruces/Smoke/smokeOrange5.png
+  SmokeOrange0:     Resources/Smoke/smokeOrange0.png
+  SmokeOrange1:     Resources/Smoke/smokeOrange1.png
+  SmokeOrange2:     Resources/Smoke/smokeOrange2.png
+  SmokeOrange3:     Resources/Smoke/smokeOrange3.png
+  SmokeOrange4:     Resources/Smoke/smokeOrange4.png
+  SmokeOrange5:     Resources/Smoke/smokeOrange5.png
                   
-  SmokeWhite0:      Resoruces/Smoke/smokeWhite0.png
-  SmokeWhite1:      Resoruces/Smoke/smokeWhite1.png
-  SmokeWhite2:      Resoruces/Smoke/smokeWhite2.png
-  SmokeWhite3:      Resoruces/Smoke/smokeWhite3.png
-  SmokeWhite4:      Resoruces/Smoke/smokeWhite4.png
-  SmokeWhite5:      Resoruces/Smoke/smokeWhite5.png
+  SmokeWhite0:      Resources/Smoke/smokeWhite0.png
+  SmokeWhite1:      Resources/Smoke/smokeWhite1.png
+  SmokeWhite2:      Resources/Smoke/smokeWhite2.png
+  SmokeWhite3:      Resources/Smoke/smokeWhite3.png
+  SmokeWhite4:      Resources/Smoke/smokeWhite4.png
+  SmokeWhite5:      Resources/Smoke/smokeWhite5.png
                   
-  SmokeYellow0:     Resoruces/Smoke/smokeYellow0.png
-  SmokeYellow1:     Resoruces/Smoke/smokeYellow1.png
-  SmokeYellow2:     Resoruces/Smoke/smokeYellow2.png
-  SmokeYellow3:     Resoruces/Smoke/smokeYellow3.png
-  SmokeYellow4:     Resoruces/Smoke/smokeYellow4.png
-  SmokeYellow5:     Resoruces/Smoke/smokeYellow5.png
+  SmokeYellow0:     Resources/Smoke/smokeYellow0.png
+  SmokeYellow1:     Resources/Smoke/smokeYellow1.png
+  SmokeYellow2:     Resources/Smoke/smokeYellow2.png
+  SmokeYellow3:     Resources/Smoke/smokeYellow3.png
+  SmokeYellow4:     Resources/Smoke/smokeYellow4.png
+  SmokeYellow5:     Resources/Smoke/smokeYellow5.png
                   
 //Obstacles       
-  BarrelGreenUp:    Resoruces/Obstacles/barrelGreen_up.png
-  BarrelRedUp:      Resoruces/Obstacles/barrelRed_up.png
-  BarrelGreyUp:     Resoruces/Obstacles/barrelGrey_up.png
-  Oil:              Resoruces/Obstacles/oil.png
-  SandBagBeige:     Resoruces/Obstacles/sandbagBeige.png
-  SandBagBrown      Resoruces/Obstacles/sandbagBrown.png
+  BarrelGreenUp:    Resources/Obstacles/barrelGreen_up.png
+  BarrelRedUp:      Resources/Obstacles/barrelRed_up.png
+  BarrelGreyUp:     Resources/Obstacles/barrelGrey_up.png
+  Oil:              Resources/Obstacles/oil.png
+  SandBagBeige:     Resources/Obstacles/sandbagBeige.png
+  SandBagBrown      Resources/Obstacles/sandbagBrown.png
                   
 //Environment     
-  Dirt:             Resoruces/Environment/dirt.png
-  Grass:            Resoruces/Environment/grass.png
-  Sand:             Resoruces/Environment/sand.png
-  TreeLarge:        Resoruces/Environment/treeLarge.png
-  TreeSmall:        Resoruces/Environment/treeSmall.png
+  Dirt:             Resources/Environment/dirt.png
+  Grass:            Resources/Environment/grass.png
+  Sand:             Resources/Environment/sand.png
+  TreeLarge:        Resources/Environment/treeLarge.png
+  TreeSmall:        Resources/Environment/treeSmall.png
                   
 //Bullets         
-  Bullet Beige:     Resoruces/Bullets/bulletBeige_outline.png
-  Bullet Silver:    Resoruces/Bullets/bulletSilver_outline.png
-  Bullet Blue:      Resoruces/Bullets/bulletBlue_outline.png
-  Bullet Green:     Resoruces/Bullets/bulletGreen_outline.png
-  Bullet Red:       Resoruces/Bullets/bulletRed_outline.png
-  Bullet Yellow:    Resoruces/Bullets/bulletYellow_outline.png
+  Bullet Beige:     Resources/Bullets/bulletBeige_outline.png
+  Bullet Silver:    Resources/Bullets/bulletSilver_outline.png
+  Bullet Blue:      Resources/Bullets/bulletBlue_outline.png
+  Bullet Green:     Resources/Bullets/bulletGreen_outline.png
+  Bullet Red:       Resources/Bullets/bulletRed_outline.png
+  Bullet Yellow:    Resources/Bullets/bulletYellow_outline.png

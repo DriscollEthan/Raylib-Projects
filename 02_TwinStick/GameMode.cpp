@@ -45,22 +45,22 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/Default.png");
     TextureManagerRef->SetTexture(ImageLoader, 0);
 
-    ImageLoader.Load("Resoruces/Tanks/tankBlue_outline.png");
+    ImageLoader.Load("Resources/Tanks/tankBlue_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 1);
 
-    ImageLoader.Load("Resoruces/Tanks/barrelBlue_outline.png");
+    ImageLoader.Load("Resources/Tanks/barrelBlue_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 2);
 
-    ImageLoader.Load("Resoruces/Bullets/bulletBlue_outline.png");
+    ImageLoader.Load("Resources/Bullets/bulletBlue_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 3);
 
-    ImageLoader.Load("Resoruces/Tanks/tankRed_outline.png");
+    ImageLoader.Load("Resources/Tanks/tankRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 4);
 
-    ImageLoader.Load("Resoruces/Tanks/barrelRed_outline.png");
+    ImageLoader.Load("Resources/Tanks/barrelRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 5);
 
-    ImageLoader.Load("Resoruces/Bullets/bulletRed_outline.png");
+    ImageLoader.Load("Resources/Bullets/bulletRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 6);
   }
 
