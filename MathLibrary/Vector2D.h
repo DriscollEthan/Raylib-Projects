@@ -390,6 +390,11 @@ namespace Driscoll
 			return !(Equals(_otherVector));
 		}
 
+		bool operator !=(const float _otherFloat) const
+		{
+			return !(x == _otherFloat && y == _otherFloat);
+		}
+
 		friend std::ostream& operator<<(std::ostream& _stream, const Vector2D& _vector2D)
 		{
 			_stream << "x: " << _vector2D.x << ", y: " << _vector2D.y;

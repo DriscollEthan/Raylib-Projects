@@ -116,7 +116,11 @@ void Character::Update()
 
 		//Using the newly Updated Movement Vector, call movement.
 		Move();
-		SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
+
+		if (MovementVector != 0)
+		{
+			SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
+		}
 
 		//Update Turret Vars
 		//Turret Look in RADIANS
