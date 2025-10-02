@@ -69,17 +69,15 @@ void GameMode::BeginPlay()
   }
 
   //CREATE PLAYER
-  PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(), 5.0f, 10.0f, 4.5f);
+  PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 10.0f, 4.5f);
   PlayerRef->SetTextureManagerRef(TextureManagerRef);
-  PlayerRef->SetHitboxRadius(20.0f);
   PlayerRef->BeginPlay();
 
   //CREATE ENEMIES
   EnemyRefs = new Enemy[10];
   for (int i = 0; i < 10; ++i)
   {
-    EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 4, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(), 3.5f, 3.0f, 2.5f };
-    EnemyRefs[i].SetHitboxRadius(25.0f);
+    EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 4, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 3.5f, 3.0f, 2.5f };
     EnemyRefs[i].SetPlayerRef(PlayerRef);
     EnemyRefs[i].SetTimer(Timer(4.0f, 1.0f));
     EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);

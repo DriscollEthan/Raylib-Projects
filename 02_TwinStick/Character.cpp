@@ -57,7 +57,6 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	/* @todo: UPDATE GUNNER NEXT! */
 	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 2, {0.5f, 1.f}, HitboxData(), 60, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);

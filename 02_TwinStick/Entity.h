@@ -53,6 +53,11 @@ struct HitboxData
 		HitboxRadius = 0.f;
 	}
 
+	HitboxData(float _radius)
+	{
+		HitboxRadius = _radius;
+	}
+
 	HitboxData(const HitboxData& _other)
 	{
 		Position = _other.Position;
