@@ -80,6 +80,7 @@ void Bullet::Update()
 	case Active:
 		Entity::Update();
 		Move();
+		SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
 		TimeAlive += GetFrameTime();
 		break;
 	case Inactive:

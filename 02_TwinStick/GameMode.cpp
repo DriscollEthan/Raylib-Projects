@@ -26,7 +26,7 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(7);
+  TextureManagerRef = new TextureManager(8);
 
   /* Texture List: (TOTAL = 7)
    * 0 = DEFAULT (ALWAYS DEFAULT)
@@ -36,6 +36,7 @@ void GameMode::BeginPlay()
    * 4 = Enemy Image
    * 5 = Enemy Turret Image
    * 6 = Enemy Bullet Image
+   * 7 = Mouse Image
    */
 
   //SET TEXTURES
@@ -62,6 +63,9 @@ void GameMode::BeginPlay()
 
     ImageLoader.Load("Resources/Bullets/bulletRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 6);
+
+    ImageLoader.Load("Resources/target_round_b.png");
+    TextureManagerRef->SetTexture(ImageLoader, 7);
   }
 
   //CREATE PLAYER
@@ -74,7 +78,7 @@ void GameMode::BeginPlay()
   EnemyRefs = new Enemy[10];
   for (int i = 0; i < 10; ++i)
   {
-    EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(), 3.5f, 3.0f, 2.5f };
+    EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 4, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(), 3.5f, 3.0f, 2.5f };
     EnemyRefs[i].SetHitboxRadius(25.0f);
     EnemyRefs[i].SetPlayerRef(PlayerRef);
     EnemyRefs[i].SetTimer(Timer(4.0f, 1.0f));
@@ -91,7 +95,7 @@ void GameMode::Update()
     if (EnemyRefs[i].GetIsAlive())
     {
       PlayerRef->GetTurretRef()->BulletCollisionCheck(EnemyRefs[i]);
-      //EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
+      EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
     }
   }
 
@@ -107,6 +111,10 @@ void GameMode::Update()
 
 void GameMode::Draw()
 {
+  //DRAW MOUSE
+  raylib::Texture& MouseTexture = TextureManagerRef->GetTexture(7);
+    MouseTexture.Draw(GetMousePosition().x - (MouseTexture.GetWidth() / 2), GetMousePosition().y - (MouseTexture.GetHeight() / 2));
+
   //DRAW PLAYER
   PlayerRef->Draw();
 

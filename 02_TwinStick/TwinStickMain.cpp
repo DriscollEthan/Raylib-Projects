@@ -28,9 +28,6 @@ int main()
 
 	//BEGIN PLAY
 	TankGameMode->BeginPlay();
-
-	//Mouse Texture
-	raylib::Texture& MouseTexture = TankGameMode->GetTextureManagerRef()->GetTexture(3);
 	
 	/*** *** ***/
 
@@ -48,8 +45,6 @@ int main()
 			Window.ClearBackground(DARKGRAY);
 
 			TankGameMode->Draw();
-
-			MouseTexture.Draw(GetMousePosition().x - (MouseTexture.GetWidth() / 2), GetMousePosition().y - (MouseTexture.GetHeight() / 2));
 		}
 	}
 

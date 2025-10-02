@@ -87,7 +87,7 @@ void Entity::Draw()
 			raylib::Rectangle(0, 0, (float)texture.GetWidth(), (float)texture.GetHeight()),																																								// SourceRec
 			raylib::Rectangle(GetWorldPosition().x, GetWorldPosition().y, (float)texture.GetWidth() * GetWorldScale().x, (float)texture.GetHeight() * GetWorldScale().y),	// DestRec
 			raylib::Vector2((float)texture.GetWidth() * Origin.x * GetWorldScale().x, (float)texture.GetHeight() * Origin.y * GetWorldScale().y),											// Origin
-			GetWorldRotation() * Driscoll::Rad2Deg,	// Rotation
+			(GetWorldRotation() * Driscoll::Rad2Deg) + 90.0f,	// Rotation
 			Driscoll::WHITE // Tint
 		);
 	}
