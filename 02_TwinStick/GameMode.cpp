@@ -26,9 +26,9 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(8);
+  TextureManagerRef = new TextureManager(11);
 
-  /* Texture List: (TOTAL = 7)
+  /* Texture List: (TOTAL = 11)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Player Turret Image
@@ -37,6 +37,9 @@ void GameMode::BeginPlay()
    * 5 = Enemy Turret Image
    * 6 = Enemy Bullet Image
    * 7 = Mouse Image
+   * 8 = Dirt Background Image
+   * 9 = Grass Background Image
+   * 10 = Sand Background Image
    */
 
   //SET TEXTURES
@@ -52,7 +55,7 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/Tanks/barrelBlue_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 2);
 
-    ImageLoader.Load("Resources/Bullets/bulletBlue_outline.png");
+    ImageLoader.Load("Resources/Bullets/bulletBlueSilver_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 3);
 
     ImageLoader.Load("Resources/Tanks/tankRed_outline.png");
@@ -61,11 +64,20 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/Tanks/barrelRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 5);
 
-    ImageLoader.Load("Resources/Bullets/bulletRed_outline.png");
+    ImageLoader.Load("Resources/Bullets/bulletRedSilver_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 6);
 
     ImageLoader.Load("Resources/target_round_b.png");
     TextureManagerRef->SetTexture(ImageLoader, 7);
+
+    ImageLoader.Load("Resources/Environment/dirt.png");
+    TextureManagerRef->SetTexture(ImageLoader, 8);
+
+    ImageLoader.Load("Resources/Environment/grass.png");
+    TextureManagerRef->SetTexture(ImageLoader, 9);
+
+    ImageLoader.Load("Resources/Environment/sand.png");
+    TextureManagerRef->SetTexture(ImageLoader, 10);
   }
 
   //CREATE PLAYER
@@ -109,16 +121,51 @@ void GameMode::Update()
 
 void GameMode::Draw()
 {
-  //DRAW MOUSE
-  raylib::Texture& MouseTexture = TextureManagerRef->GetTexture(7);
-    MouseTexture.Draw(GetMousePosition().x - (MouseTexture.GetWidth() / 2), GetMousePosition().y - (MouseTexture.GetHeight() / 2));
+  //Draw Background
+  int EnvironmentCount = 3;
+  int NextEnvironmentPosiiton = GlobalVariables.ScreenX / (3 * TextureManagerRef->GetTexture(8).GetWidth());
+  int HowManyImagesPerColumn = GlobalVariables.ScreenY / TextureManagerRef->GetTexture(8).GetHeight();
 
-  //DRAW PLAYER
-  PlayerRef->Draw();
+  for (int i = 0; i < EnvironmentCount; ++i)
+  {
+    raylib::Texture& texture = TextureManagerRef->GetTexture(8);
+    for (int j = 0; j < NextEnvironmentPosiiton; ++j)
+    {
+      for (int k = 0; k < HowManyImagesPerColumn; ++k)
+      {
+        texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
+      }
+    }
+
+    texture = TextureManagerRef->GetTexture(9);
+    for (int j = NextEnvironmentPosiiton; j < NextEnvironmentPosiiton * 2; ++j)
+    {
+      for (int k = 0; k < HowManyImagesPerColumn; ++k)
+      {
+        texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
+      }
+    }
+
+    TextureManagerRef->GetTexture(10);
+    for (int j = NextEnvironmentPosiiton * 2; j < NextEnvironmentPosiiton * 3; ++j)
+    {
+      for (int k = 0; k < HowManyImagesPerColumn; ++k)
+      {
+        texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
+      }
+    }
+  }
 
   //DRAW ENEMIES
   for (int i = 0; i < 10; ++i)
   {
     EnemyRefs[i].Draw();
   }
+
+  //DRAW PLAYER
+  PlayerRef->Draw();
+
+  //DRAW MOUSE
+  raylib::Texture& MouseTexture = TextureManagerRef->GetTexture(7);
+  MouseTexture.Draw(GetMousePosition().x - (MouseTexture.GetWidth() / 2), GetMousePosition().y - (MouseTexture.GetHeight() / 2));
 }

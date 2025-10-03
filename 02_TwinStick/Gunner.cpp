@@ -117,8 +117,8 @@ void Gunner::Shoot(float _speed, float _lifetime)
 	raylib::Texture& texture = GetTextureManagerRef()->GetTexture(TextureIndex);
 
 	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::CosDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg), Driscoll::SinDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg) };
-	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { ((texture.GetWidth() * unitVectorBasedOnCurrentRotation.x) + GetWorldPosition().x),
-		((texture.GetHeight() * unitVectorBasedOnCurrentRotation.y) + GetWorldPosition().y)};
+	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { (texture.GetHeight() * unitVectorBasedOnCurrentRotation.x + GetWorldPosition().x),
+		(texture.GetHeight() * unitVectorBasedOnCurrentRotation.y + GetWorldPosition().y)};
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;
