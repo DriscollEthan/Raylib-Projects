@@ -126,8 +126,6 @@ void GameMode::Draw()
   int NextEnvironmentPosiiton = GlobalVariables.ScreenX / (3 * TextureManagerRef->GetTexture(8).GetWidth());
   int HowManyImagesPerColumn = GlobalVariables.ScreenY / TextureManagerRef->GetTexture(8).GetHeight();
 
-  for (int i = 0; i < EnvironmentCount; ++i)
-  {
     raylib::Texture& texture = TextureManagerRef->GetTexture(8);
     for (int j = 0; j < NextEnvironmentPosiiton; ++j)
     {
@@ -154,7 +152,6 @@ void GameMode::Draw()
         texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
       }
     }
-  }
 
   //DRAW ENEMIES
   for (int i = 0; i < 10; ++i)
