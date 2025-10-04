@@ -55,11 +55,11 @@ void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
   //Init Vars
-  Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 5, { 0.5f, 1.f }, HitboxData(), 3, 6);
+  Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 5, { 0.5f, 1.f }, HitboxData(), 5, 6);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
   Turret->SetParent(this);
   SetLocalRotation(0);
-  SetHealth(2);
+  SetHealth(4);
 
   Turret->BeginPlay();
 }

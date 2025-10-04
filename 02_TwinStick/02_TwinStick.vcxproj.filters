@@ -103,5 +103,8 @@
     <Text Include="Resource File List.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="HealthIdeas.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

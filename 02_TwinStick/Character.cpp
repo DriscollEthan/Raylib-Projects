@@ -150,6 +150,17 @@ void Character::Draw()
 {
 	if (bIsAlive)
 	{
+		//Draw Tracks
+		//raylib::Texture& trackTexture = TextureManagerRef->GetTexture(TextureIndex);
+		//
+		//Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::CosDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg), Driscoll::SinDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg) };
+		//Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { (trackTexture.GetHeight() * unitVectorBasedOnCurrentRotation.x + GetWorldPosition().x),
+		//	(trackTexture.GetHeight() * unitVectorBasedOnCurrentRotation.y + GetWorldPosition().y) };
+		//
+		//trackTexture = TextureManagerRef->GetTexture(9);
+		//texture.Draw(spawnPositionBasedOnEndOfTurret);
+
+
 		Player::Draw();
 		Turret->Draw();
 	}

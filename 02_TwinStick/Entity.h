@@ -123,6 +123,7 @@ protected:
 		Driscoll::Vector2D Origin;
 		Driscoll::Matrix3 LocalMatrix;
 		Driscoll::Matrix3 WorldMatrix;
+		Driscoll::Color DrawColor;
 
 	//Collision Data
 		HitboxData Hitbox;
@@ -204,6 +205,13 @@ public:
 	 */
 	Driscoll::Vector2D GetWorldScale();
 
+	/*
+	 * Get My Draw Color:
+	 * Returns My Draw Color as a Driscoll::Color
+	 */
+	Driscoll::Color GetDrawColor();
+
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* ENTITY SPECIFIC SET FUNCTION */
@@ -215,6 +223,8 @@ public:
 		void SetLocalScale(Driscoll::Vector2D _newScale);
 		//Set Local Rotation IN RADIANS
 		void SetLocalRotation(float _newRotation);
+		//Set Draw Color
+		void SetDrawColor(Driscoll::Color _newDrawColor);
 
 
 	//Set Hitbox

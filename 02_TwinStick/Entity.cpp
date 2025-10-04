@@ -15,6 +15,7 @@ Entity::Entity(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector
 	Hitbox = _hitbox;
 	MovementVector = Driscoll::Vector2D();
 	Speed = _speed;
+	DrawColor = Driscoll::WHITE;
 }
 
 //Copy Constructor
@@ -27,6 +28,7 @@ Entity::Entity(const Entity& _other)
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
+	DrawColor = _other.DrawColor;
 }
 
 //Copy Assignment
@@ -39,6 +41,7 @@ Entity Entity::operator=(const Entity& _other)
 	Hitbox = _other.Hitbox;
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
+	DrawColor = _other.DrawColor;
 	return *this;
 }
 
@@ -88,7 +91,7 @@ void Entity::Draw()
 			raylib::Rectangle(GetWorldPosition().x, GetWorldPosition().y, (float)texture.GetWidth() * GetWorldScale().x, (float)texture.GetHeight() * GetWorldScale().y),	// DestRec
 			raylib::Vector2((float)texture.GetWidth() * Origin.x * GetWorldScale().x, (float)texture.GetHeight() * Origin.y * GetWorldScale().y),											// Origin
 			(GetWorldRotation() * Driscoll::Rad2Deg) + 90.0f,	// Rotation
-			Driscoll::WHITE // Tint
+			DrawColor // Tint
 		);
 	}
 }
@@ -155,6 +158,11 @@ Driscoll::Vector2D Entity::GetWorldScale()
 	return Driscoll::Vector2D(WorldMatrix.axis[0].Magnitude(), WorldMatrix.axis[1].Magnitude());
 }
 
+Driscoll::Color Entity::GetDrawColor()
+{
+	return DrawColor;
+}
+
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
@@ -177,6 +185,12 @@ void Entity::SetLocalScale(Driscoll::Vector2D _newScale)
 void Entity::SetLocalRotation(float _newRotation)
 {
 	LocalData.LocalRotation = _newRotation;
+}
+
+//Set Draw Color
+void Entity::SetDrawColor(Driscoll::Color _newDrawColor)
+{
+	DrawColor = _newDrawColor;
 }
 
 //Set Radius

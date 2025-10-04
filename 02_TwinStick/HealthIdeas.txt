@@ -1,0 +1,10 @@
+Health Bar like normal
+
+
+Cracks and Change Color to show dying out
+
+Turret = Health bar, White - Black
+
+Tanks Flashes with 1 hit left,
+
+4 hits show in turret, last live shows in flashing

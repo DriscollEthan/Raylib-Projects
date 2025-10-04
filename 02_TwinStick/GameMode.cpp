@@ -26,9 +26,9 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(11);
+  TextureManagerRef = new TextureManager(10);
 
-  /* Texture List: (TOTAL = 11)
+  /* Texture List: (TOTAL = 10)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Player Turret Image
@@ -38,8 +38,7 @@ void GameMode::BeginPlay()
    * 6 = Enemy Bullet Image
    * 7 = Mouse Image
    * 8 = Dirt Background Image
-   * 9 = Grass Background Image
-   * 10 = Sand Background Image
+   * 9 = Tire Tracks Large
    */
 
   //SET TEXTURES
@@ -52,7 +51,7 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/Tanks/tankBlue_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 1);
 
-    ImageLoader.Load("Resources/Tanks/barrelBlue_outline.png");
+    ImageLoader.Load("Resources/Tanks/barrelWhite_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 2);
 
     ImageLoader.Load("Resources/Bullets/bulletBlueSilver_outline.png");
@@ -73,15 +72,12 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/Environment/dirt.png");
     TextureManagerRef->SetTexture(ImageLoader, 8);
 
-    ImageLoader.Load("Resources/Environment/grass.png");
+    ImageLoader.Load("Resources/Tanks/tracksLarge.png");
     TextureManagerRef->SetTexture(ImageLoader, 9);
-
-    ImageLoader.Load("Resources/Environment/sand.png");
-    TextureManagerRef->SetTexture(ImageLoader, 10);
   }
 
   //CREATE PLAYER
-  PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 10.0f, 4.5f);
+  PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 5.0F, 3.5f);
   PlayerRef->SetTextureManagerRef(TextureManagerRef);
   PlayerRef->BeginPlay();
 
@@ -89,9 +85,9 @@ void GameMode::BeginPlay()
   EnemyRefs = new Enemy[10];
   for (int i = 0; i < 10; ++i)
   {
-    EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 4, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 3.5f, 3.0f, 2.5f };
+    EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 4, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 3.5f, 3.5f, 3.0f };
     EnemyRefs[i].SetPlayerRef(PlayerRef);
-    EnemyRefs[i].SetTimer(Timer(4.0f, 1.0f));
+    EnemyRefs[i].SetTimer(Timer(3.0f, 1.0f));
     EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);
     EnemyRefs[i].BeginPlay();
   }
@@ -122,36 +118,21 @@ void GameMode::Update()
 void GameMode::Draw()
 {
   //Draw Background
-  int EnvironmentCount = 3;
-  int NextEnvironmentPosiiton = GlobalVariables.ScreenX / (3 * TextureManagerRef->GetTexture(8).GetWidth());
+  int NextEnvironmentPosiiton = GlobalVariables.ScreenX / TextureManagerRef->GetTexture(8).GetWidth();
   int HowManyImagesPerColumn = GlobalVariables.ScreenY / TextureManagerRef->GetTexture(8).GetHeight();
+  raylib::Texture& backgroundTexture = TextureManagerRef->GetTexture(8);
 
-    raylib::Texture& texture = TextureManagerRef->GetTexture(8);
-    for (int j = 0; j < NextEnvironmentPosiiton; ++j)
-    {
-      for (int k = 0; k < HowManyImagesPerColumn; ++k)
-      {
-        texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
-      }
-    }
 
-    texture = TextureManagerRef->GetTexture(9);
-    for (int j = NextEnvironmentPosiiton; j < NextEnvironmentPosiiton * 2; ++j)
+  for (int j = 0; j < NextEnvironmentPosiiton; ++j)
+  {
+    for (int k = 0; k < HowManyImagesPerColumn; ++k)
     {
-      for (int k = 0; k < HowManyImagesPerColumn; ++k)
-      {
-        texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
-      }
+      //Color Options
+      // 1: 185, 133, 85
+      // 2: 233, 160, 99
+      backgroundTexture.Draw(j * backgroundTexture.GetWidth(), k * backgroundTexture.GetHeight(), Driscoll::Color(185, 133, 85, 255));
     }
-
-    TextureManagerRef->GetTexture(10);
-    for (int j = NextEnvironmentPosiiton * 2; j < NextEnvironmentPosiiton * 3; ++j)
-    {
-      for (int k = 0; k < HowManyImagesPerColumn; ++k)
-      {
-        texture.Draw(j * texture.GetWidth(), k * texture.GetHeight(), Driscoll::WHITE);
-      }
-    }
+  }
 
   //DRAW ENEMIES
   for (int i = 0; i < 10; ++i)
