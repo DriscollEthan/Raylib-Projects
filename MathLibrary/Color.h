@@ -170,5 +170,7 @@ namespace Driscoll
 		inline static Color Orange() { return Color(255, 165, 0, 255); }
 		inline static Color Pink() { return Color(255, 77, 255, 255); }
 		inline static Color Yellow () { return Color(255, 255, 0, 255); }
+		inline static Color Grey() {return Color(128, 128, 128, 255); }
+		inline static Color DarkGrey() {return Color (80, 80, 80, 255); }
   };
 }

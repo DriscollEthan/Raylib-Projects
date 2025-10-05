@@ -9,6 +9,9 @@ Character::Character(LocalData2D _localData, size_t _textureLocation, Driscoll::
 	Turret = nullptr;
 	BulletSpeed = _bulletSpeed;
 	BulletLifetime = _bulletLifetime;
+	bLastHit = false;
+	bFlipFlop = false;
+	SwitchingFrameCounter = 0;
 }
 
 //Copy Constructor
@@ -23,6 +26,9 @@ Character::Character(const Character& _other)
 	Speed = _other.Speed;
 	BulletSpeed = _other.BulletSpeed;
 	BulletLifetime = _other.BulletLifetime;
+	bLastHit = _other.bLastHit;
+	bFlipFlop = _other.bFlipFlop;
+	SwitchingFrameCounter = _other.SwitchingFrameCounter;
 }
 
 //Copy Assignment
@@ -37,6 +43,9 @@ Character Character::operator=(const Character& _other)
 	Speed = _other.Speed;
 	BulletSpeed = _other.BulletSpeed;
 	BulletLifetime = _other.BulletLifetime;
+	bLastHit = _other.bLastHit;
+	bFlipFlop = _other.bFlipFlop;
+	SwitchingFrameCounter = _other.SwitchingFrameCounter;
 	return *this;
 }
 
@@ -57,7 +66,7 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 2, {0.5f, 1.f}, HitboxData(), 60, 3);
+	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 60, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
 	SetLocalRotation(0);
@@ -87,6 +96,23 @@ void Character::Update()
 {
 	if (bIsAlive)
 	{
+		if (bLastHit)
+		{
+			if (++SwitchingFrameCounter > 30)
+			{
+				SwitchingFrameCounter = 0; 
+				bFlipFlop = !bFlipFlop;
+			}
+			if (bFlipFlop)
+			{
+				DrawColor = Driscoll::DARKGREY;
+			}
+			else
+			{
+				DrawColor = Driscoll::WHITE;
+			}
+		}
+
 		//Call Parent Update
 		Player::Update();
 
@@ -150,17 +176,6 @@ void Character::Draw()
 {
 	if (bIsAlive)
 	{
-		//Draw Tracks
-		//raylib::Texture& trackTexture = TextureManagerRef->GetTexture(TextureIndex);
-		//
-		//Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::CosDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg), Driscoll::SinDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg) };
-		//Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { (trackTexture.GetHeight() * unitVectorBasedOnCurrentRotation.x + GetWorldPosition().x),
-		//	(trackTexture.GetHeight() * unitVectorBasedOnCurrentRotation.y + GetWorldPosition().y) };
-		//
-		//trackTexture = TextureManagerRef->GetTexture(9);
-		//texture.Draw(spawnPositionBasedOnEndOfTurret);
-
-
 		Player::Draw();
 		Turret->Draw();
 	}
@@ -169,7 +184,32 @@ void Character::Draw()
 void Character::GotHit()
 {
 	SetHealth(GetHealth() - 1);
-	if (GetHealth() <= 0)
+
+	switch ((int)GetHealth())
+	{
+	case 0:
+		//bool for last hit to flash colors
+		bLastHit = true;
+		break;
+	case 1:
+		//Full Turret
+		Turret->SetTextureIndex(12);
+		break;
+	case 2:
+		//1/4 Turret Left
+		Turret->SetTextureIndex(11);
+		break;
+	case 3:
+		//1/2 Turret Left
+		Turret->SetTextureIndex(10);
+		break;
+	case 4:
+		//3/4 Turret Left
+		Turret->SetTextureIndex(9);
+		break;
+	}
+
+	if (GetHealth() < 0)
 	{
 		SetIsAlive(false);
 	}

@@ -8,6 +8,9 @@ Enemy::Enemy(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D
   RandomMoveToLocation = {};
   BulletSpeed = _bulletSpeed;
   BulletLifetime = _bulletLifetime;
+  bLastHit = false;
+  bFlipFlop = false;
+  SwitchingFrameCounter = 0;
 }
 
 Enemy::Enemy(const Enemy& _other)
@@ -24,6 +27,9 @@ Enemy::Enemy(const Enemy& _other)
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
   TextureManagerRef = _other.TextureManagerRef;
+  bLastHit = _other.bLastHit;
+  bFlipFlop = _other.bFlipFlop;
+  SwitchingFrameCounter = _other.SwitchingFrameCounter;
 }
 
 Enemy& Enemy::operator=(const Enemy& _other)
@@ -40,6 +46,9 @@ Enemy& Enemy::operator=(const Enemy& _other)
   PlayerRef = nullptr;
   ShootingTimer = _other.ShootingTimer;
   TextureManagerRef = _other.TextureManagerRef;
+  bLastHit = _other.bLastHit;
+  bFlipFlop = _other.bFlipFlop;
+  SwitchingFrameCounter = _other.SwitchingFrameCounter;
   return *this;
 }
 
@@ -55,11 +64,11 @@ void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
   //Init Vars
-  Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 5, { 0.5f, 1.f }, HitboxData(), 5, 6);
+  Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 8, { 0.5f, 1.f }, HitboxData(), 5, 4);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
   Turret->SetParent(this);
   SetLocalRotation(0);
-  SetHealth(4);
+  SetHealth(3);
 
   Turret->BeginPlay();
 }
@@ -69,6 +78,23 @@ void Enemy::Update()
   if (bIsAlive)
   {
     Entity::Update();
+
+    if (bLastHit)
+    {
+      if (++SwitchingFrameCounter > 30)
+      {
+        SwitchingFrameCounter = 0;
+        bFlipFlop = !bFlipFlop;
+      }
+      if (bFlipFlop)
+      {
+        DrawColor = Driscoll::DARKGREY;
+      }
+      else
+      {
+        DrawColor = Driscoll::WHITE;
+      }
+    }
 
     if (PlayerRef)
     {
@@ -104,7 +130,24 @@ void Enemy::Draw()
 void Enemy::GotHit()
 {
   SetHealth(GetHealth() - 1);
-  if (GetHealth() <= 0)
+
+  switch ((int)GetHealth())
+  {
+  case 0:
+    //bool for last hit to flash colors
+    bLastHit = true;
+    break;
+  case 1:
+    //Full Turret
+    Turret->SetTextureIndex(12);
+    break;
+  case 2:
+    //1/2 Turret Left
+    Turret->SetTextureIndex(10);
+    break;
+  }
+
+  if (GetHealth() < 0)
   {
     SetIsAlive(false);
   }

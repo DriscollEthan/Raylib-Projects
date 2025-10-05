@@ -22,4 +22,6 @@ namespace Driscoll
 #define ORANGE Color::Orange()
 #define PINK Color::Pink()
 #define YELLOW Color::Yellow()
+#define GREY Color::Grey()
+#define DARKGREY Color::DarkGrey()
 }

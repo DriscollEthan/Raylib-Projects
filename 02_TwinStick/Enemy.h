@@ -115,5 +115,11 @@ protected:
 	float BulletLifetime;
 
 	float Health; 
+
+	bool bLastHit;
+
+	bool bFlipFlop;
+
+	int SwitchingFrameCounter;
 };
 

@@ -45,6 +45,12 @@ protected:
 	//Health
 		int Health;
 
+		bool bLastHit;
+
+		bool bFlipFlop;
+
+		int SwitchingFrameCounter;
+
 
 public:
 	/* FUNCTIONS */
