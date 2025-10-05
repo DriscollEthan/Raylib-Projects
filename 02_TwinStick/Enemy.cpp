@@ -69,6 +69,7 @@ void Enemy::BeginPlay()
   Turret->SetParent(this);
   SetLocalRotation(0);
   SetHealth(3);
+  SetRandomLocation();
 
   Turret->BeginPlay();
 }
