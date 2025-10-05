@@ -105,11 +105,13 @@ void Character::Update()
 			}
 			if (bFlipFlop)
 			{
-				DrawColor = Driscoll::DARKGREY;
+				DrawColor = Driscoll::RED;
+				Turret->SetDrawColor(DrawColor);
 			}
 			else
 			{
 				DrawColor = Driscoll::WHITE;
+				Turret->SetDrawColor(DrawColor);
 			}
 		}
 

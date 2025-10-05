@@ -88,11 +88,13 @@ void Enemy::Update()
       }
       if (bFlipFlop)
       {
-        DrawColor = Driscoll::DARKGREY;
+        DrawColor = Driscoll::DARKRED;
+        Turret->SetDrawColor(DrawColor);
       }
       else
       {
         DrawColor = Driscoll::WHITE;
+        Turret->SetDrawColor(DrawColor);
       }
     }
 

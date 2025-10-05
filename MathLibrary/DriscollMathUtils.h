@@ -14,6 +14,7 @@ namespace Driscoll
 {
 //Macro Color Calls:
 #define RED Color::Red()
+#define DARKRED Color::DarkRed()
 #define GREEN Color::Green()
 #define BLUE Color::Blue()
 #define WHITE Color::White()

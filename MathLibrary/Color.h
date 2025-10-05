@@ -161,16 +161,29 @@ namespace Driscoll
 			}
 		}
 
+		//Reds
 		inline static Color Red() { return Color(255, 0, 0, 255); }
+		inline static Color DarkRed() {return Color(110, 0, 0, 255); }
+
+		//Greens
 		inline static Color Green() { return Color(0, 255, 0, 255); }
+
+		//Blues
 		inline static Color Blue() { return Color(0, 0, 255, 255); }
+
+		//White - Blacks
 		inline static Color White() { return Color(255, 255, 255, 255); }
-		inline static Color Black() { return Color(0, 0, 0, 255); }
-		inline static Color Clear() { return Color(255, 255, 255, 0); }
-		inline static Color Orange() { return Color(255, 165, 0, 255); }
-		inline static Color Pink() { return Color(255, 77, 255, 255); }
-		inline static Color Yellow () { return Color(255, 255, 0, 255); }
 		inline static Color Grey() {return Color(128, 128, 128, 255); }
 		inline static Color DarkGrey() {return Color (80, 80, 80, 255); }
+		inline static Color Black() { return Color(0, 0, 0, 255); }
+		inline static Color Clear() { return Color(255, 255, 255, 0); }
+
+		//Mixtures
+		inline static Color Yellow () { return Color(255, 255, 0, 255); }
+		inline static Color Orange() { return Color(255, 165, 0, 255); }
+		inline static Color Pink() { return Color(255, 77, 255, 255); }
+
+
+
   };
 }
