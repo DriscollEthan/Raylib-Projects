@@ -57,7 +57,7 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/Tanks/tankRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 2);
 
-    ImageLoader.Load("Resources/Bullets/bulletBlueSilver_outline.png");
+    ImageLoader.Load("Resources/Bullets/bulletGreenSilver_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 3);
 
     ImageLoader.Load("Resources/Bullets/bulletRedSilver_outline.png");
