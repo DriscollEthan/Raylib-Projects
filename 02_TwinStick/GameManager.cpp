@@ -2,7 +2,7 @@
 
 GameManager::GameManager()
 {
-
+  bShouldShutdown = false;
 }
 
 GameManager::~GameManager()
@@ -35,4 +35,9 @@ void GameManager::Update()
 void GameManager::Draw()
 {
 
+}
+
+bool GameManager::ShouldShutdown()
+{
+    return bShouldShutdown;
 }

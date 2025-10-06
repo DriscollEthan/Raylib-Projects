@@ -13,5 +13,10 @@ public:
   virtual void Update() override;
   
   virtual void Draw() override;
+
+  virtual bool ShouldShutdown();
+
+protected:
+  bool bShouldShutdown;
 };
 

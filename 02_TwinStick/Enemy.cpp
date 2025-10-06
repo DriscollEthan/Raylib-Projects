@@ -9,8 +9,8 @@ Enemy::Enemy(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D
   BulletSpeed = _bulletSpeed;
   BulletLifetime = _bulletLifetime;
   bLastHit = false;
-  bFlipFlop = false;
-  SwitchingFrameCounter = 0;
+  bFlipFlop = true;
+  SwitchingColorTime = 0.f;
 }
 
 Enemy::Enemy(const Enemy& _other)
@@ -29,7 +29,7 @@ Enemy::Enemy(const Enemy& _other)
   TextureManagerRef = _other.TextureManagerRef;
   bLastHit = _other.bLastHit;
   bFlipFlop = _other.bFlipFlop;
-  SwitchingFrameCounter = _other.SwitchingFrameCounter;
+  SwitchingColorTime = _other.SwitchingColorTime;
 }
 
 Enemy& Enemy::operator=(const Enemy& _other)
@@ -48,7 +48,7 @@ Enemy& Enemy::operator=(const Enemy& _other)
   TextureManagerRef = _other.TextureManagerRef;
   bLastHit = _other.bLastHit;
   bFlipFlop = _other.bFlipFlop;
-  SwitchingFrameCounter = _other.SwitchingFrameCounter;
+  SwitchingColorTime = _other.SwitchingColorTime;
   return *this;
 }
 
@@ -82,20 +82,21 @@ void Enemy::Update()
 
     if (bLastHit)
     {
-      if (++SwitchingFrameCounter > 30)
+      SwitchingColorTime += GetFrameTime();
+      if (SwitchingColorTime > 0.5f)
       {
-        SwitchingFrameCounter = 0;
+        SwitchingColorTime = 0;
         bFlipFlop = !bFlipFlop;
-      }
-      if (bFlipFlop)
-      {
-        DrawColor = Driscoll::DARKRED;
-        Turret->SetDrawColor(DrawColor);
-      }
-      else
-      {
-        DrawColor = Driscoll::WHITE;
-        Turret->SetDrawColor(DrawColor);
+        if (bFlipFlop)
+        {
+          DrawColor = Driscoll::DARKRED;
+          Turret->SetDrawColor(DrawColor);
+        }
+        else
+        {
+          DrawColor = Driscoll::WHITE;
+          Turret->SetDrawColor(DrawColor);
+        }
       }
     }
 
@@ -116,6 +117,9 @@ void Enemy::Update()
 
     //Movement for Enemy using a Random Position On Screen
     MoveToRandomLocation();
+
+    //Call Entity Update to update Matricies and Hitbox Position.
+    Entity::Update();
 
     Turret->Update();
   }
@@ -139,6 +143,8 @@ void Enemy::GotHit()
   case 0:
     //bool for last hit to flash colors
     bLastHit = true;
+    DrawColor = Driscoll::DARKRED;
+    Turret->SetDrawColor(DrawColor);
     break;
   case 1:
     //Full Turret

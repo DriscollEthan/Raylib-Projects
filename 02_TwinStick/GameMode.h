@@ -1,7 +1,15 @@
 #pragma once
 #include "GameManager.h"
-#include "Character.h" //For Player -- Player Manages it's Turret and Bullets
-#include "Enemy.h"     //For Enemy -- Enemy Manages it's Turret and Bullet\
+#include "Character.h"      //For Player -- Player Manages it's Turret and Bullets
+#include "Enemy.h"          //For Enemy -- Enemy Manages it's Turret and Bullet
+#include "MenuObject.h"     //For Buttons -- GameMode Manages Calling Colliisons and Clicks
+
+enum GameState
+{
+  MainMenu,
+  PlayingGame,
+  EndMenu
+};
 
 class GameMode : public GameManager
 {
@@ -20,5 +28,13 @@ protected:
   Character* PlayerRef;
 
   Enemy* EnemyRefs;
+
+  MenuObject* StartButtonRef;
+
+  MenuObject* QuitButtonRef;
+
+  MenuObject* RestartButtonRef;
+
+  GameState CurrentState;
 };
 

@@ -10,8 +10,8 @@ Character::Character(LocalData2D _localData, size_t _textureLocation, Driscoll::
 	BulletSpeed = _bulletSpeed;
 	BulletLifetime = _bulletLifetime;
 	bLastHit = false;
-	bFlipFlop = false;
-	SwitchingFrameCounter = 0;
+	bFlipFlop = true;
+	SwitchingColorTime = 0.f;
 }
 
 //Copy Constructor
@@ -28,7 +28,7 @@ Character::Character(const Character& _other)
 	BulletLifetime = _other.BulletLifetime;
 	bLastHit = _other.bLastHit;
 	bFlipFlop = _other.bFlipFlop;
-	SwitchingFrameCounter = _other.SwitchingFrameCounter;
+	SwitchingColorTime = _other.SwitchingColorTime;
 }
 
 //Copy Assignment
@@ -45,7 +45,7 @@ Character Character::operator=(const Character& _other)
 	BulletLifetime = _other.BulletLifetime;
 	bLastHit = _other.bLastHit;
 	bFlipFlop = _other.bFlipFlop;
-	SwitchingFrameCounter = _other.SwitchingFrameCounter;
+	SwitchingColorTime = _other.SwitchingColorTime;
 	return *this;
 }
 
@@ -98,25 +98,24 @@ void Character::Update()
 	{
 		if (bLastHit)
 		{
-			if (++SwitchingFrameCounter > 30)
+			SwitchingColorTime += GetFrameTime();
+			if (SwitchingColorTime > 0.5f)
 			{
-				SwitchingFrameCounter = 0; 
+				SwitchingColorTime = 0;
 				bFlipFlop = !bFlipFlop;
-			}
-			if (bFlipFlop)
-			{
-				DrawColor = Driscoll::RED;
-				Turret->SetDrawColor(DrawColor);
-			}
-			else
-			{
-				DrawColor = Driscoll::WHITE;
-				Turret->SetDrawColor(DrawColor);
+
+				if (bFlipFlop)
+				{
+					DrawColor = Driscoll::RED;
+					Turret->SetDrawColor(DrawColor);
+				}
+				else
+				{
+					DrawColor = Driscoll::WHITE;
+					Turret->SetDrawColor(DrawColor);
+				}
 			}
 		}
-
-		//Call Parent Update
-		Player::Update();
 
 		//Get Movement Input
 		for (int i = 0; i < 8; ++i)
@@ -168,6 +167,8 @@ void Character::Update()
 			}
 		}
 
+		//Call Parent Update to Update Matricies and Hitbox Position.
+		Player::Update();
 
 		Turret->Update();
 	}
@@ -192,6 +193,8 @@ void Character::GotHit()
 	case 0:
 		//bool for last hit to flash colors
 		bLastHit = true;
+		DrawColor = Driscoll::RED;
+		Turret->SetDrawColor(DrawColor);
 		break;
 	case 1:
 		//Full Turret

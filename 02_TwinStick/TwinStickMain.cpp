@@ -32,7 +32,7 @@ int main()
 	/*** *** ***/
 
 	//Main Game Loop and Entry Point
-	while (!Window.ShouldClose())
+	while (!Window.ShouldClose() && !TankGameMode->ShouldShutdown())
 	{
 		//Update
 		TankGameMode->Update();

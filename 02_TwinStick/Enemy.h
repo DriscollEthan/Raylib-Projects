@@ -120,6 +120,6 @@ protected:
 
 	bool bFlipFlop;
 
-	int SwitchingFrameCounter;
+	float SwitchingColorTime;
 };
 

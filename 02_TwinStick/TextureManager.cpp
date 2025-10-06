@@ -1,5 +1,7 @@
 #include "TextureManager.h"
 
+#include <iostream>
+
 TextureManager::TextureManager(size_t _amountOfTextures)
 {
   TEXTURE_COUNT = _amountOfTextures;
@@ -44,5 +46,12 @@ void TextureManager::SetTexture(raylib::Image _image, size_t _index)
 raylib::Texture& TextureManager::GetTexture(size_t _index)
 {
   //Return the Texture as an Image.
+  if (_index < TEXTURE_COUNT)
+  {
   return TextureArray[_index];
+  }
+  else
+  {
+    std::cout << "\033[31m ERROR: OUT OF BOUNDS \n \033[0m";
+  }
 }
