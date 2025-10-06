@@ -168,8 +168,11 @@ namespace Driscoll
 		//Greens
 		inline static Color Green() { return Color(0, 255, 0, 255); }
 
+
 		//Blues
 		inline static Color Blue() { return Color(0, 0, 255, 255); }
+		inline static Color Cyan() { return Color(0, 255, 255, 255); }
+		inline static Color Teal() { return Color(0, 128, 128, 255); }
 
 		//White - Blacks
 		inline static Color White() { return Color(255, 255, 255, 255); }

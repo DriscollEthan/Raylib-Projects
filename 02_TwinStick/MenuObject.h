@@ -13,7 +13,16 @@ class MenuObject : public Object
 public:
 	/* CONSTRUCTORS & DESTRUCTORS */
 	//Default Constructor
-	MenuObject();
+	MenuObject
+	(
+		Driscoll::Vector2D _worldPosition = {},
+		Driscoll::Vector2D _worldDimensions = {},
+		Driscoll::Color _normalColor = Driscoll::BLACK,
+		Driscoll::Color _hoveredColor = Driscoll::WHITE,
+		Driscoll::Color _textNormalColor = Driscoll::WHITE,
+		Driscoll::Color _textHoveredColor = Driscoll::BLACK,
+		raylib::Text _text = raylib::Text()
+		);
 
 	//Copy Constructor
 	MenuObject(const MenuObject& _other);
@@ -34,6 +43,14 @@ protected:
 
 	Driscoll::Color DrawColor;
 
+	Driscoll::Color NormalColor;
+
+	Driscoll::Color HoveredColor;
+
+	Driscoll::Color TextNormalColor;
+
+	Driscoll::Color TextHoveredColor;
+
 	raylib::Text Text;
 
 public:
@@ -49,25 +66,27 @@ public:
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
-	/* OBJECT SPECIFIC SET FUNCTION */
-	void SetTextureManagerRef(TextureManager* _newRef);
-
-	void SetTextureIndex(size_t _newIndex);
+	/* MENU OBJECT SPECIFIC SET FUNCTION */
 
 	void SetDimensions(Driscoll::Vector2D _newDimensionsInPixels);
 
 	void SetWorldPosition(Driscoll::Vector2D _newPosition);
 
-	void SetTextColor(Driscoll::Color _textColor);
-
 	void SetTextFontSize(int _fontSize);
 
 	void SetText(std::string& _newText);
 
+	void SetNormalColor(Driscoll::Color _newNormalColor);
+
+	void SetHoveredColor(Driscoll::Color _newHoveredColor);
+
+	void SetTextNormalColor(Driscoll::Color _newTextNormalColor);
+
+	void SetTextHoveredColor(Driscoll::Color _newTextHoveredColor);
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* OBJECT SPECIFC FUNCTIONS */
-	TextureManager* GetTextureManagerRef();
 
 	bool CheckCollision(Driscoll::Vector2D _mousePosition, float _mouseHitboxRadius);
 };

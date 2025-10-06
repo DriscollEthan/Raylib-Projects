@@ -31,9 +31,13 @@ protected:
 
   MenuObject* StartButtonRef;
 
+  MenuObject* TitleRef;
+
   MenuObject* QuitButtonRef;
 
   MenuObject* RestartButtonRef;
+
+  MenuObject* WinTextRef;
 
   GameState CurrentState;
 };

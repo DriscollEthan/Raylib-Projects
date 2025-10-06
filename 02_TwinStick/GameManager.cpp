@@ -3,6 +3,7 @@
 GameManager::GameManager()
 {
   bShouldShutdown = false;
+  bShouldRestart = false;
 }
 
 GameManager::~GameManager()
@@ -40,4 +41,9 @@ void GameManager::Draw()
 bool GameManager::ShouldShutdown()
 {
     return bShouldShutdown;
+}
+
+bool GameManager::ShouldRestart()
+{
+    return bShouldRestart;
 }

@@ -15,43 +15,51 @@ int main()
 	GlobalVariables GlobalVars = {};
 		raylib::Window Window(GlobalVars.ScreenX, GlobalVars.ScreenY, "Twin Stick Shooter");
 
-	//Player Setup
-		GameMode* TankGameMode = new GameMode();
+		bool bRESTART = false;
 
-	/*** *** ***/
-
-	SetTargetFPS(60);
-
-	HideCursor();
-
-	/*** *** ***/
-
-	//BEGIN PLAY
-	TankGameMode->BeginPlay();
-	
-	/*** *** ***/
-
-	//Main Game Loop and Entry Point
-	while (!Window.ShouldClose() && !TankGameMode->ShouldShutdown())
-	{
-		//Update
-		TankGameMode->Update();
-
-		/*** *** ***/
-
-		//Draw
-		while (Window.Drawing())
+		do
 		{
-			Window.ClearBackground(DARKGRAY);
+			//Player Setup
+			GameMode* TankGameMode = new GameMode();
 
-			TankGameMode->Draw();
-		}
-	}
+			/*** *** ***/
 
-	/*** *** ***/
+			SetTargetFPS(60);
 
-	//END OF MAIN GAME LOOP
-	delete TankGameMode;
+			HideCursor();
+
+			/*** *** ***/
+
+			//BEGIN PLAY
+			TankGameMode->BeginPlay();
+
+			/*** *** ***/
+
+			//Main Game Loop and Entry Point
+			while (!Window.ShouldClose() && !TankGameMode->ShouldShutdown())
+			{
+				//Update
+				TankGameMode->Update();
+
+				/*** *** ***/
+
+				//Draw
+				while (Window.Drawing())
+				{
+					Window.ClearBackground(DARKGRAY);
+
+					TankGameMode->Draw();
+				}
+			}
+
+			/*** *** ***/
+			bRESTART = TankGameMode->ShouldRestart();
+			
+			//END OF MAIN GAME LOOP
+			delete TankGameMode;
+
+		} while (bRESTART);
+
 
 	/*** *** ***/
 

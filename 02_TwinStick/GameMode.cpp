@@ -64,7 +64,7 @@ void GameMode::BeginPlay()
 
   //SET TEXTURES
   {
-    CurrentState = MainMenu ;
+    CurrentState = MainMenu;
 
     raylib::Image ImageLoader; 
     
@@ -113,27 +113,31 @@ void GameMode::BeginPlay()
 
   //Setup for MainMenu State;
   {
-    StartButtonRef = new MenuObject();
+    raylib::Text setupText = raylib::Text();
+    std::string setupString = std::string("Start Game");
+    setupText.SetText(setupString);
+    setupText.SetFontSize(50);
+    setupText.SetSpacing(5.0f);
+
+    StartButtonRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 400 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
     StartButtonRef->SetTextureManagerRef(TextureManagerRef);
-    StartButtonRef->SetDimensions({ 400, 200 });
-    StartButtonRef->SetWorldPosition({GlobalVariables.ScreenX / 2.f, 300});
-    StartButtonRef->SetTextFontSize(50);
     StartButtonRef->SetTextureIndex(13);
-    StartButtonRef->SetTextColor(Driscoll::WHITE);
-    std::string startText = std::string("Start Game");
-    StartButtonRef->SetText(startText);
     StartButtonRef->BeginPlay();
 
-    QuitButtonRef = new MenuObject();
+    setupString = std::string("Quit Game");
+    setupText.SetText(setupString);
+    QuitButtonRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 800 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
     QuitButtonRef->SetTextureManagerRef(TextureManagerRef);
-    QuitButtonRef->SetDimensions({ 400, 200 });
-    QuitButtonRef->SetWorldPosition({ GlobalVariables.ScreenX / 2.f, 600 });
-    QuitButtonRef->SetTextFontSize(50);
     QuitButtonRef->SetTextureIndex(13);
-    QuitButtonRef->SetTextColor(Driscoll::WHITE);
-    std::string quitText = std::string("Quit Game");
-    QuitButtonRef->SetText(quitText);
     QuitButtonRef->BeginPlay();
+
+    setupString = std::string("Tanky Game");
+    setupText.SetFontSize(75);
+    setupText.SetText(setupString);
+    TitleRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 40 }, { 450, 80 }, Driscoll::TEAL, Driscoll::CLEAR, Driscoll::WHITE, Driscoll::CLEAR, setupText);
+    TitleRef->SetTextureManagerRef(TextureManagerRef);
+    TitleRef->SetTextureIndex(13);
+    TitleRef->BeginPlay();
   }
 
   //Setup for PlayingGame State;
@@ -157,7 +161,24 @@ void GameMode::BeginPlay()
 
   //Setup for EndMenu State;
   {
+    raylib::Text setupText = raylib::Text();
+    std::string setupString = std::string("Restart Game");
+    setupText.SetText(setupString);
+    setupText.SetFontSize(50);
+    setupText.SetSpacing(5.0f);
 
+    RestartButtonRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 400 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    RestartButtonRef->SetTextureManagerRef(TextureManagerRef);
+    RestartButtonRef->SetTextureIndex(13);
+    RestartButtonRef->BeginPlay();
+
+    setupString = std::string("You Win!");
+    setupText.SetText(setupString);
+    setupText.SetFontSize(50);
+    WinTextRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 160 }, { 300, 80 }, Driscoll::GREEN, Driscoll::CLEAR, Driscoll::BLUE, Driscoll::CLEAR, setupText);
+    WinTextRef->SetTextureManagerRef(TextureManagerRef);
+    WinTextRef->SetTextureIndex(13);
+    WinTextRef->BeginPlay();
   }
 }
 
@@ -166,6 +187,10 @@ void GameMode::Update()
   bool bIsStartHovered = false;
   bool bIsQuitHovered = false;
   bool bIsRestartHovered = false;
+
+  bool bEnemiesDead = true;
+
+
   switch (CurrentState)
   {
   case MainMenu:
@@ -186,7 +211,7 @@ void GameMode::Update()
 
     StartButtonRef->Update();
     QuitButtonRef->Update();
-
+    TitleRef->Update();
     break;
 
   case PlayingGame:
@@ -195,9 +220,24 @@ void GameMode::Update()
     {
       if (EnemyRefs[i].GetIsAlive())
       {
+        bEnemiesDead = false;
         PlayerRef->GetTurretRef()->BulletCollisionCheck(EnemyRefs[i]);
         EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
       }
+    }
+
+    if (bEnemiesDead)
+    {
+      CurrentState = EndMenu;
+      break;
+    }
+    else if (!PlayerRef->GetIsAlive())
+    {
+      std::string setupText = std::string("You Lost!");
+      WinTextRef->SetText(setupText);
+      WinTextRef->SetNormalColor(Driscoll::DARKRED);
+      WinTextRef->SetTextNormalColor(Driscoll::PINK);
+      CurrentState = EndMenu;
     }
 
     //UPDATE PLAYER
@@ -211,7 +251,26 @@ void GameMode::Update()
     break;
 
   case EndMenu:
+    //CHECK COLLISIONS
+    bIsRestartHovered = RestartButtonRef->CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      bShouldRestart = true;
+      bShouldShutdown = true;
+      break;
+    }
 
+    bIsQuitHovered = QuitButtonRef->CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      bShouldShutdown = true;
+      break;
+    }
+
+    RestartButtonRef->Update();
+    QuitButtonRef->Update();
+    TitleRef->Update();
+    WinTextRef->Update();
     break;
   }
 }
@@ -223,6 +282,7 @@ void GameMode::Draw()
   case MainMenu:
     StartButtonRef->Draw();
     QuitButtonRef->Draw();
+    TitleRef->Draw();
 
     break;
 
@@ -258,7 +318,10 @@ void GameMode::Draw()
     break;
 
   case EndMenu:
-
+    RestartButtonRef->Draw();
+    QuitButtonRef->Draw();
+    TitleRef->Draw();
+    WinTextRef->Draw();
     break;
   }
 

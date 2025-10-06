@@ -83,7 +83,7 @@ void Enemy::Update()
     if (bLastHit)
     {
       SwitchingColorTime += GetFrameTime();
-      if (SwitchingColorTime > 0.5f)
+      if (SwitchingColorTime > 0.25f)
       {
         SwitchingColorTime = 0;
         bFlipFlop = !bFlipFlop;

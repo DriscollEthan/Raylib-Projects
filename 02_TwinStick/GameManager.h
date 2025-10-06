@@ -16,7 +16,11 @@ public:
 
   virtual bool ShouldShutdown();
 
+  virtual bool ShouldRestart();
+
 protected:
   bool bShouldShutdown;
+
+  bool bShouldRestart;
 };
 

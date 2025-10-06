@@ -15,14 +15,22 @@ namespace Driscoll
 //Macro Color Calls:
 #define RED Color::Red()
 #define DARKRED Color::DarkRed()
+
 #define GREEN Color::Green()
+
 #define BLUE Color::Blue()
+#define CYAN Color::Cyan()
+#define TEAL Color::Teal()
+
 #define WHITE Color::White()
 #define BLACK Color::Black()
-#define CLEAR Color::Clear()
-#define ORANGE Color::Orange()
-#define PINK Color::Pink()
-#define YELLOW Color::Yellow()
-#define GREY Color::Grey()
 #define DARKGREY Color::DarkGrey()
+#define GREY Color::Grey()
+#define CLEAR Color::Clear()
+
+#define ORANGE Color::Orange()
+
+#define PINK Color::Pink()
+
+#define YELLOW Color::Yellow()
 }

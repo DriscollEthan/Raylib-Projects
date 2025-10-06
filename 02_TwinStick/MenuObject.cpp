@@ -1,36 +1,44 @@
 #include "MenuObject.h"
 
-MenuObject::MenuObject()
+MenuObject::MenuObject(Driscoll::Vector2D _worldPosition, 
+  Driscoll::Vector2D _worldDimensions, 
+  Driscoll::Color _normalColor, 
+  Driscoll::Color _hoveredColor,
+  Driscoll::Color _textNormalColor,
+  Driscoll::Color _textHoveredColor,
+  raylib::Text _text)
 {
-  TextureManagerRef = nullptr;
-  TextureIndex = 0;
-  WorldDimensions = Driscoll::Vector2D();
-  WorldPosition = Driscoll::Vector2D();
-  DrawColor = Driscoll::BLACK;
+  WorldPosition = _worldPosition;
+  WorldDimensions = _worldDimensions;
+  NormalColor = _normalColor;
+  HoveredColor = _hoveredColor;
+  DrawColor = NormalColor;
+  TextNormalColor = _textNormalColor;
+  TextHoveredColor = _textHoveredColor;
+  Text = _text;
   MouseColliding = false;
-  Text = raylib::Text();
 }
 
 MenuObject::MenuObject(const MenuObject& _other)
 {
-  TextureManagerRef = _other.TextureManagerRef;
-  TextureIndex = _other.TextureIndex;
-  WorldDimensions = _other.WorldDimensions;
   WorldPosition = _other.WorldPosition;
+  WorldDimensions = _other.WorldDimensions;
+  NormalColor = _other.NormalColor;
+  HoveredColor = _other.HoveredColor;
   DrawColor = _other.DrawColor;
-  MouseColliding = _other.MouseColliding;
   Text = _other.Text;
+  MouseColliding = false;
 }
 
 MenuObject MenuObject::operator=(const MenuObject& _other)
 {
-  TextureManagerRef = _other.TextureManagerRef;
-  TextureIndex = _other.TextureIndex;
-  WorldDimensions = _other.WorldDimensions;
   WorldPosition = _other.WorldPosition;
+  WorldDimensions = _other.WorldDimensions;
+  NormalColor = _other.NormalColor;
+  HoveredColor = _other.HoveredColor;
   DrawColor = _other.DrawColor;
-  MouseColliding = _other.MouseColliding;
   Text = _other.Text;
+  MouseColliding = false;
   return *this;
 }
 
@@ -41,7 +49,7 @@ MenuObject::~MenuObject()
 
 void MenuObject::BeginPlay()
 {
-  Text.SetSpacing(5.f);
+
 }
 
 void MenuObject::Update()
@@ -49,11 +57,13 @@ void MenuObject::Update()
   if (MouseColliding)
   {
     //Set Hover Color if Mouse Colliding;
-    DrawColor = Driscoll::GREY;
+    DrawColor = HoveredColor;
+    Text.SetColor(TextHoveredColor);
   }
   else
   {
-    DrawColor = Driscoll::BLACK;
+    DrawColor = NormalColor;
+    Text.SetColor(TextNormalColor);
   }
 }
 
@@ -77,16 +87,6 @@ void MenuObject::Draw()
   Text.Draw(position - Driscoll::Vector2D(textWidth / 2, Text.GetFontSize() / 2));
 }
 
-void MenuObject::SetTextureManagerRef(TextureManager* _newRef)
-{
-  TextureManagerRef = _newRef;
-}
-
-void MenuObject::SetTextureIndex(size_t _newIndex)
-{
-  TextureIndex = _newIndex;
-}
-
 void MenuObject::SetDimensions(Driscoll::Vector2D _newDimensionsInPixels)
 {
   WorldDimensions = _newDimensionsInPixels;
@@ -95,11 +95,6 @@ void MenuObject::SetDimensions(Driscoll::Vector2D _newDimensionsInPixels)
 void MenuObject::SetWorldPosition(Driscoll::Vector2D _newPosition)
 {
   WorldPosition = _newPosition;
-}
-
-void MenuObject::SetTextColor(Driscoll::Color _textColor)
-{
-  Text.SetColor(_textColor);
 }
 
 void MenuObject::SetTextFontSize(int _fontSize)
@@ -112,9 +107,24 @@ void MenuObject::SetText(std::string& _newText)
   Text.SetText(_newText);
 }
 
-TextureManager* MenuObject::GetTextureManagerRef()
+void MenuObject::SetNormalColor(Driscoll::Color _newNormalColor)
 {
-  return TextureManagerRef;
+  NormalColor = _newNormalColor;
+}
+
+void MenuObject::SetHoveredColor(Driscoll::Color _newHoveredColor)
+{
+  HoveredColor = _newHoveredColor;
+}
+
+void MenuObject::SetTextNormalColor(Driscoll::Color _newTextNormalColor)
+{
+  TextNormalColor = _newTextNormalColor;
+}
+
+void MenuObject::SetTextHoveredColor(Driscoll::Color _newTextHoveredColor)
+{
+  TextHoveredColor = _newTextHoveredColor;
 }
 
 bool MenuObject::CheckCollision(Driscoll::Vector2D _mousePosition, float _mouseHitboxRadius)
