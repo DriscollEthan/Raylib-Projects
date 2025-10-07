@@ -71,6 +71,7 @@ void Character::BeginPlay()
 	Turret->SetParent(this);
 	SetLocalRotation(0);
 	SetHealth(5);
+	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.15f);
 
 	//Setup Input Keybinds
 	{
@@ -176,8 +177,36 @@ void Character::Update()
 	//When Dead DO dead sprite Drawing 
 	else
 	{
+		DrawColor = Driscoll::WHITE;
 		//Run Timer for DeadSprite Drawing
-		
+		if (DeadExplosionCountingTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
+		{
+			switch (ExplosionIterationCount++)
+			{
+			case 0:
+				TextureIndex = 14;
+				break;
+			case 1:
+				TextureIndex = 15;
+				break;
+			case 2:
+				TextureIndex = 16;
+				break;
+			case 3:
+ 				TextureIndex = 17;
+				break;
+			case 4:
+				TextureIndex = 18;
+				break;
+			case 5:
+				TextureIndex = 19;
+				break;
+			case 6:
+				TextureIndex = 0;
+				break;
+			}
+			DeadExplosionCountingTimer.ResetTimer();
+		}
 	}
 }
 
@@ -192,7 +221,10 @@ void Character::Draw()
 	//Draw Explosion Sprites
 	else
 	{
-		Player::Draw();
+		if (TextureIndex != 0)
+		{
+			Player::Draw();
+		}
 	}
 }
 

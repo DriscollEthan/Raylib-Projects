@@ -120,6 +120,40 @@ void Enemy::Update()
 
     Turret->Update();
   }
+
+  else
+  {
+    DrawColor = Driscoll::WHITE;
+    //Run Timer for DeadSprite Drawing
+    if (DeadExplosionCountingTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
+    {
+      switch (ExplosionIterationCount++)
+      {
+      case 0:
+        TextureIndex = 20;
+        break;
+      case 1:
+        TextureIndex = 21;
+        break;
+      case 2:
+        TextureIndex = 22;
+        break;
+      case 3:
+        TextureIndex = 23;
+        break;
+      case 4:
+        TextureIndex = 24;
+        break;
+      case 5:
+        TextureIndex = 25;
+        break;
+      case 6:
+        TextureIndex = 0;
+        break;
+      }
+      DeadExplosionCountingTimer.ResetTimer();
+    }
+  }
 }
 
 void Enemy::Draw()
@@ -128,6 +162,14 @@ void Enemy::Draw()
   {
     Entity::Draw();
     Turret->Draw();
+  }
+  //Draw Explosion Sprites
+  else
+  {
+    if (TextureIndex != 0)
+    {
+      Entity::Draw();
+    }
   }
 }
 

@@ -67,6 +67,7 @@ void GameMode::BeginPlay()
   //SET TEXTURES
   {
     CurrentState = MainMenu;
+    EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
 
     raylib::Image ImageLoader; 
     
@@ -354,16 +355,22 @@ void GameMode::Update()
 
     if (bEnemiesDead)
     {
-      CurrentState = EndMenu;
-      break;
+      if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
+      {
+        CurrentState = EndMenu;
+        break;
+      }
     }
     else if (!PlayerRef->GetIsAlive())
     {
-      std::string setupText = std::string("You Lost!");
-      MenuObjectRefs[4].SetText(setupText);
-      MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
-      MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
-      CurrentState = EndMenu;
+      if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
+      {
+        std::string setupText = std::string("You Lost!");
+        MenuObjectRefs[4].SetText(setupText);
+        MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
+        MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
+        CurrentState = EndMenu;
+      }
     }
 
     //UPDATE PLAYER

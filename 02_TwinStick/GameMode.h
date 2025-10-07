@@ -33,6 +33,8 @@ protected:
 
   GameState CurrentState;
 
+  Timer EndConditionWaitingTimer;
+
   ///Funny
   int CyclePlayerTank;
 };

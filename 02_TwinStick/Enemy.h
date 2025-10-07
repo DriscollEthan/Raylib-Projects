@@ -129,5 +129,9 @@ protected:
 	bool bFlipFlop;
 
 	float SwitchingColorTime;
+
+	//Dead Stuff
+	Timer DeadExplosionCountingTimer;
+	int ExplosionIterationCount;
 };
 

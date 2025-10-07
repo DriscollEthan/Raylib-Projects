@@ -264,6 +264,11 @@ public:
     CurrentTimeInSeconds = StartTimeInSeconds;
   }
 
+  void ResetTimer()
+  {
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
   
   //Run Timer
 
