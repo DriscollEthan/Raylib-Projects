@@ -35,4 +35,9 @@ public:
   {
     return CurrentTimeInSeconds / 60.0f;
   }
+
+  double GetCurrentTimeInSeconds()
+  {
+    return CurrentTimeInSeconds;
+  }
 };
