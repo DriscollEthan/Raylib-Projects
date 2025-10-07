@@ -1,4 +1,4 @@
-#include "GameMode.h"
+﻿#include "GameMode.h"
 
 #include <string.h>
 
@@ -7,9 +7,7 @@ GameMode::GameMode()
 {
   PlayerRef = nullptr;
   EnemyRefs = nullptr;
-  StartButtonRef = nullptr;
-  QuitButtonRef = nullptr;
-  RestartButtonRef = nullptr;
+  MenuObjectRefs = nullptr;
 }
 
 GameMode::~GameMode()
@@ -26,17 +24,9 @@ GameMode::~GameMode()
   {
     delete TextureManagerRef;
   }
-  if (StartButtonRef)
+  if (MenuObjectRefs)
   {
-    delete StartButtonRef;
-  }
-  if (QuitButtonRef)
-  {
-    delete QuitButtonRef;
-  }
-  if (RestartButtonRef)
-  {
-    delete RestartButtonRef;
+    delete[] MenuObjectRefs;
   }
 }
 
@@ -111,6 +101,18 @@ void GameMode::BeginPlay()
     TextureManagerRef->SetTexture(ImageLoader, 13);
   }
 
+  /* Menu Object List:
+   *  0. Start Game Button
+   *  1. Quit Game Button
+   *  2. Restart Game Button
+   *  3. Title Text
+   *  4. Win/Lose Text
+   *  5. Tutorial Text
+   *  6. Credits Text
+   */
+
+  MenuObjectRefs = new MenuObject[7];
+
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -119,25 +121,34 @@ void GameMode::BeginPlay()
     setupText.SetFontSize(50);
     setupText.SetSpacing(5.0f);
 
-    StartButtonRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 400 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
-    StartButtonRef->SetTextureManagerRef(TextureManagerRef);
-    StartButtonRef->SetTextureIndex(13);
-    StartButtonRef->BeginPlay();
+    MenuObjectRefs[0] = MenuObject({GlobalVariables.ScreenX / 2.f, 400}, {400, 200}, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[0].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[0].SetTextureIndex(13);
+    MenuObjectRefs[0].BeginPlay();
 
     setupString = std::string("Quit Game");
     setupText.SetText(setupString);
-    QuitButtonRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 800 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
-    QuitButtonRef->SetTextureManagerRef(TextureManagerRef);
-    QuitButtonRef->SetTextureIndex(13);
-    QuitButtonRef->BeginPlay();
+    MenuObjectRefs[1] = MenuObject({ GlobalVariables.ScreenX / 2.f, 800 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[1].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[1].SetTextureIndex(13);
+    MenuObjectRefs[1].BeginPlay();
 
     setupString = std::string("Tanky Game");
     setupText.SetFontSize(75);
     setupText.SetText(setupString);
-    TitleRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 40 }, { 450, 80 }, Driscoll::TEAL, Driscoll::CLEAR, Driscoll::WHITE, Driscoll::CLEAR, setupText);
-    TitleRef->SetTextureManagerRef(TextureManagerRef);
-    TitleRef->SetTextureIndex(13);
-    TitleRef->BeginPlay();
+    MenuObjectRefs[3] = MenuObject({ GlobalVariables.ScreenX / 2.f, 40 }, { 450, 80 }, Driscoll::TEAL, Driscoll::TEAL, Driscoll::WHITE, Driscoll::WHITE, setupText);
+    MenuObjectRefs[3].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[3].SetTextureIndex(13);
+    MenuObjectRefs[3].BeginPlay();
+
+    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Left Click: Shoot\n\n Space Bar: Shoot");
+    setupText.SetFontSize(30);
+    setupText.SetText(setupString);
+    MenuObjectRefs[5] = MenuObject({ 330, 600 }, { 350, 700 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
+    MenuObjectRefs[5].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[5].SetTextureIndex(13);
+    MenuObjectRefs[5].SetTextOrigin({ 0.55f, 0.53f });
+    MenuObjectRefs[5].BeginPlay();
   }
 
   //Setup for PlayingGame State;
@@ -167,18 +178,18 @@ void GameMode::BeginPlay()
     setupText.SetFontSize(50);
     setupText.SetSpacing(5.0f);
 
-    RestartButtonRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 400 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
-    RestartButtonRef->SetTextureManagerRef(TextureManagerRef);
-    RestartButtonRef->SetTextureIndex(13);
-    RestartButtonRef->BeginPlay();
+    MenuObjectRefs[2] = MenuObject({ GlobalVariables.ScreenX / 2.f, 400 }, { 400, 200 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[2].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[2].SetTextureIndex(13);
+    MenuObjectRefs[2].BeginPlay();
 
     setupString = std::string("You Win!");
     setupText.SetText(setupString);
     setupText.SetFontSize(50);
-    WinTextRef = new MenuObject({ GlobalVariables.ScreenX / 2.f, 160 }, { 300, 80 }, Driscoll::GREEN, Driscoll::CLEAR, Driscoll::BLUE, Driscoll::CLEAR, setupText);
-    WinTextRef->SetTextureManagerRef(TextureManagerRef);
-    WinTextRef->SetTextureIndex(13);
-    WinTextRef->BeginPlay();
+    MenuObjectRefs[4] = MenuObject({ GlobalVariables.ScreenX / 2.f, 160 }, { 300, 80 }, Driscoll::GREEN, Driscoll::CLEAR, Driscoll::BLUE, Driscoll::CLEAR, setupText);
+    MenuObjectRefs[4].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[4].SetTextureIndex(13);
+    MenuObjectRefs[4].BeginPlay();
   }
 }
 
@@ -187,6 +198,7 @@ void GameMode::Update()
   bool bIsStartHovered = false;
   bool bIsQuitHovered = false;
   bool bIsRestartHovered = false;
+  bool bIsTitleHovered = false;
 
   bool bEnemiesDead = true;
 
@@ -195,23 +207,64 @@ void GameMode::Update()
   {
   case MainMenu:
     //CHECK COLLISIONS
-    bIsStartHovered = StartButtonRef->CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsStartHovered = MenuObjectRefs[0].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
     if (bIsStartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       CurrentState = PlayingGame;
       break;
     }
 
-    bIsQuitHovered = QuitButtonRef->CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
     if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldShutdown = true;
       break;
     }
+    bIsTitleHovered = MenuObjectRefs[3].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    if (bIsTitleHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      raylib::Image newTankImage;
+      switch (++CyclePlayerTank)
+      {
+      case 0:
+      newTankImage.Load("Resources/Tanks/tankBlue_outline.png");
+      TextureManagerRef->SetTexture(newTankImage, 1);
+      newTankImage.Load("Resources/Bullets/bulletBlueSilver_outline.png");
+      TextureManagerRef->SetTexture(newTankImage, 3);
+      break;
+      case 1:
+        newTankImage.Load("Resources/Tanks/tankGreen_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 1);
+        newTankImage.Load("Resources/Bullets/bulletGreenSilver_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 3);
+        break;
+      case 2:
+        newTankImage.Load("Resources/Tanks/tankRed_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 1);
+        newTankImage.Load("Resources/Bullets/bulletRedSilver_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 3);
+        break;
+      case 3:
+        newTankImage.Load("Resources/Tanks/tankBlack_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 1);
+        newTankImage.Load("Resources/Bullets/bulletSilverSilver_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 3);
+        break;
+      case 4:
+        newTankImage.Load("Resources/Tanks/tankBeige_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 1);
+        newTankImage.Load("Resources/Bullets/bulletBeigeSilver_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 3);
+        CyclePlayerTank = -1;
+        break;
+      }
+    }
 
-    StartButtonRef->Update();
-    QuitButtonRef->Update();
-    TitleRef->Update();
+    MenuObjectRefs[0].Update();
+    MenuObjectRefs[1].Update();
+    MenuObjectRefs[3].Update();
+    MenuObjectRefs[5].Update();
     break;
 
   case PlayingGame:
@@ -234,9 +287,9 @@ void GameMode::Update()
     else if (!PlayerRef->GetIsAlive())
     {
       std::string setupText = std::string("You Lost!");
-      WinTextRef->SetText(setupText);
-      WinTextRef->SetNormalColor(Driscoll::DARKRED);
-      WinTextRef->SetTextNormalColor(Driscoll::PINK);
+      MenuObjectRefs[4].SetText(setupText);
+      MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
+      MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
       CurrentState = EndMenu;
     }
 
@@ -252,7 +305,7 @@ void GameMode::Update()
 
   case EndMenu:
     //CHECK COLLISIONS
-    bIsRestartHovered = RestartButtonRef->CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
     if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldRestart = true;
@@ -260,17 +313,17 @@ void GameMode::Update()
       break;
     }
 
-    bIsQuitHovered = QuitButtonRef->CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
     if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldShutdown = true;
       break;
     }
 
-    RestartButtonRef->Update();
-    QuitButtonRef->Update();
-    TitleRef->Update();
-    WinTextRef->Update();
+    MenuObjectRefs[2].Update();
+    MenuObjectRefs[1].Update();
+    MenuObjectRefs[3].Update();
+    MenuObjectRefs[4].Update();
     break;
   }
 }
@@ -280,9 +333,10 @@ void GameMode::Draw()
   switch (CurrentState)
   {
   case MainMenu:
-    StartButtonRef->Draw();
-    QuitButtonRef->Draw();
-    TitleRef->Draw();
+    MenuObjectRefs[0].Draw();
+    MenuObjectRefs[1].Draw();
+    MenuObjectRefs[3].Draw();
+    MenuObjectRefs[5].Draw();
 
     break;
 
@@ -318,10 +372,10 @@ void GameMode::Draw()
     break;
 
   case EndMenu:
-    RestartButtonRef->Draw();
-    QuitButtonRef->Draw();
-    TitleRef->Draw();
-    WinTextRef->Draw();
+    MenuObjectRefs[2].Draw();
+    MenuObjectRefs[1].Draw();
+    MenuObjectRefs[3].Draw();
+    MenuObjectRefs[4].Draw();
     break;
   }
 

@@ -24,7 +24,7 @@ int main()
 
 			/*** *** ***/
 
-			SetTargetFPS(60);
+			SetTargetFPS(240);
 
 			HideCursor();
 

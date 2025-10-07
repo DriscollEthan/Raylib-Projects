@@ -53,6 +53,10 @@ protected:
 
 	raylib::Text Text;
 
+	int AmountOfNewLinesInText;
+
+	Driscoll::Vector2D TextOrigin;
+
 public:
 	/* VIRTUAL FUNCTIONS */
 	//Called Before the Start of the Main Game Loop, But after being Constructed. MUST be USER CALLED!
@@ -83,6 +87,8 @@ public:
 	void SetTextNormalColor(Driscoll::Color _newTextNormalColor);
 
 	void SetTextHoveredColor(Driscoll::Color _newTextHoveredColor);
+
+	void SetTextOrigin(Driscoll::Vector2D _textOrigin);
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

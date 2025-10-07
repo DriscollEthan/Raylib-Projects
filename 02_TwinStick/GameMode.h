@@ -29,16 +29,11 @@ protected:
 
   Enemy* EnemyRefs;
 
-  MenuObject* StartButtonRef;
-
-  MenuObject* TitleRef;
-
-  MenuObject* QuitButtonRef;
-
-  MenuObject* RestartButtonRef;
-
-  MenuObject* WinTextRef;
+  MenuObject* MenuObjectRefs;
 
   GameState CurrentState;
+
+  ///Funny
+  int CyclePlayerTank;
 };
 

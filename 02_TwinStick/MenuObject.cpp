@@ -17,6 +17,17 @@ MenuObject::MenuObject(Driscoll::Vector2D _worldPosition,
   TextHoveredColor = _textHoveredColor;
   Text = _text;
   MouseColliding = false;
+  AmountOfNewLinesInText = 1;
+
+  for (int i = 0; i < Text.GetText().length(); ++i)
+  {
+    if (Text.GetText().at(i) == '\n')
+    {
+      ++AmountOfNewLinesInText;
+    }
+  }
+
+  TextOrigin = { 0.5f, 0.5f };
 }
 
 MenuObject::MenuObject(const MenuObject& _other)
@@ -25,8 +36,11 @@ MenuObject::MenuObject(const MenuObject& _other)
   WorldDimensions = _other.WorldDimensions;
   NormalColor = _other.NormalColor;
   HoveredColor = _other.HoveredColor;
-  DrawColor = _other.DrawColor;
+  DrawColor = NormalColor;
+  TextNormalColor = _other.TextNormalColor;
+  TextHoveredColor = _other.TextHoveredColor;
   Text = _other.Text;
+  AmountOfNewLinesInText = _other.AmountOfNewLinesInText;
   MouseColliding = false;
 }
 
@@ -36,8 +50,11 @@ MenuObject MenuObject::operator=(const MenuObject& _other)
   WorldDimensions = _other.WorldDimensions;
   NormalColor = _other.NormalColor;
   HoveredColor = _other.HoveredColor;
-  DrawColor = _other.DrawColor;
+  DrawColor = NormalColor;
+  TextNormalColor = _other.TextNormalColor;
+  TextHoveredColor = _other.TextHoveredColor;
   Text = _other.Text;
+  AmountOfNewLinesInText = _other.AmountOfNewLinesInText;
   MouseColliding = false;
   return *this;
 }
@@ -83,8 +100,7 @@ void MenuObject::Draw()
   );
 
   int textWidth = Text.Measure();
-
-  Text.Draw(position - Driscoll::Vector2D(textWidth / 2, Text.GetFontSize() / 2));
+  Text.Draw(position - Driscoll::Vector2D(textWidth * TextOrigin.x, (Text.GetFontSize() * AmountOfNewLinesInText) * TextOrigin.y));
 }
 
 void MenuObject::SetDimensions(Driscoll::Vector2D _newDimensionsInPixels)
@@ -105,6 +121,16 @@ void MenuObject::SetTextFontSize(int _fontSize)
 void MenuObject::SetText(std::string& _newText)
 {
   Text.SetText(_newText);
+
+  AmountOfNewLinesInText = 1;
+
+  for (int i = 0; i < Text.GetText().length(); ++i)
+  {
+    if (Text.GetText().at(i) == '\n')
+    {
+      ++AmountOfNewLinesInText;
+    }
+  }
 }
 
 void MenuObject::SetNormalColor(Driscoll::Color _newNormalColor)
@@ -125,6 +151,11 @@ void MenuObject::SetTextNormalColor(Driscoll::Color _newTextNormalColor)
 void MenuObject::SetTextHoveredColor(Driscoll::Color _newTextHoveredColor)
 {
   TextHoveredColor = _newTextHoveredColor;
+}
+
+void MenuObject::SetTextOrigin(Driscoll::Vector2D _textOrigin)
+{
+  TextOrigin = _textOrigin;
 }
 
 bool MenuObject::CheckCollision(Driscoll::Vector2D _mousePosition, float _mouseHitboxRadius)
