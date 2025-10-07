@@ -79,8 +79,14 @@ void Gunner::BeginPlay()
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
 void Gunner::Update()
 {
-	//Call Parent Update
-	Entity::Update();
+	if (Parent)
+	{
+		if (Parent->GetIsAlive())
+		{
+			//Call Inherited Update
+			Entity::Update();
+		}
+	}
 
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
@@ -91,7 +97,13 @@ void Gunner::Update()
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Gunner::Draw()
 {
-	Entity::Draw();
+	if (Parent)
+	{
+		if (Parent->GetIsAlive())
+		{
+			Entity::Draw();
+		}
+	}
 
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{

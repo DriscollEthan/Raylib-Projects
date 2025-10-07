@@ -10,7 +10,6 @@ Enemy::Enemy(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D
   BulletLifetime = _bulletLifetime;
   bLastHit = false;
   bFlipFlop = true;
-  SwitchingColorTime = 0.f;
 }
 
 Enemy::Enemy(const Enemy& _other)
@@ -29,7 +28,7 @@ Enemy::Enemy(const Enemy& _other)
   TextureManagerRef = _other.TextureManagerRef;
   bLastHit = _other.bLastHit;
   bFlipFlop = _other.bFlipFlop;
-  SwitchingColorTime = _other.SwitchingColorTime;
+  SwitchingColorTimer = _other.SwitchingColorTimer;
 }
 
 Enemy& Enemy::operator=(const Enemy& _other)
@@ -48,7 +47,7 @@ Enemy& Enemy::operator=(const Enemy& _other)
   TextureManagerRef = _other.TextureManagerRef;
   bLastHit = _other.bLastHit;
   bFlipFlop = _other.bFlipFlop;
-  SwitchingColorTime = _other.SwitchingColorTime;
+  SwitchingColorTimer = _other.SwitchingColorTimer;
   return *this;
 }
 
@@ -67,9 +66,16 @@ void Enemy::BeginPlay()
   Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 8, { 0.5f, 1.f }, HitboxData(), 5, 4);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
   Turret->SetParent(this);
+
   SetLocalRotation(0);
+
   SetHealth(3);
+  SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
+
   SetRandomLocation();
+
+  ExplosionIterationCount = 0;
+  DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.15f);
 
   Turret->BeginPlay();
 }
@@ -80,23 +86,20 @@ void Enemy::Update()
   {
     Entity::Update();
 
-    if (bLastHit)
+    if (bLastHit && SwitchingColorTimer.RunTimer(GetFrameTime()))
     {
-      SwitchingColorTime += GetFrameTime();
-      if (SwitchingColorTime > 0.25f)
+      SwitchingColorTimer.ResetTimer();
+      bFlipFlop = !bFlipFlop;
+
+      if (bFlipFlop)
       {
-        SwitchingColorTime = 0;
-        bFlipFlop = !bFlipFlop;
-        if (bFlipFlop)
-        {
-          DrawColor = Driscoll::DARKRED;
-          Turret->SetDrawColor(DrawColor);
-        }
-        else
-        {
-          DrawColor = Driscoll::WHITE;
-          Turret->SetDrawColor(DrawColor);
-        }
+        DrawColor = Driscoll::DARKRED;
+        Turret->SetDrawColor(DrawColor);
+      }
+      else
+      {
+        DrawColor = Driscoll::WHITE;
+        Turret->SetDrawColor(DrawColor);
       }
     }
 
@@ -108,7 +111,7 @@ void Enemy::Update()
     if (ShootingTimer.TimerUpdate(GetFrameTime()))
     {
       Turret->Shoot(3.0f, 3.5f);
-      ShootingTimer.ResetTimer();
+      ShootingTimer.CustomSetTimer(1.5f, 1.0f);
     }
 
 
@@ -117,10 +120,7 @@ void Enemy::Update()
 
     //Call Entity Update to update Matricies and Hitbox Position.
     Entity::Update();
-
-    Turret->Update();
   }
-
   else
   {
     DrawColor = Driscoll::WHITE;
@@ -130,22 +130,22 @@ void Enemy::Update()
       switch (ExplosionIterationCount++)
       {
       case 0:
-        TextureIndex = 20;
+        TextureIndex = 14;
         break;
       case 1:
-        TextureIndex = 21;
+        TextureIndex = 15;
         break;
       case 2:
-        TextureIndex = 22;
+        TextureIndex = 16;
         break;
       case 3:
-        TextureIndex = 23;
+        TextureIndex = 17;
         break;
       case 4:
-        TextureIndex = 24;
+        TextureIndex = 18;
         break;
       case 5:
-        TextureIndex = 25;
+        TextureIndex = 19;
         break;
       case 6:
         TextureIndex = 0;
@@ -154,6 +154,8 @@ void Enemy::Update()
       DeadExplosionCountingTimer.ResetTimer();
     }
   }
+
+  Turret->Update();
 }
 
 void Enemy::Draw()
@@ -161,7 +163,6 @@ void Enemy::Draw()
   if (bIsAlive)
   {
     Entity::Draw();
-    Turret->Draw();
   }
   //Draw Explosion Sprites
   else
@@ -171,6 +172,8 @@ void Enemy::Draw()
       Entity::Draw();
     }
   }
+
+  Turret->Draw();
 }
 
 void Enemy::GotHit()

@@ -11,7 +11,6 @@ Character::Character(LocalData2D _localData, size_t _textureLocation, Driscoll::
 	BulletLifetime = _bulletLifetime;
 	bLastHit = false;
 	bFlipFlop = true;
-	SwitchingColorTime = 0.f;
 }
 
 //Copy Constructor
@@ -28,7 +27,7 @@ Character::Character(const Character& _other)
 	BulletLifetime = _other.BulletLifetime;
 	bLastHit = _other.bLastHit;
 	bFlipFlop = _other.bFlipFlop;
-	SwitchingColorTime = _other.SwitchingColorTime;
+	SwitchingColorTimer = _other.SwitchingColorTimer;
 }
 
 //Copy Assignment
@@ -45,7 +44,7 @@ Character Character::operator=(const Character& _other)
 	BulletLifetime = _other.BulletLifetime;
 	bLastHit = _other.bLastHit;
 	bFlipFlop = _other.bFlipFlop;
-	SwitchingColorTime = _other.SwitchingColorTime;
+	SwitchingColorTimer = _other.SwitchingColorTimer;
 	return *this;
 }
 
@@ -69,9 +68,17 @@ void Character::BeginPlay()
 	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 60, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
+
 	SetLocalRotation(0);
+
 	SetHealth(5);
+
+	SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
+
 	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.15f);
+	ExplosionIterationCount = 0;
+
+	ShootingTimer.SetTimerInSeconds(0.0f, 0.225f);
 
 	//Setup Input Keybinds
 	{
@@ -86,8 +93,8 @@ void Character::BeginPlay()
 		MovementInput[7] = FInput(E_IsKeyDown, KEY_RIGHT, 3);
 
 		//Setup Shoot Variables
-		ShootInput[0] = FInput(E_IsMouseButtonPressed, MOUSE_BUTTON_LEFT, 0);
-		ShootInput[1] = FInput(E_IsKeyPressed, KEY_SPACE, 0);
+		ShootInput[0] = FInput(E_IsMouseButtonDown, MOUSE_BUTTON_LEFT, 0);
+		ShootInput[1] = FInput(E_IsKeyDown, KEY_SPACE, 0);
 	}
 
 	Turret->BeginPlay();
@@ -97,24 +104,20 @@ void Character::Update()
 {
 	if (bIsAlive)
 	{
-		if (bLastHit)
+		if (bLastHit && SwitchingColorTimer.RunTimer(GetFrameTime()))
 		{
-			SwitchingColorTime += GetFrameTime();
-			if (SwitchingColorTime > 0.25f)
-			{
-				SwitchingColorTime = 0;
-				bFlipFlop = !bFlipFlop;
+			SwitchingColorTimer.ResetTimer();
+			bFlipFlop = !bFlipFlop;
 
-				if (bFlipFlop)
-				{
-					DrawColor = Driscoll::RED;
-					Turret->SetDrawColor(DrawColor);
-				}
-				else
-				{
-					DrawColor = Driscoll::WHITE;
-					Turret->SetDrawColor(DrawColor);
-				}
+			if (bFlipFlop)
+			{
+				DrawColor = Driscoll::RED;
+				Turret->SetDrawColor(DrawColor);
+			}
+			else
+			{
+				DrawColor = Driscoll::WHITE;
+				Turret->SetDrawColor(DrawColor);
 			}
 		}
 
@@ -163,7 +166,11 @@ void Character::Update()
 			FInputReturnStruct inputReturn = Input(ShootInput[i]);
 			if (inputReturn.bIsInput)
 			{
-				Turret->Shoot(BulletSpeed, BulletLifetime);
+				if (ShootingTimer.RunTimer(GetFrameTime()))
+				{
+					ShootingTimer.ResetTimer();
+					Turret->Shoot(BulletSpeed, BulletLifetime);
+				}
 				break;
 			}
 		}
@@ -177,7 +184,7 @@ void Character::Update()
 	//When Dead DO dead sprite Drawing 
 	else
 	{
-		DrawColor = Driscoll::WHITE;
+		DrawColor = Driscoll::Color(0, 222, 255, 255);
 		//Run Timer for DeadSprite Drawing
 		if (DeadExplosionCountingTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
 		{

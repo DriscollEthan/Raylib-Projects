@@ -35,6 +35,8 @@ protected:
 	float BulletSpeed;
 	float BulletLifetime;
 
+	Timer ShootingTimer;
+
 	//Input Arrays:
 		//Movement: (WASD), (ARROW KEYS)
 		FInput MovementInput[8];
@@ -49,7 +51,7 @@ protected:
 
 		bool bFlipFlop;
 
-		float SwitchingColorTime;
+		Timer SwitchingColorTimer ;
 
 	//Dead Stuff
 		Timer DeadExplosionCountingTimer;

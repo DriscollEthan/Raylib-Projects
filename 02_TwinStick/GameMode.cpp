@@ -33,9 +33,9 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(26);
+  TextureManagerRef = new TextureManager(20);
 
-  /* Texture List: (TOTAL = 26)
+  /* Texture List: (TOTAL = 20)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Enemy Image
@@ -50,18 +50,12 @@ void GameMode::BeginPlay()
    * 11 = 1/4 Health Turret
    * 12 = 0 Health Turret
    * 13 = Button Image Background
-   * 14 = Player Smoke 0
-   * 15 = Player Smoke 1
-   * 16 = Player Smoke 2
-   * 17 = Player Smoke 3
-   * 18 = Player Smoke 4
-   * 19 = Player Smoke 5
-   * 20 = Enemy Smoke 0
-   * 21 = Enemy Smoke 1
-   * 22 = Enemy Smoke 2
-   * 23 = Enemy Smoke 3
-   * 24 = Enemy Smoke 4
-   * 25 = Enemy Smoke 5
+   * 14 = Death Smoke 0
+   * 15 = Death Smoke 1
+   * 16 = Death Smoke 2
+   * 17 = Death Smoke 3
+   * 18 = Death Smoke 4
+   * 19 = Death Smoke 5
    */
 
   //SET TEXTURES
@@ -127,53 +121,29 @@ void GameMode::BeginPlay()
     ImageLoader.Load("Resources/ButtonImage.png");
     TextureManagerRef->SetTexture(ImageLoader, 13);
 
-    //Player Smoke 0
-    ImageLoader.Load("Resources/Smoke/smokeGrey0.png");
+    //White Smoke 0
+    ImageLoader.Load("Resources/Smoke/smokeWhite0.png");
     TextureManagerRef->SetTexture(ImageLoader, 14);
 
-    //Player Smoke 1
-    ImageLoader.Load("Resources/Smoke/smokeGrey1.png");
+    //White Smoke 1
+    ImageLoader.Load("Resources/Smoke/smokeWhite1.png");
     TextureManagerRef->SetTexture(ImageLoader, 15);
 
-    //Player Smoke 2
-    ImageLoader.Load("Resources/Smoke/smokeGrey2.png");
+    //White Smoke 2
+    ImageLoader.Load("Resources/Smoke/smokeWhite2.png");
     TextureManagerRef->SetTexture(ImageLoader, 16);
 
-    //Player Smoke 3
-    ImageLoader.Load("Resources/Smoke/smokeGrey3.png");
+    //White Smoke 3
+    ImageLoader.Load("Resources/Smoke/smokeWhite3.png");
     TextureManagerRef->SetTexture(ImageLoader, 17);
 
-    //Player Smoke 4
-    ImageLoader.Load("Resources/Smoke/smokeGrey4.png");
+    //White Smoke 4
+    ImageLoader.Load("Resources/Smoke/smokeWhite4.png");
     TextureManagerRef->SetTexture(ImageLoader, 18);
 
-    //Player Smoke 5
-    ImageLoader.Load("Resources/Smoke/smokeGrey5.png");
+    //White Smoke 5
+    ImageLoader.Load("Resources/Smoke/smokeWhite5.png");
     TextureManagerRef->SetTexture(ImageLoader, 19);
-
-    //Enemy Smoke 0
-    ImageLoader.Load("Resources/Smoke/smokeOrange0.png");
-    TextureManagerRef->SetTexture(ImageLoader, 20);
-
-    //Enemy Smoke 1
-    ImageLoader.Load("Resources/Smoke/smokeOrange1.png");
-    TextureManagerRef->SetTexture(ImageLoader, 21);
-
-    //Enemy Smoke 2
-    ImageLoader.Load("Resources/Smoke/smokeOrange2.png");
-    TextureManagerRef->SetTexture(ImageLoader, 22);
-
-    //Enemy Smoke 3
-    ImageLoader.Load("Resources/Smoke/smokeOrange3.png");
-    TextureManagerRef->SetTexture(ImageLoader, 23);
-
-    //Enemy Smoke 4
-    ImageLoader.Load("Resources/Smoke/smokeOrange4.png");
-    TextureManagerRef->SetTexture(ImageLoader, 24);
-
-    //Enemy Smoke 5
-    ImageLoader.Load("Resources/Smoke/smokeOrange5.png");
-    TextureManagerRef->SetTexture(ImageLoader, 25);
   }
 
   /* Menu Object List:
@@ -215,10 +185,10 @@ void GameMode::BeginPlay()
     MenuObjectRefs[3].SetTextureIndex(13);
     MenuObjectRefs[3].BeginPlay();
 
-    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Left Click: Shoot\n\n Space Bar: Shoot\n\nAiming: \n The Turret Looks\n Towards the Mouse");
+    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Left Click: Shoot\n Space Bar: Shoot\n\nAiming: \n The Turret Looks\n Towards the Mouse");
     setupText.SetFontSize(30);
     setupText.SetText(setupString);
-    MenuObjectRefs[5] = MenuObject({ 330, 600 }, { 375, 825 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
+    MenuObjectRefs[5] = MenuObject({ 330, 600 }, { 375, 775 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
     MenuObjectRefs[5].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[5].SetTextureIndex(13);
     MenuObjectRefs[5].SetTextOrigin({ 0.55f, 0.53f });
@@ -228,7 +198,7 @@ void GameMode::BeginPlay()
   //Setup for PlayingGame State;
   {
     //CREATE PLAYER
-    PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 5.0F, 3.5f);
+    PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 3.F, 3.5f);
     PlayerRef->SetTextureManagerRef(TextureManagerRef);
     PlayerRef->BeginPlay();
 

@@ -128,10 +128,9 @@ protected:
 
 	bool bFlipFlop;
 
-	float SwitchingColorTime;
+	Timer SwitchingColorTimer;
 
 	//Dead Stuff
 	Timer DeadExplosionCountingTimer;
 	int ExplosionIterationCount;
 };
-
