@@ -57,6 +57,10 @@ protected:
 
 	Driscoll::Vector2D TextOrigin;
 
+	Driscoll::Vector2D DrawScale;
+
+	Driscoll::Vector2D DrawPosition;
+
 public:
 	/* VIRTUAL FUNCTIONS */
 	//Called Before the Start of the Main Game Loop, But after being Constructed. MUST be USER CALLED!

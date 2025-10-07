@@ -25,6 +25,7 @@ public:
     return *this;
   }
 
+
   //Conversions for NanoSecodns
   double NanoSecondsToMicroSeconds(double _nanoSeconds)
   {
@@ -51,6 +52,7 @@ public:
     return _nanoSeconds / 3600000000000.0f;
   }
 
+
   //Converisions for MicroSeconds
   double MicroSecondsToNanoSeconds(double _microSeconds)
   {
@@ -76,6 +78,7 @@ public:
   {
     return _microSeconds / 3600000000.0f;
   }
+
 
   //Converisions for MilliSeconds
   double MilliSecondsToNanoSeconds(double _milliSeconds)
@@ -131,6 +134,8 @@ public:
     return _seconds / 3600.0f;
   }
 
+
+  //Converisions for Minutes
   double MinutesToNanoSeconds(double _minutes)
   {
     return _minutes * 60000000000.0f;
@@ -156,31 +161,33 @@ public:
     return _minutes / 60.0f;
   }
 
+
   //Converisions for Hours
   double HoursToNanoSeconds(double _hours)
   {
-    return _hours;
+    return _hours * 3600000000000.0f;
   }
 
   double HoursToMicroSeconds(double _hours)
   {
-    return _hours;
+    return _hours * 3600000000.0f;
   }
 
   double HoursToMilliSeconds(double _hours)
   {
-    return _hours;
+    return _hours * 3600000.0f;
   }
 
   double HoursToSeconds(double _hours)
   {
-    return _hours;
+    return _hours * 3600.0f;
   }
 
   double HoursToMinutes(double _hours)
   {
-    return _hours;
+    return _hours * 60.0f;
   }
+
 
   //Get Current Time + Converisions
   double GetCurrentTimeInNanoSeconds()
@@ -214,4 +221,56 @@ public:
   }
 
 
+  //Timer Work
+  void SetTimerInNanoSeconds(double _startTime, double _endTime)
+  {
+    StartTimeInSeconds = NanoSecondsToSeconds(_startTime);
+    EndTimeInSeconds = NanoSecondsToSeconds(_endTime);
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
+  void SetTimerInMicroSeconds(double _startTime, double _endTime)
+  {
+    StartTimeInSeconds = MicroSecondsToSeconds(_startTime);
+    EndTimeInSeconds = MicroSecondsToSeconds(_endTime);
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
+  void SetTimerInMilliSeconds(double _startTime, double _endTime)
+  {
+    StartTimeInSeconds = MilliSecondsToSeconds(_startTime);
+    EndTimeInSeconds = MilliSecondsToSeconds(_endTime);
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
+  void SetTimerInSeconds(double _startTime, double _endTime)
+  {
+    StartTimeInSeconds = _startTime;
+    EndTimeInSeconds = _endTime;
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
+  void SetTimerInMinutes(double _startTime, double _endTime)
+  {
+    StartTimeInSeconds = MinutesToSeconds(_startTime);
+    EndTimeInSeconds = MinutesToSeconds(_endTime);
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
+  void SetTimerInHours(double _startTime, double _endTime)
+  {
+    StartTimeInSeconds = HoursToSeconds(_startTime);
+    EndTimeInSeconds = HoursToSeconds(_endTime);
+    CurrentTimeInSeconds = StartTimeInSeconds;
+  }
+
+  
+  //Run Timer
+
+  /* Run Timer, takes in deltaTime in Seconds. Returns true if done. */
+  bool RunTimer(double _deltaTime)
+  {
+    CurrentTimeInSeconds += _deltaTime;
+    return CurrentTimeInSeconds >= EndTimeInSeconds;
+  }
 };

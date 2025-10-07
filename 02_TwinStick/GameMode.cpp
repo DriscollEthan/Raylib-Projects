@@ -141,10 +141,10 @@ void GameMode::BeginPlay()
     MenuObjectRefs[3].SetTextureIndex(13);
     MenuObjectRefs[3].BeginPlay();
 
-    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Left Click: Shoot\n\n Space Bar: Shoot");
+    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Left Click: Shoot\n\n Space Bar: Shoot\n\nAiming: \n The Turret Looks\n Towards the Mouse");
     setupText.SetFontSize(30);
     setupText.SetText(setupString);
-    MenuObjectRefs[5] = MenuObject({ 330, 600 }, { 350, 700 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
+    MenuObjectRefs[5] = MenuObject({ 330, 600 }, { 375, 825 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
     MenuObjectRefs[5].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[5].SetTextureIndex(13);
     MenuObjectRefs[5].SetTextOrigin({ 0.55f, 0.53f });
@@ -208,20 +208,20 @@ void GameMode::Update()
   case MainMenu:
     //CHECK COLLISIONS
     MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
-    bIsStartHovered = MenuObjectRefs[0].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsStartHovered = MenuObjectRefs[0].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsStartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       CurrentState = PlayingGame;
       break;
     }
 
-    bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldShutdown = true;
       break;
     }
-    bIsTitleHovered = MenuObjectRefs[3].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsTitleHovered = MenuObjectRefs[3].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsTitleHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       raylib::Image newTankImage;
@@ -305,7 +305,7 @@ void GameMode::Update()
 
   case EndMenu:
     //CHECK COLLISIONS
-    bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldRestart = true;
@@ -313,7 +313,7 @@ void GameMode::Update()
       break;
     }
 
-    bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldShutdown = true;

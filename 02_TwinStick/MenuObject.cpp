@@ -26,7 +26,6 @@ MenuObject::MenuObject(Driscoll::Vector2D _worldPosition,
       ++AmountOfNewLinesInText;
     }
   }
-
   TextOrigin = { 0.5f, 0.5f };
 }
 
@@ -42,6 +41,8 @@ MenuObject::MenuObject(const MenuObject& _other)
   Text = _other.Text;
   AmountOfNewLinesInText = _other.AmountOfNewLinesInText;
   MouseColliding = false;
+  DrawScale = _other.DrawScale;
+  DrawPosition = _other.DrawPosition;
 }
 
 MenuObject MenuObject::operator=(const MenuObject& _other)
@@ -66,7 +67,10 @@ MenuObject::~MenuObject()
 
 void MenuObject::BeginPlay()
 {
+  raylib::Texture& imageTexture = TextureManagerRef->GetTexture(TextureIndex);
 
+  DrawScale = WorldDimensions / (Driscoll::Vector2D)imageTexture.GetSize();
+  DrawPosition = WorldPosition - (DrawScale * 0.5f);
 }
 
 void MenuObject::Update()
@@ -88,19 +92,16 @@ void MenuObject::Draw()
 {
   raylib::Texture& imageTexture = TextureManagerRef->GetTexture(TextureIndex);
 
-  Driscoll::Vector2D scale = WorldDimensions / (Driscoll::Vector2D)imageTexture.GetSize();
-  Driscoll::Vector2D position = WorldPosition - (scale * 0.5f);
-
   imageTexture.Draw(
-    raylib::Rectangle(0, 0, (float)imageTexture.GetWidth(), (float)imageTexture.GetHeight()),																						    // SourceRec
-    raylib::Rectangle(position.x, position.y, (float)imageTexture.GetWidth() * scale.x, (float)imageTexture.GetHeight() * scale.y),	        // DestRec
-    raylib::Vector2((float)imageTexture.GetWidth() * 0.5f * scale.x, (float)imageTexture.GetHeight() * 0.5f * scale.y),										  // Origin
+    raylib::Rectangle(0, 0, (float)imageTexture.GetWidth(), (float)imageTexture.GetHeight()),																						                  // SourceRec
+    raylib::Rectangle(DrawPosition.x, DrawPosition.y, (float)imageTexture.GetWidth() * DrawScale.x, (float)imageTexture.GetHeight() * DrawScale.y),       // DestRec
+    raylib::Vector2((float)imageTexture.GetWidth() * 0.5f * DrawScale.x, (float)imageTexture.GetHeight() * 0.5f * DrawScale.y),									          // Origin
     0.0f,	// Rotation
     DrawColor // Tint
   );
 
   int textWidth = Text.Measure();
-  Text.Draw(position - Driscoll::Vector2D(textWidth * TextOrigin.x, (Text.GetFontSize() * AmountOfNewLinesInText) * TextOrigin.y));
+  Text.Draw(DrawPosition - Driscoll::Vector2D(textWidth * TextOrigin.x, (Text.GetFontSize() * AmountOfNewLinesInText) * TextOrigin.y));
 }
 
 void MenuObject::SetDimensions(Driscoll::Vector2D _newDimensionsInPixels)
@@ -160,9 +161,8 @@ void MenuObject::SetTextOrigin(Driscoll::Vector2D _textOrigin)
 
 bool MenuObject::CheckCollision(Driscoll::Vector2D _mousePosition, float _mouseHitboxRadius)
 {
-  Driscoll::Vector2D scale = WorldDimensions / (Driscoll::Vector2D)TextureManagerRef->GetTexture(TextureIndex).GetSize();
   Driscoll::Vector2D position = (WorldPosition - (WorldDimensions * 0.5f));
-  position -= Driscoll::Vector2D(12.5f, 12.5f);
+  position -= Driscoll::Vector2D(_mouseHitboxRadius, _mouseHitboxRadius);
 
   raylib::Rectangle hitbox = raylib::Rectangle(position, WorldDimensions);
 
