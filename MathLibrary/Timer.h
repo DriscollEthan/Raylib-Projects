@@ -25,19 +25,193 @@ public:
     return *this;
   }
 
-  //Conversions
-  double GetCurrentTimeInHour()
+  //Conversions for NanoSecodns
+  double NanoSecondsToMicroSeconds(double _nanoSeconds)
   {
-    return CurrentTimeInSeconds / 3600.0f;
+    return _nanoSeconds / 1000.0f;
   }
 
-  double GetCurrentTimeInMinutes()
+  double NanoSecondsToMilliSeconds(double _nanoSeconds)
   {
-    return CurrentTimeInSeconds / 60.0f;
+    return _nanoSeconds / 1000000.0f;
+  }
+
+  double NanoSecondsToSeconds(double _nanoSeconds)
+  {
+    return _nanoSeconds / 1000000000.0f;
+  }
+
+  double NanoSecondsToMinutes(double _nanoSeconds)
+  {
+    return _nanoSeconds / 60000000000.0f;
+  }
+
+  double NanoSecondsToHours(double _nanoSeconds)
+  {
+    return _nanoSeconds / 3600000000000.0f;
+  }
+
+  //Converisions for MicroSeconds
+  double MicroSecondsToNanoSeconds(double _microSeconds)
+  {
+    return _microSeconds * 1000.0f;
+  }
+
+  double MicroSecondsToMilliSeconds(double _microSeconds)
+  {
+    return _microSeconds / 1000.0f;
+  }
+
+  double MicroSecondsToSeconds(double _microSeconds)
+  {
+    return _microSeconds / 1000000.0f;
+  }
+
+  double MicroSecondsToMinutes(double _microSeconds)
+  {
+    return _microSeconds / 60000000.0f;
+  }
+
+  double MicroSecondsToHours(double _microSeconds)
+  {
+    return _microSeconds / 3600000000.0f;
+  }
+
+  //Converisions for MilliSeconds
+  double MilliSecondsToNanoSeconds(double _milliSeconds)
+  {
+    return _milliSeconds * 1000000.0f;
+  }
+
+  double MilliSecondsToMicroSeconds(double _milliSeconds)
+  {
+    return _milliSeconds * 1000.0f;
+  }
+
+  double MilliSecondsToSeconds(double _milliSeconds)
+  {
+    return _milliSeconds / 1000.0f;
+  }
+
+  double MilliSecondsToMinutes(double _milliSeconds)
+  {
+    return _milliSeconds / 60000.0f;
+  }
+
+  double MilliSecondsToHours(double _milliSeconds)
+  {
+    return _milliSeconds / 3600000.0f;
+  }
+
+
+
+  //Converisions for Seconds
+  double SecondsToNanoSeconds(double _seconds)
+  {
+    return _seconds * 1000000000.0f;
+  }
+
+  double SecondsToMicroSeconds(double _seconds)
+  {
+    return _seconds * 1000.0f;
+  }
+
+  double SecondsToMilliSeconds(double _seconds)
+  {
+    return _seconds * 1000.0f;
+  }
+
+  double SecondsToMinutes(double _seconds)
+  {
+    return _seconds / 60.0f;
+  }
+
+  double SecondsToHours(double _seconds)
+  {
+    return _seconds / 3600.0f;
+  }
+
+  double MinutesToNanoSeconds(double _minutes)
+  {
+    return _minutes * 60000000000.0f;
+  }
+
+  double MinutesToMicroSeconds(double _minutes)
+  {
+    return _minutes * 60000000.0f;
+  }
+
+  double MinutesToMilliSeconds(double _minutes)
+  {
+    return _minutes * 60000.0f;
+  }
+
+  double MinutesToSeconds(double _minutes)
+  {
+    return _minutes * 60.0f;
+  }
+
+  double MinutesToHours(double _minutes)
+  {
+    return _minutes / 60.0f;
+  }
+
+  //Converisions for Hours
+  double HoursToNanoSeconds(double _hours)
+  {
+    return _hours;
+  }
+
+  double HoursToMicroSeconds(double _hours)
+  {
+    return _hours;
+  }
+
+  double HoursToMilliSeconds(double _hours)
+  {
+    return _hours;
+  }
+
+  double HoursToSeconds(double _hours)
+  {
+    return _hours;
+  }
+
+  double HoursToMinutes(double _hours)
+  {
+    return _hours;
+  }
+
+  //Get Current Time + Converisions
+  double GetCurrentTimeInNanoSeconds()
+  {
+    return SecondsToNanoSeconds(CurrentTimeInSeconds);
+  }
+
+  double GetCurrentTimeInMicroSeconds()
+  {
+    return SecondsToMicroSeconds(CurrentTimeInSeconds);
+  }
+
+  double GetCurrentTimeInMilliSeconds()
+  {
+    return SecondsToMilliSeconds(CurrentTimeInSeconds);
   }
 
   double GetCurrentTimeInSeconds()
   {
     return CurrentTimeInSeconds;
   }
+
+  double GetCurrentTimeInMinutes()
+  {
+    return SecondsToMinutes(CurrentTimeInSeconds);
+  }
+
+  double GetCurrentTimeInHours()
+  {
+    return SecondsToHours(CurrentTimeInSeconds);
+  }
+
+
 };
