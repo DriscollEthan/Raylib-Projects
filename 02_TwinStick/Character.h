@@ -51,6 +51,10 @@ protected:
 
 		float SwitchingColorTime;
 
+	//Dead Stuff
+		Timer DeadExplosionCountingTimer;
+		int ExplosionIterationCount;
+
 
 public:
 	/* FUNCTIONS */

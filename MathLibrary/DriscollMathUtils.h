@@ -9,6 +9,7 @@
 #include "Matrix3.h"
 #include "Matrix4.h"
 #include "Color.h"
+#include "Timer.h"
 
 namespace Driscoll
 {

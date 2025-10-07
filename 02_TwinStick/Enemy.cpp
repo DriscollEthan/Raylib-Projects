@@ -105,10 +105,7 @@ void Enemy::Update()
       Turret->SetLocalRotation(PlayerRef->GetWorldPosition().AngleBetween(GetWorldPosition()) - GetWorldRotation());
     }
 
-
-    ShootingTimer.TimerUpdate();
-
-    if (ShootingTimer.TimerOver())
+    if (ShootingTimer.TimerUpdate(GetFrameTime()))
     {
       Turret->Shoot(3.0f, 3.5f);
       ShootingTimer.ResetTimer();
@@ -167,9 +164,9 @@ void Enemy::SetPlayerRef(Entity* _playerRef)
   PlayerRef = _playerRef;
 }
 
-void Enemy::SetTimer(Timer _newTimer)
+void Enemy::SetTimer(float _length, float _deviation)
 {
-  ShootingTimer = _newTimer;
+  ShootingTimer.CustomSetTimer(_length, _deviation);
 }
 
 void Enemy::SetRandomLocation()

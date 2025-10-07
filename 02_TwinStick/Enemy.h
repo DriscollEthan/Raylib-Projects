@@ -1,48 +1,54 @@
 #pragma once
 #include "Entity.h"
+#include "Timer.h"
+
 #include "Gunner.h"
 
-struct Timer
+struct CustomTimer
 {
 	float TimerLength;
 
 	float TimerDeviation;
 
-	float CurrentTimer;
+	Timer InternalTimer;
 
-	Timer() { TimerLength = TimerDeviation = CurrentTimer = 0.0f; }
+	CustomTimer()
+	{
+		TimerLength = TimerDeviation = 0.0f; 
+		InternalTimer = {};
+	}
 
-	Timer(float _length, float _deviation)
+	CustomTimer(float _length, float _deviation)
 	{
 		TimerLength = _length;
 		TimerDeviation = _deviation;
-		CurrentTimer = 0.0f;
+		InternalTimer = {};
 	}
 
-	Timer(const Timer& _other)
+	CustomTimer(const CustomTimer& _other)
 	{
 		TimerLength = _other.TimerLength;
 		TimerDeviation = _other.TimerDeviation;
-		CurrentTimer = _other.CurrentTimer;
+		_other.InternalTimer;
 	}
 
-	Timer& operator =(const Timer& _other)
+	CustomTimer& operator =(const CustomTimer& _other)
 	{
 		TimerLength = _other.TimerLength;
 		TimerDeviation = _other.TimerDeviation;
-		CurrentTimer = _other.CurrentTimer;
+		_other.InternalTimer;
 		return *this;
 	}
 
-	bool TimerOver()
+	void CustomSetTimer(float _length, float _deviation)
 	{
-		return CurrentTimer >= TimerLength;
+		TimerLength = _length;
+		TimerDeviation = _deviation;
+		ResetTimer(); 
 	}
 
 	void ResetTimer()
 	{
-		CurrentTimer = 0.0f;
-
 		TimerLength -= TimerDeviation;
 
 		float min = 0 - TimerDeviation;
@@ -50,11 +56,13 @@ struct Timer
 		TimerDeviation = GetRandomValue(min, max);
 
 		TimerLength += TimerDeviation;
+
+		InternalTimer.SetTimerInSeconds(0.0f, TimerLength);
 	}
 
-	void TimerUpdate()
+	bool TimerUpdate(float _deltaSeconds)
 	{
-		CurrentTimer += GetFrameTime();
+		return InternalTimer.RunTimer(_deltaSeconds);
 	}
 };
 
@@ -89,7 +97,7 @@ public:
 
 	void SetPlayerRef(Entity* _playerRef);
 
-	void SetTimer(Timer _newTimer);
+	void SetTimer(float _length, float _deviation);
 
 	void SetRandomLocation();
 
@@ -106,7 +114,7 @@ protected:
 
 	Entity* PlayerRef;
 
-	Timer ShootingTimer;
+	CustomTimer ShootingTimer;
 
 	Driscoll::Vector2D RandomMoveToLocation;
 

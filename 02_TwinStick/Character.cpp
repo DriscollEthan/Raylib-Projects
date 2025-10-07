@@ -172,6 +172,13 @@ void Character::Update()
 
 		Turret->Update();
 	}
+
+	//When Dead DO dead sprite Drawing 
+	else
+	{
+		//Run Timer for DeadSprite Drawing
+		
+	}
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
@@ -181,6 +188,11 @@ void Character::Draw()
 	{
 		Player::Draw();
 		Turret->Draw();
+	}
+	//Draw Explosion Sprites
+	else
+	{
+		Player::Draw();
 	}
 }
 

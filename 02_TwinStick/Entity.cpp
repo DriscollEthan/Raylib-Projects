@@ -78,8 +78,6 @@ void Entity::Update()
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
 void Entity::Draw()
 {
-	if (bIsAlive)
-	{
 		Object::Draw();
 
 		raylib::Texture& texture = GetTextureManagerRef()->GetTexture(TextureIndex);
@@ -93,7 +91,6 @@ void Entity::Draw()
 			(GetWorldRotation() * Driscoll::Rad2Deg) + 90.0f,	// Rotation
 			DrawColor // Tint
 		);
-	}
 }
 
 void Entity::GotHit()

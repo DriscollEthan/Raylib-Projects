@@ -33,9 +33,9 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(14);
+  TextureManagerRef = new TextureManager(26);
 
-  /* Texture List: (TOTAL = 14)
+  /* Texture List: (TOTAL = 26)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Enemy Image
@@ -49,7 +49,19 @@ void GameMode::BeginPlay()
    * 10 = 1/2 Health Turret
    * 11 = 1/4 Health Turret
    * 12 = 0 Health Turret
-   * 13 = ButtonImageBackground
+   * 13 = Button Image Background
+   * 14 = Player Smoke 0
+   * 15 = Player Smoke 1
+   * 16 = Player Smoke 2
+   * 17 = Player Smoke 3
+   * 18 = Player Smoke 4
+   * 19 = Player Smoke 5
+   * 20 = Enemy Smoke 0
+   * 21 = Enemy Smoke 1
+   * 22 = Enemy Smoke 2
+   * 23 = Enemy Smoke 3
+   * 24 = Enemy Smoke 4
+   * 25 = Enemy Smoke 5
    */
 
   //SET TEXTURES
@@ -58,47 +70,109 @@ void GameMode::BeginPlay()
 
     raylib::Image ImageLoader; 
     
+    //Default
     ImageLoader.Load("Resources/Default.png");
     TextureManagerRef->SetTexture(ImageLoader, 0);
 
+    //Player Tank
     ImageLoader.Load("Resources/Tanks/tankBlue_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 1);
 
+    //Enemy Tank
     ImageLoader.Load("Resources/Tanks/tankRed_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 2);
 
+    //Player Bullet
     ImageLoader.Load("Resources/Bullets/bulletBlueSilver_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 3);
 
+    //Enemy Bullet
     ImageLoader.Load("Resources/Bullets/bulletRedSilver_outline.png");
     TextureManagerRef->SetTexture(ImageLoader, 4);
 
+    //Mouse Cursor
     ImageLoader.Load("Resources/target_round_b.png");
     TextureManagerRef->SetTexture(ImageLoader, 5);
 
+    //Background
     ImageLoader.Load("Resources/Environment/dirt.png");
     TextureManagerRef->SetTexture(ImageLoader, 6);
 
+    //Tire Tracks
     ImageLoader.Load("Resources/Tanks/tracksLarge.png");
     TextureManagerRef->SetTexture(ImageLoader, 7);
 
+    //Max Health Turret
     ImageLoader.Load("Resources/Tanks/barrelWhite_outline-0Hit.png");
     TextureManagerRef->SetTexture(ImageLoader, 8);
 
+    //3/4 Health Turret
     ImageLoader.Load("Resources/Tanks/barrelWhite_outline-1Hit.png");
     TextureManagerRef->SetTexture(ImageLoader, 9);
 
+    //1/2 Health Turret
     ImageLoader.Load("Resources/Tanks/barrelWhite_outline-2Hit.png");
     TextureManagerRef->SetTexture(ImageLoader, 10);
 
+    //1/4 Health Turret
     ImageLoader.Load("Resources/Tanks/barrelWhite_outline-3Hit.png");
     TextureManagerRef->SetTexture(ImageLoader, 11);
 
+    //0 Health Turret
     ImageLoader.Load("Resources/Tanks/barrelWhite_outline-4Hit.png");
     TextureManagerRef->SetTexture(ImageLoader, 12);
 
+    //Button Image Background
     ImageLoader.Load("Resources/ButtonImage.png");
     TextureManagerRef->SetTexture(ImageLoader, 13);
+
+    //Player Smoke 0
+    ImageLoader.Load("Resources/Smoke/smokeGrey0.png");
+    TextureManagerRef->SetTexture(ImageLoader, 14);
+
+    //Player Smoke 1
+    ImageLoader.Load("Resources/Smoke/smokeGrey1.png");
+    TextureManagerRef->SetTexture(ImageLoader, 15);
+
+    //Player Smoke 2
+    ImageLoader.Load("Resources/Smoke/smokeGrey2.png");
+    TextureManagerRef->SetTexture(ImageLoader, 16);
+
+    //Player Smoke 3
+    ImageLoader.Load("Resources/Smoke/smokeGrey3.png");
+    TextureManagerRef->SetTexture(ImageLoader, 17);
+
+    //Player Smoke 4
+    ImageLoader.Load("Resources/Smoke/smokeGrey4.png");
+    TextureManagerRef->SetTexture(ImageLoader, 18);
+
+    //Player Smoke 5
+    ImageLoader.Load("Resources/Smoke/smokeGrey5.png");
+    TextureManagerRef->SetTexture(ImageLoader, 19);
+
+    //Enemy Smoke 0
+    ImageLoader.Load("Resources/Smoke/smokeOrange0.png");
+    TextureManagerRef->SetTexture(ImageLoader, 20);
+
+    //Enemy Smoke 1
+    ImageLoader.Load("Resources/Smoke/smokeOrange1.png");
+    TextureManagerRef->SetTexture(ImageLoader, 21);
+
+    //Enemy Smoke 2
+    ImageLoader.Load("Resources/Smoke/smokeOrange2.png");
+    TextureManagerRef->SetTexture(ImageLoader, 22);
+
+    //Enemy Smoke 3
+    ImageLoader.Load("Resources/Smoke/smokeOrange3.png");
+    TextureManagerRef->SetTexture(ImageLoader, 23);
+
+    //Enemy Smoke 4
+    ImageLoader.Load("Resources/Smoke/smokeOrange4.png");
+    TextureManagerRef->SetTexture(ImageLoader, 24);
+
+    //Enemy Smoke 5
+    ImageLoader.Load("Resources/Smoke/smokeOrange5.png");
+    TextureManagerRef->SetTexture(ImageLoader, 25);
   }
 
   /* Menu Object List:
@@ -112,7 +186,6 @@ void GameMode::BeginPlay()
    */
 
   MenuObjectRefs = new MenuObject[7];
-
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -164,7 +237,7 @@ void GameMode::BeginPlay()
     {
       EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 3.5f, 3.5f, 3.0f };
       EnemyRefs[i].SetPlayerRef(PlayerRef);
-      EnemyRefs[i].SetTimer(Timer(3.0f, 1.0f));
+      EnemyRefs[i].SetTimer(3.0f, 1.0f);
       EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);
       EnemyRefs[i].BeginPlay();
     }
