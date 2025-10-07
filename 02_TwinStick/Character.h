@@ -30,7 +30,7 @@ public:
 protected:
 	/* VARIABLES */
 	//TURRET POINTER
-	Gunner* Turret;
+	Gunner* Turret; 
 
 	float BulletSpeed;
 	float BulletLifetime;
@@ -51,7 +51,13 @@ protected:
 
 		bool bFlipFlop;
 
-		Timer SwitchingColorTimer ;
+		Timer SwitchingColorTimer;
+
+		bool bShowHit;
+
+		Timer HitColorShowingTimer;
+
+		Timer SwitchHitColorTimer;
 
 	//Dead Stuff
 		Timer DeadExplosionCountingTimer;
@@ -80,6 +86,8 @@ public:
 	Gunner* GetTurretRef();
 
 	float GetHealth();
+
+	bool bIsHit();
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

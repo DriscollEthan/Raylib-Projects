@@ -130,6 +130,12 @@ protected:
 
 	Timer SwitchingColorTimer;
 
+	bool bShowHit;
+
+	Timer HitColorShowingTimer;
+
+	Timer SwitchHitColorTimer;
+
 	//Dead Stuff
 	Timer DeadExplosionCountingTimer;
 	int ExplosionIterationCount;

@@ -62,6 +62,9 @@ Enemy::~Enemy()
 void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
+  SetRandomLocation();
+  SetLocalPosition(RandomMoveToLocation);
+
   //Init Vars
   Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 8, { 0.5f, 1.f }, HitboxData(), 5, 4);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
@@ -71,6 +74,9 @@ void Enemy::BeginPlay()
 
   SetHealth(3);
   SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
+  bShowHit = false;
+  HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.6f);
+  SwitchHitColorTimer.SetTimerInSeconds(0.0f, 0.15f);
 
   SetRandomLocation();
 
@@ -102,6 +108,34 @@ void Enemy::Update()
         Turret->SetDrawColor(DrawColor);
       }
     }
+    
+
+    if (bShowHit)
+    {
+      if (!HitColorShowingTimer.RunTimer(GetFrameTime()))
+      {
+        if (SwitchHitColorTimer.RunTimer(GetFrameTime()))
+        {
+          if (DrawColor == Driscoll::PURPLE)
+          {
+            DrawColor = Driscoll::WHITE;
+            SwitchHitColorTimer.ResetTimer();
+          }
+          else
+          {
+            DrawColor = Driscoll::PURPLE;
+            SwitchHitColorTimer.ResetTimer();
+          }
+        }
+      }
+      else
+      {
+        bShowHit = false;
+        HitColorShowingTimer.ResetTimer();
+        DrawColor = Driscoll::WHITE;
+        SwitchHitColorTimer.ResetTimer();
+      }
+    }
 
     if (PlayerRef)
     {
@@ -111,7 +145,7 @@ void Enemy::Update()
     if (ShootingTimer.TimerUpdate(GetFrameTime()))
     {
       Turret->Shoot(3.0f, 3.5f);
-      ShootingTimer.CustomSetTimer(1.5f, 1.0f);
+      ShootingTimer.CustomSetTimer(2.0f, 1.0f);
     }
 
 
@@ -178,29 +212,34 @@ void Enemy::Draw()
 
 void Enemy::GotHit()
 {
-  SetHealth(GetHealth() - 1);
-
-  switch ((int)GetHealth())
+  if (!bShowHit)
   {
-  case 0:
-    //bool for last hit to flash colors
-    bLastHit = true;
-    DrawColor = Driscoll::DARKRED;
-    Turret->SetDrawColor(DrawColor);
-    break;
-  case 1:
-    //Full Turret
-    Turret->SetTextureIndex(12);
-    break;
-  case 2:
-    //1/2 Turret Left
-    Turret->SetTextureIndex(10);
-    break;
-  }
+    SetHealth(GetHealth() - 1);
 
-  if (GetHealth() < 0)
-  {
-    SetIsAlive(false);
+    switch ((int)GetHealth())
+    {
+    case 0:
+      //bool for last hit to flash colors
+      bLastHit = true;
+      DrawColor = Driscoll::DARKRED;
+      Turret->SetDrawColor(DrawColor);
+      break;
+    case 1:
+      //Full Turret
+      Turret->SetTextureIndex(12);
+      bShowHit = true;
+      break;
+    case 2:
+      //1/2 Turret Left
+      Turret->SetTextureIndex(10);
+      bShowHit = true;
+      break;
+    }
+
+    if (GetHealth() < 0)
+    {
+      SetIsAlive(false);
+    }
   }
 }
 

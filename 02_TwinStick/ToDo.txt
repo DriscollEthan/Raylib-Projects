@@ -1,0 +1,20 @@
+More Balancing (maybe)
+
+- Done to Have
+    - i-frames
+    - Some More Hit Response
+
+- Need to Have
+    - More hit response on EVERYTHING 
+    - Pause Menu
+    - New Spawn Locations for everyone
+- Want to Have
+     - Optional "laser sight" or "aim indicator" to help reinforce player understanding of current aim direction
+    - i-frames so you can't die instantly?
+    - An actual goal to work towards beyond "kill everything"
+    - Powerups
+    - Enemy Movement Profiles?
+- Nice to Have
+    - Smoothing on tank body rotation (without actually affecting player locomotion)
+    - Walls/Barriers
+ 

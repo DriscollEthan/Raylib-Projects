@@ -35,6 +35,8 @@ protected:
 
   Timer EndConditionWaitingTimer;
 
+  Timer HitStopTimer;
+
   ///Funny
   int CyclePlayerTank;
 };

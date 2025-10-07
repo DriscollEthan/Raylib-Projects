@@ -33,9 +33,9 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(20);
+  TextureManagerRef = new TextureManager(21);
 
-  /* Texture List: (TOTAL = 20)
+  /* Texture List: (TOTAL = 21)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Enemy Image
@@ -56,12 +56,12 @@ void GameMode::BeginPlay()
    * 17 = Death Smoke 3
    * 18 = Death Smoke 4
    * 19 = Death Smoke 5
+   * 20 = Laser
    */
 
   //SET TEXTURES
   {
     CurrentState = MainMenu;
-    EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
 
     raylib::Image ImageLoader; 
     
@@ -144,6 +144,10 @@ void GameMode::BeginPlay()
     //White Smoke 5
     ImageLoader.Load("Resources/Smoke/smokeWhite5.png");
     TextureManagerRef->SetTexture(ImageLoader, 19);
+
+    //Laser
+    ImageLoader.Load("Resources/Turret.png");
+    TextureManagerRef->SetTexture(ImageLoader, 20);
   }
 
   /* Menu Object List:
@@ -197,6 +201,10 @@ void GameMode::BeginPlay()
 
   //Setup for PlayingGame State;
   {
+    //SETUP TIMERS
+    EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
+    HitStopTimer.SetTimerInSeconds(0.0f, 0.008f);
+
     //CREATE PLAYER
     PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 3.F, 3.5f);
     PlayerRef->SetTextureManagerRef(TextureManagerRef);
@@ -272,11 +280,11 @@ void GameMode::Update()
       switch (++CyclePlayerTank)
       {
       case 0:
-      newTankImage.Load("Resources/Tanks/tankBlue_outline.png");
-      TextureManagerRef->SetTexture(newTankImage, 1);
-      newTankImage.Load("Resources/Bullets/bulletBlueSilver_outline.png");
-      TextureManagerRef->SetTexture(newTankImage, 3);
-      break;
+        newTankImage.Load("Resources/Tanks/tankBlue_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 1);
+        newTankImage.Load("Resources/Bullets/bulletBlueSilver_outline.png");
+        TextureManagerRef->SetTexture(newTankImage, 3);
+        break;
       case 1:
         newTankImage.Load("Resources/Tanks/tankGreen_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 1);
@@ -312,46 +320,55 @@ void GameMode::Update()
     break;
 
   case PlayingGame:
-    //CHECK COLLISIONS
-    for (int i = 0; i < 10; ++i)
+    if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(GetFrameTime()))
     {
-      if (EnemyRefs[i].GetIsAlive())
-      {
-        bEnemiesDead = false;
-        PlayerRef->GetTurretRef()->BulletCollisionCheck(EnemyRefs[i]);
-        EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
-      }
+      break;
     }
+    else
+    {
+      HitStopTimer.ResetTimer();
 
-    if (bEnemiesDead)
-    {
-      if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
+      //CHECK COLLISIONS
+      for (int i = 0; i < 10; ++i)
       {
-        CurrentState = EndMenu;
-        break;
+        if (EnemyRefs[i].GetIsAlive())
+        {
+          bEnemiesDead = false;
+          PlayerRef->GetTurretRef()->BulletCollisionCheck(EnemyRefs[i]);
+          EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
+        }
       }
-    }
-    else if (!PlayerRef->GetIsAlive())
-    {
-      if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
+
+      if (bEnemiesDead)
       {
-        std::string setupText = std::string("You Lost!");
-        MenuObjectRefs[4].SetText(setupText);
-        MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
-        MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
-        CurrentState = EndMenu;
+        if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
+        {
+          CurrentState = EndMenu;
+          break;
+        }
       }
-    }
+      else if (!PlayerRef->GetIsAlive())
+      {
+        if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
+        {
+          std::string setupText = std::string("You Lost!");
+          MenuObjectRefs[4].SetText(setupText);
+          MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
+          MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
+          CurrentState = EndMenu;
+        }
+      }
 
-    //UPDATE PLAYER
-    PlayerRef->Update();
+      //UPDATE PLAYER
+      PlayerRef->Update();
 
-    //UPDATE ENEMIES
-    for (int i = 0; i < 10; ++i)
-    {
-      EnemyRefs[i].Update();
+      //UPDATE ENEMIES
+      for (int i = 0; i < 10; ++i)
+      {
+        EnemyRefs[i].Update();
+      }
+      break;
     }
-    break;
 
   case EndMenu:
     //CHECK COLLISIONS

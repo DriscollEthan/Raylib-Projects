@@ -34,4 +34,6 @@ namespace Driscoll
 #define PINK Color::Pink()
 
 #define YELLOW Color::Yellow()
+
+#define PURPLE Color::Purple()
 }

@@ -72,10 +72,12 @@ void Character::BeginPlay()
 	SetLocalRotation(0);
 
 	SetHealth(5);
-
 	SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
+	bShowHit = false;
+	HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.6f);
+	SwitchHitColorTimer.SetTimerInSeconds(0.0f, 0.15f);
 
-	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.15f);
+	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.2f);
 	ExplosionIterationCount = 0;
 
 	ShootingTimer.SetTimerInSeconds(0.0f, 0.225f);
@@ -121,6 +123,33 @@ void Character::Update()
 			}
 		}
 
+		if (bShowHit)
+		{
+			if (!HitColorShowingTimer.RunTimer(GetFrameTime()))
+			{
+				if (SwitchHitColorTimer.RunTimer(GetFrameTime()))
+				{
+					if (DrawColor == Driscoll::PURPLE)
+					{
+						DrawColor = Driscoll::WHITE;
+						SwitchHitColorTimer.ResetTimer();
+					}
+					else
+					{
+						DrawColor = Driscoll::PURPLE;
+						SwitchHitColorTimer.ResetTimer();
+					}
+				}
+			}
+			else
+			{
+				bShowHit = false;
+				HitColorShowingTimer.ResetTimer();
+				DrawColor = Driscoll::WHITE;
+				SwitchHitColorTimer.ResetTimer();
+			}
+		}
+
 		//Get Movement Input
 		for (int i = 0; i < 8; ++i)
 		{
@@ -161,23 +190,20 @@ void Character::Update()
 
 
 		//Get Shoot Input
+		ShootingTimer.RunTimer(GetFrameTime());
 		for (int i = 0; i < 2; ++i)
 		{
 			FInputReturnStruct inputReturn = Input(ShootInput[i]);
-			if (inputReturn.bIsInput)
+			if (inputReturn.bIsInput && ShootingTimer.RunTimer(0))
 			{
-				if (ShootingTimer.RunTimer(GetFrameTime()))
-				{
 					ShootingTimer.ResetTimer();
 					Turret->Shoot(BulletSpeed, BulletLifetime);
-				}
 				break;
 			}
 		}
 
 		//Call Parent Update to Update Matricies and Hitbox Position.
 		Player::Update();
-
 		Turret->Update();
 	}
 
@@ -237,37 +263,45 @@ void Character::Draw()
 
 void Character::GotHit()
 {
-	SetHealth(GetHealth() - 1);
-
-	switch ((int)GetHealth())
+	if (!bShowHit)
 	{
-	case 0:
-		//bool for last hit to flash colors
-		bLastHit = true;
-		DrawColor = Driscoll::RED;
-		Turret->SetDrawColor(DrawColor);
-		break;
-	case 1:
-		//Full Turret
-		Turret->SetTextureIndex(12);
-		break;
-	case 2:
-		//1/4 Turret Left
-		Turret->SetTextureIndex(11);
-		break;
-	case 3:
-		//1/2 Turret Left
-		Turret->SetTextureIndex(10);
-		break;
-	case 4:
-		//3/4 Turret Left
-		Turret->SetTextureIndex(9);
-		break;
-	}
+		SetHealth(GetHealth() - 1);
 
-	if (GetHealth() < 0)
-	{
-		SetIsAlive(false);
+		switch ((int)GetHealth())
+		{
+		case 0:
+			//bool for last hit to flash colors
+			bLastHit = true;
+			DrawColor = Driscoll::RED;
+			Turret->SetDrawColor(DrawColor);
+			bShowHit = true;
+			break;
+		case 1:
+			//Full Turret
+			Turret->SetTextureIndex(12);
+			bShowHit = true;
+			break;
+		case 2:
+			//1/4 Turret Left
+			Turret->SetTextureIndex(11);
+			bShowHit = true;
+			break;
+		case 3:
+			//1/2 Turret Left
+			Turret->SetTextureIndex(10);
+			bShowHit = true;
+			break;
+		case 4:
+			//3/4 Turret Left
+			Turret->SetTextureIndex(9);
+			bShowHit = true;
+			break;
+		}
+
+		if (GetHealth() < 0)
+		{
+			SetIsAlive(false);
+		}
 	}
 }
 
@@ -283,6 +317,11 @@ Gunner* Character::GetTurretRef()
 float Character::GetHealth()
 {
 	return Health;
+}
+
+bool Character::bIsHit()
+{
+	return bShowHit;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
