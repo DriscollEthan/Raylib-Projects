@@ -290,11 +290,26 @@ namespace Driscoll
 			return tempVector;
 		}
 
+		Vector2D operator +(const float& _otherFloat) const
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x += _otherFloat;
+			tempVector.y += _otherFloat;
+			return tempVector;
+		}
+
 		// assigns this Vector the value of this vector added to the other vector
 		Vector2D& operator +=(const Vector2D& _otherVector)
 		{
 			x += _otherVector.x;
 			y += _otherVector.y;
+			return *this;
+		}
+
+		Vector2D& operator +=(const float& _otherFloat)
+		{
+			x += _otherFloat;
+			y += _otherFloat;
 			return *this;
 		}
 
@@ -307,11 +322,26 @@ namespace Driscoll
 			return tempVector;
 		}
 
+		Vector2D operator -(const float& _otherFloat) const
+		{
+			Vector2D tempVector = { x, y };
+			tempVector.x -= _otherFloat;
+			tempVector.y -= _otherFloat;
+			return tempVector;
+		}
+
 		// assigns this Vector the value of this vector subtracted from the other vector
 		Vector2D& operator -=(const Vector2D& _otherVector)
 		{
 			x -= _otherVector.x;
 			y -= _otherVector.y;
+			return *this;
+		}
+
+		Vector2D& operator -=(const float& _otherFloat)
+		{
+			x -= _otherFloat;
+			y -= _otherFloat;
 			return *this;
 		}
 

@@ -37,6 +37,8 @@ protected:
 
   Timer HitStopTimer;
 
+  Timer StartingCountdownTimer;
+
   ///Funny
   int CyclePlayerTank;
 };

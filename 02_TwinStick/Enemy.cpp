@@ -62,8 +62,6 @@ Enemy::~Enemy()
 void Enemy::BeginPlay()
 {
   Entity::BeginPlay();
-  SetRandomLocation();
-  SetLocalPosition(RandomMoveToLocation);
 
   //Init Vars
   Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 8, { 0.5f, 1.f }, HitboxData(), 5, 4);
@@ -227,7 +225,6 @@ void Enemy::GotHit()
     case 1:
       //Full Turret
       Turret->SetTextureIndex(12);
-      bShowHit = true;
       break;
     case 2:
       //1/2 Turret Left

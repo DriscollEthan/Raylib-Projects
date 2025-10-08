@@ -7,7 +7,7 @@ More Balancing (maybe)
 - Need to Have
     - More hit response on EVERYTHING 
     - Pause Menu
-    - New Spawn Locations for everyone
+    - Starting Countdown
 - Want to Have
      - Optional "laser sight" or "aim indicator" to help reinforce player understanding of current aim direction
     - i-frames so you can't die instantly?
@@ -17,4 +17,5 @@ More Balancing (maybe)
 - Nice to Have
     - Smoothing on tank body rotation (without actually affecting player locomotion)
     - Walls/Barriers
+    - Better Spawn Locations for everyone
  

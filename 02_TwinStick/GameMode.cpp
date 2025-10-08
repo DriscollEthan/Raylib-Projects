@@ -204,10 +204,12 @@ void GameMode::BeginPlay()
     //SETUP TIMERS
     EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
     HitStopTimer.SetTimerInSeconds(0.0f, 0.008f);
+    StartingCountdownTimer.SetTimerInSeconds(0.0f, 4.0f);
 
     //CREATE PLAYER
     PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 3.F, 3.5f);
     PlayerRef->SetTextureManagerRef(TextureManagerRef);
+    PlayerRef->SetLocalPosition(GlobalVariables.ScreenSize - 100);
     PlayerRef->BeginPlay();
 
     //CREATE ENEMIES
@@ -216,6 +218,7 @@ void GameMode::BeginPlay()
     {
       EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 3.5f, 3.5f, 3.0f };
       EnemyRefs[i].SetPlayerRef(PlayerRef);
+      EnemyRefs[i].SetLocalPosition(Driscoll::Vector2D(0.f, 0.f) + 100);
       EnemyRefs[i].SetTimer(3.0f, 1.0f);
       EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);
       EnemyRefs[i].BeginPlay();
@@ -320,6 +323,10 @@ void GameMode::Update()
     break;
 
   case PlayingGame:
+    if (!StartingCountdownTimer.RunTimer(GetFrameTime()))
+    {
+      break;
+    }
     if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(GetFrameTime()))
     {
       break;
@@ -435,6 +442,29 @@ void GameMode::Draw()
 
       //DRAW PLAYER
       PlayerRef->Draw();
+
+      //DRAW COUNTDOWN TILL SHOOTING
+      if (!StartingCountdownTimer.RunTimer(0.0f))
+      {
+        int drawNumber = 4 - StartingCountdownTimer.GetCurrentTimeInSeconds();
+
+        raylib::Text drawText = raylib::Text();
+        std::string drawString;
+        if (drawNumber < 1)
+        {
+          drawString = "GO!";
+          drawText.SetText(drawString);
+        }
+        else
+        {
+          drawText.SetText(TextFormat("% 01i", drawNumber));
+        }
+        drawText.SetFontSize(300);
+        drawText.SetSpacing(5.0f);
+        drawText.SetColor(Driscoll::YELLOW);
+
+        drawText.Draw((GlobalVariables.ScreenSize / 2) - Driscoll::Vector2D(drawText.Measure() * 0.5f, drawText.GetFontSize() * 0.5f));
+      }
     }
     break;
 
