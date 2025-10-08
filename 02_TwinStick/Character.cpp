@@ -97,6 +97,10 @@ void Character::BeginPlay()
 		//Setup Shoot Variables
 		ShootInput[0] = FInput(E_IsMouseButtonDown, MOUSE_BUTTON_LEFT, 0);
 		ShootInput[1] = FInput(E_IsKeyDown, KEY_SPACE, 0);
+
+		//Setup Pause Variables
+		PauseInput[0] = FInput(E_IsKeyPressed, KEY_ESCAPE, 0);
+		PauseInput[1] = FInput(E_IsKeyPressed, KEY_END, 0);
 	}
 
 	Turret->BeginPlay();
@@ -202,6 +206,9 @@ void Character::Update()
 			}
 		}
 
+		//Get Pause Input
+		CheckPauseInput();
+
 		//Call Parent Update to Update Matricies and Hitbox Position.
 		Player::Update();
 		Turret->Update();
@@ -305,6 +312,19 @@ void Character::GotHit()
 	}
 }
 
+void Character::CheckPauseInput()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		FInputReturnStruct inputReturn = Input(PauseInput[i]);
+		if (inputReturn.bIsInput && ShootingTimer.RunTimer(0))
+		{
+			bShouldPause = !bShouldPause;
+			break;
+		}
+	}
+}
+
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 
 /* Character SPECIFIC GET FUNCTIONS */
@@ -322,6 +342,11 @@ float Character::GetHealth()
 bool Character::bIsHit()
 {
 	return bShowHit;
+}
+
+bool Character::GetShouldPause()
+{
+	return bShouldPause;
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/

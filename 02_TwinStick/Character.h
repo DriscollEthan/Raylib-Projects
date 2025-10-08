@@ -44,6 +44,10 @@ protected:
 		//Shoot: (Left Click) (Space Bar)
 		FInput ShootInput[2];
 
+		//Pause (Esc) (End)
+		FInput PauseInput[2];
+		bool bShouldPause;
+
 	//Health
 		int Health;
 
@@ -79,6 +83,8 @@ public:
 
 	virtual void GotHit() override;
 
+	void CheckPauseInput();
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* Character SPECIFIC GET FUNCTIONS */
@@ -88,6 +94,8 @@ public:
 	float GetHealth();
 
 	bool bIsHit();
+
+	bool GetShouldPause();
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 

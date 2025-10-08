@@ -327,6 +327,13 @@ void GameMode::Update()
     {
       break;
     }
+
+    if (PlayerRef->GetShouldPause())
+    {
+      PlayerRef->CheckPauseInput();
+      break;
+    }
+
     if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(GetFrameTime()))
     {
       break;
