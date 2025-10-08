@@ -492,8 +492,16 @@ void GameMode::Draw()
       {
         for (int k = 0; k < HowManyImagesPerColumn; ++k)
         {
-          DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
-            ? Driscoll::Color(185, 133, 85, 255) : DrawColor = Driscoll::Color(233, 160, 99, 255);
+          if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(0))
+          {
+            DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
+              ? Driscoll::BLACK : DrawColor = Driscoll::DARKGREY;
+          }
+          else
+          {
+            DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
+              ? Driscoll::Color(185, 133, 85, 255) : DrawColor = Driscoll::Color(233, 160, 99, 255);
+          }
 
           //Color Options
           // 1: 185, 133, 85
