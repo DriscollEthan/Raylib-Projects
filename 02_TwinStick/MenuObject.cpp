@@ -159,6 +159,11 @@ void MenuObject::SetTextOrigin(Driscoll::Vector2D _textOrigin)
   TextOrigin = _textOrigin;
 }
 
+void MenuObject::SetTextSpacing(float _newTextSpacing)
+{
+  Text.SetSpacing(_newTextSpacing);
+}
+
 bool MenuObject::CheckCollision(Driscoll::Vector2D _mousePosition, float _mouseHitboxRadius)
 {
   Driscoll::Vector2D position = (WorldPosition - (WorldDimensions * 0.5f));

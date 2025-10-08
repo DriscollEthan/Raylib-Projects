@@ -102,5 +102,7 @@ public:
 	/* Character SPECIFIC SET FUNCTIONS */
 	void SetHealth(float _maxHealth);
 
+	void SetShouldBePaused(bool _shouldBePaused);
+
 };
 

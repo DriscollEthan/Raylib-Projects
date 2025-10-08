@@ -56,7 +56,7 @@ void GameMode::BeginPlay()
    * 17 = Death Smoke 3
    * 18 = Death Smoke 4
    * 19 = Death Smoke 5
-   * 20 = Laser
+   * 20 = Background Wrapper Indicationish
    */
 
   //SET TEXTURES
@@ -146,7 +146,7 @@ void GameMode::BeginPlay()
     TextureManagerRef->SetTexture(ImageLoader, 19);
 
     //Laser
-    ImageLoader.Load("Resources/Turret.png");
+    ImageLoader.Load("Resources/Environment/Grass.png");
     TextureManagerRef->SetTexture(ImageLoader, 20);
   }
 
@@ -158,9 +158,12 @@ void GameMode::BeginPlay()
    *  4. Win/Lose Text
    *  5. Tutorial Text
    *  6. Credits Text
+   *  7. Pause Menu Background
+   *  8. Pause Menu Resume Button
+   *  9. Pause Menu Quit Button
    */
 
-  MenuObjectRefs = new MenuObject[7];
+  MenuObjectRefs = new MenuObject[10];
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -205,9 +208,41 @@ void GameMode::BeginPlay()
     EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
     HitStopTimer.SetTimerInSeconds(0.0f, 0.008f);
     StartingCountdownTimer.SetTimerInSeconds(0.0f, 4.0f);
+    
+    //SETUP PAUSE MENU
+    std::string setupString = std::string("Paused");
+    raylib::Text setupText; 
+    setupText.SetFontSize(60);
+    setupText.SetText(setupString);
+    MenuObjectRefs[7] = MenuObject({ GlobalVariables.ScreenSize / 2.f }, { 350, 500 }, Driscoll::BLACK, Driscoll::BLACK, Driscoll::WHITE, Driscoll::YELLOW, setupText);
+    MenuObjectRefs[7].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[7].SetTextureIndex(13);
+    MenuObjectRefs[7].SetTextOrigin({ 0.5f, 3.75f });
+    MenuObjectRefs[7].BeginPlay();
+    MenuObjectRefs[7].SetTextSpacing(10.0f);
+
+    setupString = std::string("Resume");
+    setupText.SetFontSize(50);
+    setupText.SetText(setupString);
+    MenuObjectRefs[8] = MenuObject({ GlobalVariables.ScreenX / 2.f, (GlobalVariables.ScreenY / 2.f) - 75.f}, { 300, 150 }, Driscoll::WHITE, Driscoll::TEAL, Driscoll::BLACK, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[8].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[8].SetTextureIndex(13);
+    MenuObjectRefs[8].SetTextOrigin({ 0.6f, 0.5f });
+    MenuObjectRefs[8].BeginPlay();
+    MenuObjectRefs[8].SetTextSpacing(10.0f);
+
+    setupString = std::string("Quit");
+    setupText.SetFontSize(50);
+    setupText.SetText(setupString);
+    MenuObjectRefs[9] = MenuObject({ GlobalVariables.ScreenX / 2.f, (GlobalVariables.ScreenY / 2.f) + 125.f }, { 300, 150 }, Driscoll::WHITE, Driscoll::TEAL, Driscoll::BLACK, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[9].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[9].SetTextureIndex(13);
+    MenuObjectRefs[9].SetTextOrigin({ 0.6f, 0.5f });
+    MenuObjectRefs[9].BeginPlay();
+    MenuObjectRefs[9].SetTextSpacing(10.0f);
 
     //CREATE PLAYER
-    PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 3.F, 3.5f);
+    PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 2.F, 5.f);
     PlayerRef->SetTextureManagerRef(TextureManagerRef);
     PlayerRef->SetLocalPosition(GlobalVariables.ScreenSize - 100);
     PlayerRef->BeginPlay();
@@ -256,13 +291,14 @@ void GameMode::Update()
   bool bIsTitleHovered = false;
 
   bool bEnemiesDead = true;
-
+  bool bIsPauseResumeHovered = false;
+  bool bIsPauseQuitHovered = false;
 
   switch (CurrentState)
   {
   case MainMenu:
     //CHECK COLLISIONS
-    MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth());
+    MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsStartHovered = MenuObjectRefs[0].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsStartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -331,6 +367,26 @@ void GameMode::Update()
     if (PlayerRef->GetShouldPause())
     {
       PlayerRef->CheckPauseInput();
+
+      MenuObjectRefs[7].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+      bIsPauseResumeHovered = MenuObjectRefs[8].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+      if (bIsPauseResumeHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+      {
+        PlayerRef->SetShouldBePaused(false);
+        break;
+      }
+
+      bIsPauseQuitHovered = MenuObjectRefs[9].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+      if (bIsPauseQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+      {
+        bShouldShutdown = true;
+        break;
+      }
+
+      MenuObjectRefs[7].Update();
+      MenuObjectRefs[8].Update();
+      MenuObjectRefs[9].Update();
+
       break;
     }
 
@@ -425,19 +481,24 @@ void GameMode::Draw()
     { //When Should Be Running Game
 
       //Draw Background
-      int NextEnvironmentPosiiton = GlobalVariables.ScreenX / TextureManagerRef->GetTexture(8).GetWidth();
-      int HowManyImagesPerColumn = GlobalVariables.ScreenY / TextureManagerRef->GetTexture(8).GetHeight();
+      int NextEnvironmentPosiiton = GlobalVariables.ScreenX / 128.f;
+      int HowManyImagesPerColumn = GlobalVariables.ScreenY / 128.f;
       raylib::Texture& backgroundTexture = TextureManagerRef->GetTexture(6);
+      Driscoll::Color DrawColor;
 
+      int i = 0;
 
       for (int j = 0; j < NextEnvironmentPosiiton; ++j)
       {
         for (int k = 0; k < HowManyImagesPerColumn; ++k)
         {
+          DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
+            ? Driscoll::Color(185, 133, 85, 255) : DrawColor = Driscoll::Color(233, 160, 99, 255);
+
           //Color Options
           // 1: 185, 133, 85
           // 2: 233, 160, 99
-          backgroundTexture.Draw(j * backgroundTexture.GetWidth(), k * backgroundTexture.GetHeight(), Driscoll::Color(185, 133, 85, 255));
+          backgroundTexture.Draw(j * 128, k * 128, DrawColor);
         }
       }
 
@@ -467,10 +528,18 @@ void GameMode::Draw()
           drawText.SetText(TextFormat("% 01i", drawNumber));
         }
         drawText.SetFontSize(300);
-        drawText.SetSpacing(5.0f);
+        drawText.SetSpacing(10.0f);
         drawText.SetColor(Driscoll::YELLOW);
 
         drawText.Draw((GlobalVariables.ScreenSize / 2) - Driscoll::Vector2D(drawText.Measure() * 0.5f, drawText.GetFontSize() * 0.5f));
+      }
+
+      //Paused??
+      if (PlayerRef->GetShouldPause())
+      {
+        MenuObjectRefs[7].Draw();
+        MenuObjectRefs[8].Draw();
+        MenuObjectRefs[9].Draw();
       }
     }
     break;

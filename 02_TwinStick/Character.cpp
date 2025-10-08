@@ -65,7 +65,7 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 60, 3);
+	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 15, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
 
@@ -355,4 +355,9 @@ bool Character::GetShouldPause()
 void Character::SetHealth(float _maxHealth)
 {
 	Health = _maxHealth;
+}
+
+void Character::SetShouldBePaused(bool _shouldBePaused)
+{
+	bShouldPause = _shouldBePaused;
 }

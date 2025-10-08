@@ -94,6 +94,8 @@ public:
 
 	void SetTextOrigin(Driscoll::Vector2D _textOrigin);
 
+	void SetTextSpacing(float _newTextSpacing);
+
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
 	/* OBJECT SPECIFC FUNCTIONS */
