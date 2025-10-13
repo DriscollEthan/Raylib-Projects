@@ -39,6 +39,8 @@ protected:
 
   Timer StartingCountdownTimer;
 
+  bool bShowEnemyHit;
+
   ///Funny
   int CyclePlayerTank;
 };

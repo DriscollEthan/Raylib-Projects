@@ -109,6 +109,8 @@ public:
 
 	void SetHealth(float _maxHealth);
 
+	bool GetShowHit();
+
 protected:
 	Gunner* Turret;
 
@@ -131,6 +133,10 @@ protected:
 	Timer SwitchingColorTimer;
 
 	bool bShowHit;
+
+	bool bHit;
+
+	Timer HitTimer;
 
 	Timer HitColorShowingTimer;
 

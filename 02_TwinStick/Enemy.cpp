@@ -73,6 +73,8 @@ void Enemy::BeginPlay()
   SetHealth(3);
   SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
   bShowHit = false;
+  HitTimer.SetTimerInSeconds(0.0f, 0.15f);
+  bHit = false;
   HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.6f);
   SwitchHitColorTimer.SetTimerInSeconds(0.0f, 0.15f);
 
@@ -129,9 +131,19 @@ void Enemy::Update()
       else
       {
         bShowHit = false;
+        bHit = false;
         HitColorShowingTimer.ResetTimer();
         DrawColor = Driscoll::WHITE;
         SwitchHitColorTimer.ResetTimer();
+      }
+    }
+
+    if (bHit)
+    {
+      if (HitTimer.RunTimer(GetFrameTime()))
+      {
+        bHit = false;
+        HitTimer.ResetTimer();
       }
     }
 
@@ -212,6 +224,7 @@ void Enemy::GotHit()
 {
   if (!bShowHit)
   {
+    bHit = true;
     SetHealth(GetHealth() - 1);
 
     switch ((int)GetHealth())
@@ -283,4 +296,9 @@ float Enemy::GetHealth()
 void Enemy::SetHealth(float _maxHealth)
 {
   Health = _maxHealth;
+}
+
+bool Enemy::GetShowHit()
+{
+  return bHit;
 }

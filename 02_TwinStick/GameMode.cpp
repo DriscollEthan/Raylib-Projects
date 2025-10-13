@@ -399,6 +399,7 @@ void GameMode::Update()
       HitStopTimer.ResetTimer();
 
       //CHECK COLLISIONS
+      bShowEnemyHit = false;
       for (int i = 0; i < 10; ++i)
       {
         if (EnemyRefs[i].GetIsAlive())
@@ -406,6 +407,10 @@ void GameMode::Update()
           bEnemiesDead = false;
           PlayerRef->GetTurretRef()->BulletCollisionCheck(EnemyRefs[i]);
           EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
+          if (EnemyRefs[i].GetShowHit())
+          {
+            bShowEnemyHit = true;
+          }
         }
       }
 
@@ -497,12 +502,17 @@ void GameMode::Draw()
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
               ? Driscoll::BLACK : DrawColor = Driscoll::DARKGREY;
           }
+          else if (bShowEnemyHit)
+          {
+            DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
+              ? Driscoll::RED : DrawColor = Driscoll::DARKRED;
+          }
           else
           {
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
               ? Driscoll::Color(185, 133, 85, 255) : DrawColor = Driscoll::Color(233, 160, 99, 255);
           }
-
+          
           //Color Options
           // 1: 185, 133, 85
           // 2: 233, 160, 99
