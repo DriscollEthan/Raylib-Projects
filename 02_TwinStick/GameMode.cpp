@@ -505,7 +505,7 @@ void GameMode::Draw()
           else if (bShowEnemyHit)
           {
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
-              ? Driscoll::RED : DrawColor = Driscoll::DARKRED;
+              ? Driscoll::Color(207, 7, 0, 255) : DrawColor = Driscoll::Color(160, 71, 50, 255);
           }
           else
           {

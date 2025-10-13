@@ -73,7 +73,7 @@ void Enemy::BeginPlay()
   SetHealth(3);
   SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
   bShowHit = false;
-  HitTimer.SetTimerInSeconds(0.0f, 0.15f);
+  HitTimer.SetTimerInSeconds(0.0f, 0.1f);
   bHit = false;
   HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.6f);
   SwitchHitColorTimer.SetTimerInSeconds(0.0f, 0.15f);
@@ -138,15 +138,6 @@ void Enemy::Update()
       }
     }
 
-    if (bHit)
-    {
-      if (HitTimer.RunTimer(GetFrameTime()))
-      {
-        bHit = false;
-        HitTimer.ResetTimer();
-      }
-    }
-
     if (PlayerRef)
     {
       Turret->SetLocalRotation(PlayerRef->GetWorldPosition().AngleBetween(GetWorldPosition()) - GetWorldRotation());
@@ -196,6 +187,15 @@ void Enemy::Update()
         break;
       }
       DeadExplosionCountingTimer.ResetTimer();
+    }
+  }
+
+  if (bHit)
+  {
+    if (HitTimer.RunTimer(GetFrameTime()))
+    {
+      bHit = false;
+      HitTimer.ResetTimer();
     }
   }
 
