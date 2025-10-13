@@ -6,8 +6,6 @@
 Bullet::Bullet(LocalData2D _localData, size_t _textureLocation, Driscoll::Vector2D _origin, HitboxData _hitbox, float _speed) : Entity(_localData, _textureLocation, _origin, _hitbox, _speed)
 {
 	CurrentState = None;
-	TimeAlive = 0.0f;
-	TimeToLive = 0.0f;
 }
 
 //Copy Constructor
@@ -19,8 +17,6 @@ Bullet::Bullet(const Bullet& _other)
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
 	CurrentState = _other.CurrentState;
-	TimeAlive = _other.TimeAlive;
-	TimeToLive = _other.TimeToLive;
 	TextureManagerRef = _other.TextureManagerRef;
 }
 
@@ -33,8 +29,6 @@ Bullet Bullet::operator=(const Bullet& _other)
 	MovementVector = _other.MovementVector;
 	Speed = _other.Speed;
 	CurrentState = _other.CurrentState;
-	TimeAlive = _other.TimeAlive;
-	TimeToLive = _other.TimeToLive;
 	TextureManagerRef = _other.TextureManagerRef;
 	return *this;
 }
@@ -59,6 +53,9 @@ void Bullet::BeginPlay()
 	SetCurrentState(None);
 	Origin = { 0.5f, 0.5f };
 	Hitbox.SetHitbox(GetWorldPosition(), GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth());
+	LivingTimer.SetTimerInSeconds(0.0f, 0.0f);
+	ExplosionTimer.SetTimerInSeconds(0.0f, 0.1);
+	ExplosionIterations = 0;
 }
 
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
@@ -75,17 +72,85 @@ void Bullet::Update()
 		Entity::Update();
 		Move();
 		SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
+		//Check if still Alive
+		if (LivingTimer.RunTimer(GetFrameTime()))
+		{
+			CurrentState = Explosion;
+			ExplosionIterations = 0;
+		}
+
 		break;
 	case Inactive:
 		break;
-	}
-
-	//Check if still Alive
-	if (LivingTimer.RunTimer(GetFrameTime())
+	case Explosion:
 	{
-		CurrentState = Inactive;
+		if (ExplosionTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
+		{
+			DrawColor = Driscoll::PINK;
+			switch (ExplosionIterations++)
+			{
+			case 0:
+				TextureIndex = 14;
+				break;
+			case 1:
+				TextureIndex = 15;
+				break;
+			case 2:
+				TextureIndex = 16;
+				break;
+			case 3:
+				TextureIndex = 17;
+				break;
+			case 4:
+				TextureIndex = 18;
+				break;
+			case 5:
+				TextureIndex = 19;
+				break;
+			case 6:
+				TextureIndex = 0;
+				CurrentState = Inactive;
+				break;
+			}
+			ExplosionTimer.ResetTimer();
+		}
 	}
-
+		break;
+	case NonDeadlyExplosion:
+	{
+		if (ExplosionTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
+		{
+			DrawColor = Driscoll::PINK;
+			switch (ExplosionIterations++)
+			{
+			case 0:
+				TextureIndex = 14;
+				break;
+			case 1:
+				TextureIndex = 15;
+				break;
+			case 2:
+				TextureIndex = 16;
+				break;
+			case 3:
+				TextureIndex = 17;
+				break;
+			case 4:
+				TextureIndex = 18;
+				break;
+			case 5:
+				TextureIndex = 19;
+				break;
+			case 6:
+				TextureIndex = 0;
+				CurrentState = Inactive;
+				break;
+			}
+			ExplosionTimer.ResetTimer();
+		}
+	}
+	break;
+	}
 }
 
 //Draw: Called Every Tick in the Draw Section && MUST BE USER CALLED
@@ -99,6 +164,26 @@ void Bullet::Draw()
 		Entity::Draw();
 		break;
 	case Inactive:
+		break;
+	case Explosion:
+		if (ExplosionIterations < 6)
+		{
+			Entity::Draw();
+		}
+		else
+		{
+			CurrentState == Inactive;
+		}
+		break;
+	case NonDeadlyExplosion:
+		if (ExplosionIterations < 6)
+		{
+			Entity::Draw();
+		}
+		else
+		{
+			CurrentState == Inactive;
+		}
 		break;
 	}
 }
@@ -118,6 +203,10 @@ EState Bullet::GetCurrentState()
 //Set Current State
 void Bullet::SetCurrentState(EState _newState)
 {
+	if (_newState == Explosion || _newState == NonDeadlyExplosion)
+	{
+		ExplosionIterations = 0;
+	}
 	CurrentState = _newState;
 }
 
@@ -136,7 +225,7 @@ void Bullet::SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _
 	LocalData.LocalPosition = _spawnPosition;
 	MovementVector = _movementVector;
 	Speed = _speed;
-	SetTimeToLive(_timeToLive);
 	SetCurrentState(Active);
-	LivingTimer.ResetTimer;
+	LivingTimer.SetTimerInSeconds(0.0f, _timeToLive);
+	DrawColor = Driscoll::WHITE;
 }

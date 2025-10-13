@@ -5,7 +5,9 @@ enum EState
 {
 	None,
 	Inactive,
-	Active
+	Active,
+	Explosion,
+	NonDeadlyExplosion
 };
 
 class Bullet : public Entity
@@ -39,6 +41,8 @@ protected:
 	Timer LivingTimer;
 
 	Timer ExplosionTimer;
+
+	int ExplosionIterations;
 
 public:
 	/* FUNCTIONS */

@@ -115,10 +115,20 @@ void Gunner::BulletCollisionCheck(Entity& _enemy)
 {
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
+		BulletsInPool[i].SetHitboxRadius(10 * BulletsInPool[i].GetWorldScale().x);
 		if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
 		{
-			BulletsInPool[i].SetCurrentState(Inactive);
+			BulletsInPool[i].SetCurrentState(NonDeadlyExplosion);
 			_enemy.GotHit();
+		}
+		else if (BulletsInPool[i].GetCurrentState() == Explosion)
+		{
+			BulletsInPool[i].SetHitboxRadius(49 * BulletsInPool[i].GetWorldScale().x);
+			if (BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
+			{
+				BulletsInPool[i].SetCurrentState(NonDeadlyExplosion);
+				_enemy.GotHit();
+			}
 		}
 	}
 }
@@ -131,6 +141,7 @@ void Gunner::Shoot(float _speed, float _lifetime)
 	Driscoll::Vector2D unitVectorBasedOnCurrentRotation = { Driscoll::CosDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg), Driscoll::SinDeg<float>(GetWorldRotation() * Driscoll::Rad2Deg) };
 	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { (texture.GetHeight() * unitVectorBasedOnCurrentRotation.x + GetWorldPosition().x),
 		(texture.GetHeight() * unitVectorBasedOnCurrentRotation.y + GetWorldPosition().y)};
+	BulletsInPool[WhichBulletToUse].SetTextureIndex(BulletTextureIndex);
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;
