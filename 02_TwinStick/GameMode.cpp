@@ -33,9 +33,9 @@ GameMode::~GameMode()
 void GameMode::BeginPlay()
 {
   //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(21);
+  TextureManagerRef = new TextureManager(20);
 
-  /* Texture List: (TOTAL = 21)
+  /* Texture List: (TOTAL = 20)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Enemy Image
@@ -56,7 +56,6 @@ void GameMode::BeginPlay()
    * 17 = Death Smoke 3
    * 18 = Death Smoke 4
    * 19 = Death Smoke 5
-   * 20 = Background Wrapper Indicationish
    */
 
   //SET TEXTURES
@@ -144,10 +143,6 @@ void GameMode::BeginPlay()
     //White Smoke 5
     ImageLoader.Load("Resources/Smoke/smokeWhite5.png");
     TextureManagerRef->SetTexture(ImageLoader, 19);
-
-    //Laser
-    ImageLoader.Load("Resources/Environment/Grass.png");
-    TextureManagerRef->SetTexture(ImageLoader, 20);
   }
 
   /* Menu Object List:
@@ -163,7 +158,7 @@ void GameMode::BeginPlay()
    *  9. Pause Menu Quit Button
    */
 
-  MenuObjectRefs = new MenuObject[10];
+  MenuObjectRefs = new MenuObject[11];
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -200,6 +195,15 @@ void GameMode::BeginPlay()
     MenuObjectRefs[5].SetTextureIndex(13);
     MenuObjectRefs[5].SetTextOrigin({ 0.55f, 0.53f });
     MenuObjectRefs[5].BeginPlay();
+
+    setupString = std::string("You are the Blue Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Blue Tanker!");
+    setupText.SetFontSize(30);
+    setupText.SetText(setupString);
+    MenuObjectRefs[10] = MenuObject({ 1590, 600 }, { 650, 300 }, Driscoll::Color(232, 106, 23, 255), Driscoll::Color(37, 150, 190, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
+    MenuObjectRefs[10].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[10].SetTextureIndex(13);
+    MenuObjectRefs[10].SetTextOrigin({ 0.55f, 0.53f });
+    MenuObjectRefs[10].BeginPlay();
   }
 
   //Setup for PlayingGame State;
@@ -299,6 +303,7 @@ void GameMode::Update()
   case MainMenu:
     //CHECK COLLISIONS
     MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    MenuObjectRefs[10].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsStartHovered = MenuObjectRefs[0].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsStartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -356,6 +361,7 @@ void GameMode::Update()
     MenuObjectRefs[1].Update();
     MenuObjectRefs[3].Update();
     MenuObjectRefs[5].Update();
+    MenuObjectRefs[10].Update();
     break;
 
   case PlayingGame:
@@ -479,6 +485,7 @@ void GameMode::Draw()
     MenuObjectRefs[1].Draw();
     MenuObjectRefs[3].Draw();
     MenuObjectRefs[5].Draw();
+    MenuObjectRefs[10].Draw();
 
     break;
 
