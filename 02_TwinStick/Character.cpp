@@ -65,7 +65,7 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 15, 3);
+	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 25, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
 
@@ -80,7 +80,7 @@ void Character::BeginPlay()
 	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.2f);
 	ExplosionIterationCount = 0;
 
-	ShootingTimer.SetTimerInSeconds(0.0f, 0.225f);
+	ShootingTimer.SetTimerInSeconds(0.0f, 0.3f);
 
 	//Setup Input Keybinds
 	{
@@ -272,10 +272,19 @@ void Character::GotHit()
 {
 	if (!bShowHit)
 	{
-		SetHealth(GetHealth() - 1);
+		SetHealth(GetHealth() - 2);
+
+		if (GetHealth() < 0 && bLastHit == true)
+		{
+			SetIsAlive(false);
+		}
 
 		switch ((int)GetHealth())
 		{
+		case -2:
+
+		case -1:
+
 		case 0:
 			//bool for last hit to flash colors
 			bLastHit = true;
@@ -303,11 +312,6 @@ void Character::GotHit()
 			Turret->SetTextureIndex(9);
 			bShowHit = true;
 			break;
-		}
-
-		if (GetHealth() < 0)
-		{
-			SetIsAlive(false);
 		}
 	}
 }
@@ -342,6 +346,11 @@ float Character::GetHealth()
 bool Character::bIsHit()
 {
 	return bShowHit;
+}
+
+bool Character::GetLastHit()
+{
+	return bLastHit;
 }
 
 bool Character::GetShouldPause()

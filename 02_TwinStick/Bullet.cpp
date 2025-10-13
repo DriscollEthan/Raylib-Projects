@@ -66,12 +66,6 @@ void Bullet::Update()
 {
 	//Reset Vars
 
-	//Check if still Alive
-	if (TimeAlive >= TimeToLive)
-	{
-		CurrentState = Inactive;
-	}
-
 	//Call Parent Update
 	switch (CurrentState)
 	{
@@ -81,10 +75,15 @@ void Bullet::Update()
 		Entity::Update();
 		Move();
 		SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
-		TimeAlive += GetFrameTime();
 		break;
 	case Inactive:
 		break;
+	}
+
+	//Check if still Alive
+	if (LivingTimer.RunTimer(GetFrameTime())
+	{
+		CurrentState = Inactive;
 	}
 
 }
@@ -125,7 +124,7 @@ void Bullet::SetCurrentState(EState _newState)
 //Set Time To Live
 void Bullet::SetTimeToLive(float _newTimeToLive)
 {
-	TimeToLive = _newTimeToLive;
+	LivingTimer.SetTimerInSeconds(0.0f, _newTimeToLive);
 }
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
@@ -139,5 +138,5 @@ void Bullet::SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _
 	Speed = _speed;
 	SetTimeToLive(_timeToLive);
 	SetCurrentState(Active);
-	TimeAlive = 0.0f;
+	LivingTimer.ResetTimer;
 }

@@ -141,6 +141,24 @@ void Gunner::Shoot(float _speed, float _lifetime)
 	}
 }
 
+void Gunner::SetBulletData(LocalData2D _localData)
+{
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].SetLocalPosition(_localData.LocalPosition);
+		BulletsInPool[i].SetLocalRotation(_localData.LocalRotation);
+		BulletsInPool[i].SetLocalScale(_localData.LocalScale);
+	}
+}
+
+void Gunner::SetBulletHitboxRadius()
+{
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].SetHitboxRadius(BulletsInPool[i].GetHitbox().HitboxRadius * BulletsInPool[i].GetWorldScale().y);
+	}
+}
+
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 

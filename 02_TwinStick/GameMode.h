@@ -39,7 +39,9 @@ protected:
 
   Timer StartingCountdownTimer;
 
-  bool bShowEnemyHit;
+  Timer PlayerLastHitFlashTimer;
+
+  bool bShowPlayerLastHit;
 
   ///Funny
   int CyclePlayerTank;

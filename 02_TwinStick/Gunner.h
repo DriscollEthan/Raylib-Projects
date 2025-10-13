@@ -69,5 +69,9 @@ public:
 	//Shoot: Shoots the next available Bullet
 	void Shoot(float _speed, float _lifetime);
 
+	void SetBulletData(LocalData2D _localData);
+
+	void SetBulletHitboxRadius();
+
 };
 

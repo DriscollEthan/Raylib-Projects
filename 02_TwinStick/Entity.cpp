@@ -193,7 +193,7 @@ void Entity::SetDrawColor(Driscoll::Color _newDrawColor)
 //Set Radius
 void Entity::SetHitboxRadius(float _newRadius)
 {
-	LocalData.LocalRotation = _newRadius;
+	Hitbox.HitboxRadius = _newRadius;
 }
 
 void Entity::SetHitboxLocation(Driscoll::Vector2D _newPosition)

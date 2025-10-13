@@ -9,6 +9,9 @@ More Balancing (maybe)
     - Better Spawn Locations for everyone
 
 - Need to Have
+    - PROGRESSION
+    - Bullets Show something on Death
+    - Bullets Explode on Death??
     
 - Want to Have
      - Optional "laser sight" or "aim indicator" to help reinforce player understanding of current aim direction

@@ -36,9 +36,9 @@ protected:
 	/* VARIABLES */
 	EState CurrentState;
 
-	float TimeAlive;
+	Timer LivingTimer;
 
-	float TimeToLive;
+	Timer ExplosionTimer;
 
 public:
 	/* FUNCTIONS */

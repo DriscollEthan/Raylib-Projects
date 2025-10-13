@@ -64,7 +64,7 @@ void Enemy::BeginPlay()
   Entity::BeginPlay();
 
   //Init Vars
-  Turret = new Gunner(LocalData2D({ 0, 0 }, 5, { 1.0f, 1.0f }), 8, { 0.5f, 1.f }, HitboxData(), 5, 4);
+  Turret = new Gunner(LocalData2D({ 0, 0 }, 0, { 1.0f, 1.0f }), 8, { 0.5f, 1.f }, HitboxData(), 5, 4);
   Turret->SetTextureManagerRef(GetTextureManagerRef());
   Turret->SetParent(this);
 
@@ -84,6 +84,8 @@ void Enemy::BeginPlay()
   DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.15f);
 
   Turret->BeginPlay();
+  Turret->SetBulletData(LocalData2D({ 0, 0 }, 0, { 2.0f, 2.0f }));
+  Turret->SetBulletHitboxRadius();
 }
 
 void Enemy::Update()
@@ -222,8 +224,6 @@ void Enemy::Draw()
 
 void Enemy::GotHit()
 {
-  if (!bShowHit)
-  {
     bHit = true;
     SetHealth(GetHealth() - 1);
 
@@ -250,7 +250,6 @@ void Enemy::GotHit()
     {
       SetIsAlive(false);
     }
-  }
 }
 
 void Enemy::SetPlayerRef(Entity* _playerRef)
@@ -265,7 +264,7 @@ void Enemy::SetTimer(float _length, float _deviation)
 
 void Enemy::SetRandomLocation()
 {
-  RandomMoveToLocation = { GetRandomValue(0, GlobalVariables.ScreenX), GetRandomValue(0, GlobalVariables.ScreenY) };
+  RandomMoveToLocation = { GetRandomValue(128, GlobalVariables.ScreenX - 128), GetRandomValue(128, GlobalVariables.ScreenY - 128) };
 }
 
 void Enemy::MoveToRandomLocation()

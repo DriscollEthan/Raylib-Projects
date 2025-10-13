@@ -157,6 +157,7 @@ void GameMode::BeginPlay()
    *  8. Pause Menu Resume Button
    *  9. Pause Menu Quit Button
    */
+  bShowPlayerLastHit = false;
 
   MenuObjectRefs = new MenuObject[11];
   //Setup for MainMenu State;
@@ -212,6 +213,7 @@ void GameMode::BeginPlay()
     EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
     HitStopTimer.SetTimerInSeconds(0.0f, 0.008f);
     StartingCountdownTimer.SetTimerInSeconds(0.0f, 4.0f);
+    PlayerLastHitFlashTimer.SetTimerInSeconds(0.0f, 0.25f);
     
     //SETUP PAUSE MENU
     std::string setupString = std::string("Paused");
@@ -246,18 +248,16 @@ void GameMode::BeginPlay()
     MenuObjectRefs[9].SetTextSpacing(10.0f);
 
     //CREATE PLAYER
-    PlayerRef = new Character(LocalData2D((GlobalVariables.ScreenSize / 2), 0, { 1, 1 }), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 2.F, 5.f);
+    PlayerRef = new Character(LocalData2D({128, 128}, 45, {1, 1}), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 2.F, 5.f);
     PlayerRef->SetTextureManagerRef(TextureManagerRef);
-    PlayerRef->SetLocalPosition(GlobalVariables.ScreenSize - 100);
     PlayerRef->BeginPlay();
 
     //CREATE ENEMIES
     EnemyRefs = new Enemy[10];
     for (int i = 0; i < 10; ++i)
     {
-      EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize / 2), 4, {1, 1}), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 3.5f, 3.5f, 3.0f };
+      EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize - 128.0f), 180, {1, 1}), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 1.f, 3.5f, 1.f };
       EnemyRefs[i].SetPlayerRef(PlayerRef);
-      EnemyRefs[i].SetLocalPosition(Driscoll::Vector2D(0.f, 0.f) + 100);
       EnemyRefs[i].SetTimer(3.0f, 1.0f);
       EnemyRefs[i].SetTextureManagerRef(TextureManagerRef);
       EnemyRefs[i].BeginPlay();
@@ -426,7 +426,6 @@ void GameMode::Update()
       HitStopTimer.ResetTimer();
 
       //CHECK COLLISIONS
-      bShowEnemyHit = false;
       for (int i = 0; i < 10; ++i)
       {
         if (EnemyRefs[i].GetIsAlive())
@@ -434,10 +433,6 @@ void GameMode::Update()
           bEnemiesDead = false;
           PlayerRef->GetTurretRef()->BulletCollisionCheck(EnemyRefs[i]);
           EnemyRefs[i].GetTurretRef()->BulletCollisionCheck((*PlayerRef));
-          if (EnemyRefs[i].GetShowHit())
-          {
-            bShowEnemyHit = true;
-          }
         }
       }
 
@@ -459,6 +454,13 @@ void GameMode::Update()
           MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
           CurrentState = EndMenu;
         }
+      }
+
+      if (PlayerRef->GetLastHit() && PlayerLastHitFlashTimer.RunTimer(GetFrameTime()))
+      {
+        bShowPlayerLastHit = !bShowPlayerLastHit;
+        PlayerLastHitFlashTimer.ResetTimer();
+        std::cout << "ShowLastPlayerHit: " << bShowPlayerLastHit << std::endl;
       }
 
       //UPDATE PLAYER
@@ -519,8 +521,6 @@ void GameMode::Draw()
       raylib::Texture& backgroundTexture = TextureManagerRef->GetTexture(6);
       Driscoll::Color DrawColor;
 
-      int i = 0;
-
       for (int j = 0; j < NextEnvironmentPosiiton; ++j)
       {
         for (int k = 0; k < HowManyImagesPerColumn; ++k)
@@ -530,10 +530,13 @@ void GameMode::Draw()
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
               ? Driscoll::BLACK : DrawColor = Driscoll::DARKGREY;
           }
-          else if (bShowEnemyHit)
+          else if (bShowPlayerLastHit == true)
           {
+            DrawColor = Driscoll::BLACK;
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
-              ? Driscoll::Color(207, 7, 0, 255) : DrawColor = Driscoll::Color(160, 71, 50, 255);
+              ? Driscoll::Color(207, 7, 0, 255) : DrawColor = Driscoll::Color(233, 120, 99, 255);
+
+            //Should Main Area be a Shade of Red at: 160, 71, 50, 255 || Normal Color at: 233, 160, 99, 255
           }
           else
           {
