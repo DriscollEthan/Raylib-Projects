@@ -277,10 +277,10 @@ void GameMode::BeginPlay()
     MenuObjectRefs[2].SetTextureIndex(13);
     MenuObjectRefs[2].BeginPlay();
 
-    setupString = std::string("You Win!");
+    setupString = std::string("             Well done! \nThe Blue Tankers win the War!");
     setupText.SetText(setupString);
     setupText.SetFontSize(50);
-    MenuObjectRefs[4] = MenuObject({ GlobalVariables.ScreenX / 2.f, 160 }, { 300, 80 }, Driscoll::GREEN, Driscoll::CLEAR, Driscoll::BLUE, Driscoll::CLEAR, setupText);
+    MenuObjectRefs[4] = MenuObject({ GlobalVariables.ScreenX / 2.f, 200 }, { 900, 155 }, Driscoll::GREEN, Driscoll::CLEAR, Driscoll::BLUE, Driscoll::CLEAR, setupText);
     MenuObjectRefs[4].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[4].SetTextureIndex(13);
     MenuObjectRefs[4].BeginPlay();
@@ -321,6 +321,7 @@ void GameMode::Update()
     if (bIsTitleHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       raylib::Image newTankImage;
+      std::string setupText;
       switch (++CyclePlayerTank)
       {
       case 0:
@@ -328,30 +329,50 @@ void GameMode::Update()
         TextureManagerRef->SetTexture(newTankImage, 1);
         newTankImage.Load("Resources/Bullets/bulletBlueSilver_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 3);
+        setupText = std::string("You are the Blue Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Blue Tanker!");
+        MenuObjectRefs[10].SetText(setupText);
+        setupText = std::string("             Well done! \nThe Blue Tankers win the War!");
+        MenuObjectRefs[4].SetText(setupText);
         break;
       case 1:
         newTankImage.Load("Resources/Tanks/tankGreen_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 1);
         newTankImage.Load("Resources/Bullets/bulletGreenSilver_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 3);
+        setupText = std::string("You are the Green Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Green Tanker!");
+        MenuObjectRefs[10].SetText(setupText);
+        setupText = std::string("             Well done! \nThe Green Tankers win the War!");
+        MenuObjectRefs[4].SetText(setupText);
         break;
       case 2:
         newTankImage.Load("Resources/Tanks/tankRed_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 1);
         newTankImage.Load("Resources/Bullets/bulletRedSilver_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 3);
+        setupText = std::string("You are the Orange Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Orange Tanker!");
+        MenuObjectRefs[10].SetText(setupText);
+        setupText = std::string("             Well done! \nThe Orange Tankers win the War!");
+        MenuObjectRefs[4].SetText(setupText);
         break;
       case 3:
         newTankImage.Load("Resources/Tanks/tankBlack_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 1);
         newTankImage.Load("Resources/Bullets/bulletSilverSilver_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 3);
+        setupText = std::string("You are the Black Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Black Tanker!");
+        MenuObjectRefs[10].SetText(setupText);
+        setupText = std::string("             Well done! \nThe Black Tankers win the War!");
+        MenuObjectRefs[4].SetText(setupText);
         break;
       case 4:
         newTankImage.Load("Resources/Tanks/tankBeige_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 1);
         newTankImage.Load("Resources/Bullets/bulletBeigeSilver_outline.png");
         TextureManagerRef->SetTexture(newTankImage, 3);
+        setupText = std::string("You are the Beige Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Beige Tanker!");
+        MenuObjectRefs[10].SetText(setupText);
+        setupText = std::string("             Well done! \nThe Beige Tankers win the War!");
+        MenuObjectRefs[4].SetText(setupText);
         CyclePlayerTank = -1;
         break;
       }
@@ -432,7 +453,7 @@ void GameMode::Update()
       {
         if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
         {
-          std::string setupText = std::string("You Lost!");
+          std::string setupText = std::string("             How dare you! \nThe Orange Tankers Win the War!");
           MenuObjectRefs[4].SetText(setupText);
           MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
           MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
