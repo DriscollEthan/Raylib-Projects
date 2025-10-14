@@ -301,3 +301,23 @@ bool Enemy::GetShowHit()
 {
   return bHit;
 }
+
+void Enemy::IncreaseDifficulty(int _round)
+{
+  bHit = false;
+  bShowHit = false;
+  bLastHit = false;
+  SetDrawColor(Driscoll::WHITE);
+  SetTextureIndex(2);
+  BulletSpeed += 0.5f;
+  BulletLifetime += 0.25f;
+  float endShootingTime = ShootingTimer.GetTimer()->GetEndTimeInSeconds() - 0.2f;
+  ShootingTimer.CustomSetTimer(endShootingTime, ShootingTimer.TimerDeviation);
+  SetHealth(3);
+  Turret->SetTextureIndex(8);
+  Turret->SetDrawColor(Driscoll::WHITE);
+  Turret->IncreaseDifficulty(_round);
+  SetIsAlive(true);
+  DeadExplosionCountingTimer.ResetTimer();
+  ExplosionIterationCount = 0;
+}

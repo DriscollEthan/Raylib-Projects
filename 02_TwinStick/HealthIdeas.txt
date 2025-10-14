@@ -8,3 +8,48 @@ Turret = Health bar, White - Black
 Tanks Flashes with 1 hit left,
 
 4 hits show in turret, last live shows in flashing
+
+
+
+NOTES:
+/* Menu Object List:
+   *  0. Start Game Button
+   *  1. Quit Game Button
+   *  2. Restart Game Button
+   *  3. Title Text
+   *  4. Win/Lose Text
+   *  5. Tutorial Text
+   *  6. Credits Text
+   *  7. Pause Menu Background
+   *  8. Pause Menu Resume Button
+   *  9. Pause Menu Quit Button
+   *  10. Lore Text
+   *  11. Round Counter
+   *  12. Next Round
+   *  13. End Game
+   *  14. Quit
+   */
+
+
+ /* Texture List: (TOTAL = 20)
+   * 0 = DEFAULT (ALWAYS DEFAULT)
+   * 1 = Player Image
+   * 2 = Enemy Image
+   * 3 = Player Bullet Image
+   * 4 = Enemy Bullet Image
+   * 5 = Mouse Image
+   * 6 = Dirt Background Image
+   * 7 = Tire Tracks Large
+   * 8 = Max Health Turret 
+   * 9 = 3/4 Health Turret
+   * 10 = 1/2 Health Turret
+   * 11 = 1/4 Health Turret
+   * 12 = 0 Health Turret
+   * 13 = Button Image Background
+   * 14 = Death Smoke 0
+   * 15 = Death Smoke 1
+   * 16 = Death Smoke 2
+   * 17 = Death Smoke 3
+   * 18 = Death Smoke 4
+   * 19 = Death Smoke 5
+   */

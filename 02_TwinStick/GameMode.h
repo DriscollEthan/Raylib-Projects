@@ -8,6 +8,7 @@ enum GameState
 {
   MainMenu,
   PlayingGame,
+  InbetweenRounds,
   EndMenu
 };
 
@@ -29,6 +30,8 @@ protected:
 
   Enemy* EnemyRefs;
 
+  int TOTAL_ENEMY_COUNT;
+
   MenuObject* MenuObjectRefs;
 
   GameState CurrentState;
@@ -42,6 +45,12 @@ protected:
   Timer PlayerLastHitFlashTimer;
 
   bool bShowPlayerLastHit;
+
+  Timer PlayingTime;
+
+  int Rounds;
+
+  int CurrentAmountOfEnemies;
 
   ///Funny
   int CyclePlayerTank;

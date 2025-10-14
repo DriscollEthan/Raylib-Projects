@@ -64,6 +64,11 @@ struct CustomTimer
 	{
 		return InternalTimer.RunTimer(_deltaSeconds);
 	}
+
+	Timer* GetTimer()
+	{
+		return &InternalTimer;
+	}
 };
 
 class Enemy : public Entity
@@ -110,6 +115,8 @@ public:
 	void SetHealth(float _maxHealth);
 
 	bool GetShowHit();
+
+	void IncreaseDifficulty(int _round);
 
 protected:
 	Gunner* Turret;

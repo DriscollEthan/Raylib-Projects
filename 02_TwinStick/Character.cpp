@@ -65,7 +65,7 @@ void Character::BeginPlay()
 	Player::BeginPlay();
 
 	//Init Vars
-	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 25, 3);
+	Turret = new Gunner(LocalData2D({0, 0}, 0, {1.0f, 1.0f}), 8, {0.5f, 1.f}, HitboxData(), 200, 3);
 	Turret->SetTextureManagerRef(GetTextureManagerRef());
 	Turret->SetParent(this);
 
@@ -369,4 +369,43 @@ void Character::SetHealth(float _maxHealth)
 void Character::SetShouldBePaused(bool _shouldBePaused)
 {
 	bShouldPause = _shouldBePaused;
+}
+
+void Character::IncreaseDifficulty(int _round)
+{
+	bLastHit = false;
+	bShowHit = false;
+	BulletSpeed += 0.01f;
+	BulletLifetime += 0.01f;
+	float endShootingTime = ShootingTimer.GetEndTimeInSeconds() - 0.001f;
+	ShootingTimer.SetTimerInSeconds(0.0f, endShootingTime);
+	SetHealth(GetHealth() + 2);
+	SetDrawColor(Driscoll::WHITE);
+	Turret->SetDrawColor(Driscoll::WHITE);
+	switch ((int)GetHealth())
+	{
+	case 1:
+		//Full Turret
+		Turret->SetTextureIndex(12);
+		break;
+	case 2:
+		//1/4 Turret Left
+		Turret->SetTextureIndex(11);
+		break;
+	case 3:
+		//1/2 Turret Left
+		Turret->SetTextureIndex(10);
+		break;
+	case 4:
+		//3/4 Turret Left
+		Turret->SetTextureIndex(9);
+		break;
+	case 5:
+		Turret->SetTextureIndex(8);
+		break;
+	default:
+		Turret->SetTextureIndex(8);
+		break;
+	}
+	Turret->IncreaseDifficulty(_round);
 }

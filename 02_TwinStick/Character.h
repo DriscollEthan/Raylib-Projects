@@ -106,5 +106,7 @@ public:
 
 	void SetShouldBePaused(bool _shouldBePaused);
 
+	void IncreaseDifficulty(int _round);
+
 };
 

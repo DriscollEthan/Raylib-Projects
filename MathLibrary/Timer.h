@@ -221,6 +221,70 @@ public:
   }
 
 
+  //Get End Time + Converisions
+  double GetEndTimeInNanoSeconds()
+  {
+    return SecondsToNanoSeconds(EndTimeInSeconds);
+  }
+
+  double GetEndTimeInMicroSeconds()
+  {
+    return SecondsToMicroSeconds(EndTimeInSeconds);
+  }
+
+  double GetEndTimeInMilliSeconds()
+  {
+    return SecondsToMilliSeconds(EndTimeInSeconds);
+  }
+
+  double GetEndTimeInSeconds()
+  {
+    return EndTimeInSeconds;
+  }
+
+  double GetEndTimeInMinutes()
+  {
+    return SecondsToMinutes(EndTimeInSeconds);
+  }
+
+  double GetEndTimeInHours()
+  {
+    return SecondsToHours(EndTimeInSeconds);
+  }
+
+
+  //Get Start Time + Converisions
+  double GetStartTimeInNanoSeconds()
+  {
+    return SecondsToNanoSeconds(StartTimeInSeconds);
+  }
+
+  double GetStartTimeInMicroSeconds()
+  {
+    return SecondsToMicroSeconds(StartTimeInSeconds);
+  }
+
+  double GetStartTimeInMilliSeconds()
+  {
+    return SecondsToMilliSeconds(StartTimeInSeconds);
+  }
+
+  double GetStartTimeInSeconds()
+  {
+    return StartTimeInSeconds;
+  }
+
+  double GetStartTimeInMinutes()
+  {
+    return SecondsToMinutes(StartTimeInSeconds);
+  }
+
+  double GetStartTimeInHours()
+  {
+    return SecondsToHours(StartTimeInSeconds);
+  }
+
+
   //Timer Work
   void SetTimerInNanoSeconds(double _startTime, double _endTime)
   {

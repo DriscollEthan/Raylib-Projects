@@ -119,6 +119,11 @@ void MenuObject::SetTextFontSize(int _fontSize)
   Text.SetFontSize(_fontSize);
 }
 
+void MenuObject::SetText(raylib::Text _newText)
+{
+  Text.text = _newText.text;
+}
+
 void MenuObject::SetText(std::string& _newText)
 {
   Text.SetText(_newText);

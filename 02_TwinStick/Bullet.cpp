@@ -86,7 +86,7 @@ void Bullet::Update()
 	{
 		if (ExplosionTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
 		{
-			DrawColor = Driscoll::PINK;
+			DrawColor = Driscoll::Color(255, 63, 63, 255);
 			switch (ExplosionIterations++)
 			{
 			case 0:
@@ -228,4 +228,8 @@ void Bullet::SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _
 	SetCurrentState(Active);
 	LivingTimer.SetTimerInSeconds(0.0f, _timeToLive);
 	DrawColor = Driscoll::WHITE;
+}
+
+void Bullet::IncreaseDifficulty(int _round)
+{
 }

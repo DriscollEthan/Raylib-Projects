@@ -73,5 +73,9 @@ public:
 
 	void SetBulletHitboxRadius();
 
+	void IncreaseDifficulty(int _round);
+
+	void DisableAllBullets();
+
 };
 

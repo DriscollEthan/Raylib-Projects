@@ -79,5 +79,7 @@ public:
 	/* BULLET ONLY FUNCTIONS */
 	void SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _movementVector, float _speed, float _timeToLive);
 
+	void IncreaseDifficulty(int _round);
+
 };
 

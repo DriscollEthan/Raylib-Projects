@@ -82,6 +82,8 @@ public:
 
 	void SetTextFontSize(int _fontSize);
 
+	void SetText(raylib::Text _newText);
+
 	void SetText(std::string& _newText);
 
 	void SetNormalColor(Driscoll::Color _newNormalColor);

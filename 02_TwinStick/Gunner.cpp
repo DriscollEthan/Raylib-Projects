@@ -170,6 +170,19 @@ void Gunner::SetBulletHitboxRadius()
 	}
 }
 
+void Gunner::IncreaseDifficulty(int _round)
+{
+	DisableAllBullets();
+}
+
+void Gunner::DisableAllBullets()
+{
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].SetCurrentState(Inactive);
+	}
+}
+
 
 /*** ------------------------------------------------------------------------------------------------------------------------------------ ***/
 

@@ -60,6 +60,10 @@ void GameMode::BeginPlay()
 
   //SET TEXTURES
   {
+    Rounds = 0;
+    PlayingTime.SetTimerInSeconds(0.0f, 0.0f);
+    CurrentAmountOfEnemies = 5;
+
     CurrentState = MainMenu;
 
     raylib::Image ImageLoader; 
@@ -156,10 +160,16 @@ void GameMode::BeginPlay()
    *  7. Pause Menu Background
    *  8. Pause Menu Resume Button
    *  9. Pause Menu Quit Button
+   *  10. Lore Text
+   *  11. Round Counter
+   *  12. Next Round
+   *  13. End Game
+   *  14. Quit
+   *  15. In Game Round Counter
    */
   bShowPlayerLastHit = false;
 
-  MenuObjectRefs = new MenuObject[11];
+  MenuObjectRefs = new MenuObject[16];
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -247,14 +257,24 @@ void GameMode::BeginPlay()
     MenuObjectRefs[9].BeginPlay();
     MenuObjectRefs[9].SetTextSpacing(10.0f);
 
+    //15 = In Game Round Counter
+    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
+    setupText.SetFontSize(30);
+    setupText.SetSpacing(5.0f);
+    MenuObjectRefs[15] = MenuObject({ GlobalVariables.ScreenX - 225.f, 50  }, { 200, 155 }, Driscoll::CLEAR, Driscoll::CLEAR, Driscoll::WHITE, Driscoll::WHITE, setupText);
+    MenuObjectRefs[15].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[15].SetTextureIndex(13);
+    MenuObjectRefs[15].BeginPlay();
+
     //CREATE PLAYER
     PlayerRef = new Character(LocalData2D({128, 128}, 45, {1, 1}), 1, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(50.0F), 5.0f, 2.F, 5.f);
     PlayerRef->SetTextureManagerRef(TextureManagerRef);
     PlayerRef->BeginPlay();
 
     //CREATE ENEMIES
-    EnemyRefs = new Enemy[10];
-    for (int i = 0; i < 10; ++i)
+    TOTAL_ENEMY_COUNT = 15;
+    EnemyRefs = new Enemy[TOTAL_ENEMY_COUNT];
+    for (int i = 0; i < TOTAL_ENEMY_COUNT; ++i)
     {
       EnemyRefs[i] = { LocalData2D((GlobalVariables.ScreenSize - 128.0f), 180, {1, 1}), 2, Driscoll::Vector2D(0.5f, 0.5f), HitboxData(60.0f), 1.f, 3.5f, 1.f };
       EnemyRefs[i].SetPlayerRef(PlayerRef);
@@ -264,7 +284,50 @@ void GameMode::BeginPlay()
     }
   }
 
-  //Setup for EndMenu State;
+  //Setup for InBetweenRounds State;
+  {
+     //11 = Round Counter
+    raylib::Text setupText;
+    std::string setupString;
+    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
+    setupText.SetFontSize(50);
+    setupText.SetSpacing(5.0f);
+    MenuObjectRefs[11] = MenuObject({ GlobalVariables.ScreenX / 2.f, 200 }, { 650, 155 }, Driscoll::DARKBLUE, Driscoll::GREEN, Driscoll::BLUE, Driscoll::BLUE, setupText);
+    MenuObjectRefs[11].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[11].SetTextureIndex(13);
+    MenuObjectRefs[11].SetTextNormalColor(Driscoll::BLUE);
+    MenuObjectRefs[11].BeginPlay();
+
+    //12 = Next Round
+    setupString = std::string("Next Round");
+    setupText.SetFontSize(50);
+    setupText.SetText(setupString);
+    MenuObjectRefs[12] = MenuObject({ GlobalVariables.ScreenX / 2.f, 500}, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[12].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[12].SetTextureIndex(13);
+    MenuObjectRefs[12].BeginPlay();
+
+    //13 = End Game
+    setupString = std::string("End Game");
+    setupText.SetFontSize(50);
+    setupText.SetText(setupString);
+    MenuObjectRefs[13] = MenuObject({ GlobalVariables.ScreenX / 2.f, 700 }, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[13].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[13].SetTextureIndex(13);
+    MenuObjectRefs[13].BeginPlay();
+
+    //14 = Quit
+    setupString = std::string("Quit");
+    setupText.SetFontSize(50);
+    setupText.SetText(setupString);
+    MenuObjectRefs[14] = MenuObject({ GlobalVariables.ScreenX / 2.f, 900 }, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[14].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[14].SetTextureIndex(13);
+    MenuObjectRefs[14].BeginPlay();
+
+  }
+
+  //Setup for EndLevelMenu State;
   {
     raylib::Text setupText = raylib::Text();
     std::string setupString = std::string("Restart Game");
@@ -293,10 +356,14 @@ void GameMode::Update()
   bool bIsQuitHovered = false;
   bool bIsRestartHovered = false;
   bool bIsTitleHovered = false;
+  bool bIsNextRoundHovered = false;
+  bool bIsEndGameHovered = false;
 
   bool bEnemiesDead = true;
   bool bIsPauseResumeHovered = false;
   bool bIsPauseQuitHovered = false;
+
+  raylib::Text setupText;
 
   switch (CurrentState)
   {
@@ -391,6 +458,10 @@ void GameMode::Update()
       break;
     }
 
+    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
+    MenuObjectRefs[15].SetText(setupText);
+    MenuObjectRefs[15].Update();
+
     if (PlayerRef->GetShouldPause())
     {
       PlayerRef->CheckPauseInput();
@@ -426,7 +497,7 @@ void GameMode::Update()
       HitStopTimer.ResetTimer();
 
       //CHECK COLLISIONS
-      for (int i = 0; i < 10; ++i)
+      for (int i = 0; i < CurrentAmountOfEnemies; ++i)
       {
         if (EnemyRefs[i].GetIsAlive())
         {
@@ -440,7 +511,8 @@ void GameMode::Update()
       {
         if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
         {
-          CurrentState = EndMenu;
+          Rounds++;
+          CurrentState = InbetweenRounds;
           break;
         }
       }
@@ -467,13 +539,77 @@ void GameMode::Update()
       PlayerRef->Update();
 
       //UPDATE ENEMIES
-      for (int i = 0; i < 10; ++i)
+      for (int i = 0; i < CurrentAmountOfEnemies; ++i)
       {
         EnemyRefs[i].Update();
       }
       break;
     }
 
+  case InbetweenRounds:
+  {
+    //CHECK COLLISIONS
+    raylib::Text setupText; setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
+
+    MenuObjectRefs[11].SetText(setupText);
+
+    bIsNextRoundHovered = MenuObjectRefs[12].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    bIsEndGameHovered = MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    bIsQuitHovered = MenuObjectRefs[14].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    MenuObjectRefs[10].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    if (bIsNextRoundHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      if (CurrentAmountOfEnemies < TOTAL_ENEMY_COUNT)
+      {
+        CurrentAmountOfEnemies++;
+      }
+      //SETUP TIMERS
+      EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
+      HitStopTimer.SetTimerInSeconds(0.0f, 0.008f);
+      StartingCountdownTimer.SetTimerInSeconds(0.0f, 4.0f);
+      PlayerLastHitFlashTimer.SetTimerInSeconds(0.0f, 0.25f);
+
+      PlayerRef->SetLocalPosition({ 128, 128 });
+      PlayerRef->SetLocalRotation(45.0f);
+
+      for (int i = 0; i < TOTAL_ENEMY_COUNT; ++i)
+      {
+        EnemyRefs[i].SetLocalPosition(GlobalVariables.ScreenSize - 128.0f);
+        EnemyRefs[i].SetLocalRotation(180.0f);
+        EnemyRefs[i].IncreaseDifficulty(Rounds);
+        EnemyRefs[i].GetTurretRef()->DisableAllBullets();
+
+        EnemyRefs[i].Update();
+        EnemyRefs[i].GetTurretRef()->DisableAllBullets();
+      }
+
+      PlayerRef->IncreaseDifficulty(Rounds);
+      PlayerRef->GetTurretRef()->DisableAllBullets();
+      PlayerRef->Update();
+      PlayerRef->GetTurretRef()->DisableAllBullets();
+
+      CurrentState = PlayingGame;
+      break;
+    }
+    if (bIsEndGameHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      CurrentState = EndMenu;
+      break;
+    }
+    if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      bShouldShutdown = true;
+      break;
+    }
+    MenuObjectRefs[3].Update();
+    MenuObjectRefs[5].Update();
+    MenuObjectRefs[10].Update();
+    MenuObjectRefs[12].Update();
+    MenuObjectRefs[13].Update();
+    MenuObjectRefs[14].Update();
+    break;
+  }
   case EndMenu:
     //CHECK COLLISIONS
     bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
@@ -552,7 +688,7 @@ void GameMode::Draw()
       }
 
       //DRAW ENEMIES
-      for (int i = 0; i < 10; ++i)
+      for (int i = 0; i < CurrentAmountOfEnemies; ++i)
       {
         EnemyRefs[i].Draw();
       }
@@ -583,6 +719,8 @@ void GameMode::Draw()
         drawText.Draw((GlobalVariables.ScreenSize / 2) - Driscoll::Vector2D(drawText.Measure() * 0.5f, drawText.GetFontSize() * 0.5f));
       }
 
+      MenuObjectRefs[15].Draw();
+
       //Paused??
       if (PlayerRef->GetShouldPause())
       {
@@ -591,6 +729,16 @@ void GameMode::Draw()
         MenuObjectRefs[9].Draw();
       }
     }
+    break;
+
+  case InbetweenRounds:
+    MenuObjectRefs[3].Draw();
+    MenuObjectRefs[5].Draw();
+    MenuObjectRefs[10].Draw();
+    MenuObjectRefs[11].Draw();
+    MenuObjectRefs[12].Draw();
+    MenuObjectRefs[13].Draw();
+    MenuObjectRefs[14].Draw();
     break;
 
   case EndMenu:
