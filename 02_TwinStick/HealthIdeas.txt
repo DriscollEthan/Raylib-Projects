@@ -12,7 +12,7 @@ Tanks Flashes with 1 hit left,
 
 
 NOTES:
-/* Menu Object List:
+  /* Menu Object List:
    *  0. Start Game Button
    *  1. Quit Game Button
    *  2. Restart Game Button
@@ -26,8 +26,9 @@ NOTES:
    *  10. Lore Text
    *  11. Round Counter
    *  12. Next Round
-   *  13. End Game
+   *  13. Round HighScore
    *  14. Quit
+   *  15. In Game Round Counter
    */
 
 

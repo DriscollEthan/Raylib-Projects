@@ -1,7 +1,7 @@
 ﻿#include "GameMode.h"
 
-#include <string.h>
-
+#include <string.h>   //Use of Creating Text for Menu Objects
+#include <fstream>    //Use of tracking HighScore for Rounds
 
 GameMode::GameMode()
 {
@@ -35,6 +35,14 @@ void GameMode::BeginPlay()
   //CREATE TEXTURE MANAGER
   TextureManagerRef = new TextureManager(20);
 
+  std::fstream HighScoreFile;
+  HighScoreFile.open("Resources/HighScores.txt", std::ios::in);
+  if (HighScoreFile.is_open())
+  {
+    HighScoreFile >> RoundHighScore;
+  }
+  HighScoreFile.close();
+
   /* Texture List: (TOTAL = 20)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
@@ -62,7 +70,7 @@ void GameMode::BeginPlay()
   {
     Rounds = 0;
     PlayingTime.SetTimerInSeconds(0.0f, 0.0f);
-    CurrentAmountOfEnemies = 3;
+    CurrentAmountOfEnemies = 5;
 
     CurrentState = MainMenu;
 
@@ -163,7 +171,7 @@ void GameMode::BeginPlay()
    *  10. Lore Text
    *  11. Round Counter
    *  12. Next Round
-   *  13. End Game
+   *  13. Round HighScore
    *  14. Quit
    *  15. In Game Round Counter
    */
@@ -215,6 +223,14 @@ void GameMode::BeginPlay()
     MenuObjectRefs[10].SetTextureIndex(13);
     MenuObjectRefs[10].SetTextOrigin({ 0.55f, 0.53f });
     MenuObjectRefs[10].BeginPlay();
+
+    //13 = High Score
+    setupText.SetFontSize(30);
+    setupText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
+    MenuObjectRefs[13] = MenuObject({ GlobalVariables.ScreenX - 225.f, 75 }, { 350, 150 }, Driscoll::BLUE, Driscoll::TEAL, Driscoll::WHITE, Driscoll::BLACK, setupText);
+    MenuObjectRefs[13].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[13].SetTextureIndex(13);
+    MenuObjectRefs[13].BeginPlay();
   }
 
   //Setup for PlayingGame State;
@@ -307,15 +323,6 @@ void GameMode::BeginPlay()
     MenuObjectRefs[12].SetTextureIndex(13);
     MenuObjectRefs[12].BeginPlay();
 
-    //13 = End Game
-    setupString = std::string("End Game");
-    setupText.SetFontSize(50);
-    setupText.SetText(setupString);
-    MenuObjectRefs[13] = MenuObject({ GlobalVariables.ScreenX / 2.f, 700 }, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
-    MenuObjectRefs[13].SetTextureManagerRef(TextureManagerRef);
-    MenuObjectRefs[13].SetTextureIndex(13);
-    MenuObjectRefs[13].BeginPlay();
-
     //14 = Quit
     setupString = std::string("Quit");
     setupText.SetFontSize(50);
@@ -357,7 +364,6 @@ void GameMode::Update()
   bool bIsRestartHovered = false;
   bool bIsTitleHovered = false;
   bool bIsNextRoundHovered = false;
-  bool bIsEndGameHovered = false;
 
   bool bEnemiesDead = true;
   bool bIsPauseResumeHovered = false;
@@ -369,6 +375,7 @@ void GameMode::Update()
   {
   case MainMenu:
     //CHECK COLLISIONS
+    MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     MenuObjectRefs[10].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsStartHovered = MenuObjectRefs[0].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
@@ -450,6 +457,7 @@ void GameMode::Update()
     MenuObjectRefs[3].Update();
     MenuObjectRefs[5].Update();
     MenuObjectRefs[10].Update();
+    MenuObjectRefs[13].Update();
     break;
 
   case PlayingGame:
@@ -477,6 +485,22 @@ void GameMode::Update()
       bIsPauseQuitHovered = MenuObjectRefs[9].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
       if (bIsPauseQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
       {
+        if (RoundHighScore < Rounds)
+        {
+          std::fstream HighScoreFile;
+          HighScoreFile.open("Resources/HighScores.txt", std::ios::out);
+          if (HighScoreFile.is_open())
+          {
+            RoundHighScore = Rounds;
+            HighScoreFile << RoundHighScore;
+
+            raylib::Text newHighscoreText;
+            newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
+            MenuObjectRefs[13].SetText(newHighscoreText);
+          }
+          HighScoreFile.flush();
+          HighScoreFile.close();
+        }
         bShouldShutdown = true;
         break;
       }
@@ -520,10 +544,30 @@ void GameMode::Update()
       {
         if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
         {
-          std::string setupText = std::string("             How dare you! \nThe Orange Tankers Win the War!");
-          MenuObjectRefs[4].SetText(setupText);
-          MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
-          MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
+          if (Rounds < 1)
+          {
+            std::string setupText = std::string("             How dare you! \nThe Orange Tankers Win the War!");
+            MenuObjectRefs[4].SetText(setupText);
+            MenuObjectRefs[4].SetNormalColor(Driscoll::DARKRED);
+            MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
+          }
+
+          if (RoundHighScore < Rounds)
+          {
+            std::fstream HighScoreFile;
+            HighScoreFile.open("Resources/HighScores.txt", std::ios::out);
+            if (HighScoreFile.is_open())
+            {
+              RoundHighScore = Rounds;
+              HighScoreFile << RoundHighScore;
+
+              raylib::Text newHighscoreText;
+              newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
+              MenuObjectRefs[13].SetText(newHighscoreText);
+            }
+            HighScoreFile.flush();
+            HighScoreFile.close();
+        }
           CurrentState = EndMenu;
         }
       }
@@ -551,9 +595,8 @@ void GameMode::Update()
     raylib::Text setupText; setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
 
     MenuObjectRefs[11].SetText(setupText);
-
+    MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsNextRoundHovered = MenuObjectRefs[12].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
-    bIsEndGameHovered = MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsQuitHovered = MenuObjectRefs[14].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     MenuObjectRefs[10].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
@@ -593,11 +636,6 @@ void GameMode::Update()
       CurrentState = PlayingGame;
       break;
     }
-    if (bIsEndGameHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-    {
-      CurrentState = EndMenu;
-      break;
-    }
     if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       bShouldShutdown = true;
@@ -613,6 +651,7 @@ void GameMode::Update()
   }
   case EndMenu:
     //CHECK COLLISIONS
+    MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -632,6 +671,7 @@ void GameMode::Update()
     MenuObjectRefs[1].Update();
     MenuObjectRefs[3].Update();
     MenuObjectRefs[4].Update();
+    MenuObjectRefs[13].Update();
     break;
   }
 }
@@ -646,6 +686,7 @@ void GameMode::Draw()
     MenuObjectRefs[3].Draw();
     MenuObjectRefs[5].Draw();
     MenuObjectRefs[10].Draw();
+    MenuObjectRefs[13].Draw();
 
     break;
 
@@ -694,8 +735,12 @@ void GameMode::Draw()
         EnemyRefs[i].Draw();
       }
 
+      //Draw Laser Sight
+      DrawLine(PlayerRef->GetWorldPosition().x, PlayerRef->GetWorldPosition().y, GetMousePosition().x, GetMousePosition().y, Driscoll::YELLOW);
+
       //DRAW PLAYER
       PlayerRef->Draw();
+
 
       //DRAW COUNTDOWN TILL SHOOTING
       if (!StartingCountdownTimer.RunTimer(0.0f))
@@ -787,6 +832,7 @@ void GameMode::Draw()
     MenuObjectRefs[1].Draw();
     MenuObjectRefs[3].Draw();
     MenuObjectRefs[4].Draw();
+    MenuObjectRefs[13].Draw();
     break;
   }
 

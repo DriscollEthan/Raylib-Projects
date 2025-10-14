@@ -50,6 +50,8 @@ protected:
 
   int Rounds;
 
+  int RoundHighScore;
+
   int CurrentAmountOfEnemies;
 
   ///Funny

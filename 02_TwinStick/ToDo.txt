@@ -7,18 +7,18 @@ More Balancing (maybe)
     - Pause Menu
     - Starting Countdown
     - Better Spawn Locations for everyone
+    - Optional "laser sight" or "aim indicator" to help reinforce player understanding of current aim direction
+    - Infinite with slow Build Up?
 
 - Need to Have
-    - PROGRESSION
-    - Bullets Show something on Death
-    - Bullets Explode on Death??
+    - Extra Upgrade for Player at end of Round(s).
     
 - Want to Have
-     - Optional "laser sight" or "aim indicator" to help reinforce player understanding of current aim direction
+     
     - An actual goal to work towards beyond "kill everything"
     - Powerups
     - Enemy Movement Profiles?
-    - Infinite with slow Build Up?
+    
 - Nice to Have
     - Smoothing on tank body rotation (without actually affecting player locomotion)
     - Walls/Barriers
