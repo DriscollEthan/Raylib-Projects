@@ -207,7 +207,7 @@ void GameMode::BeginPlay()
     MenuObjectRefs[5].SetTextOrigin({ 0.55f, 0.53f });
     MenuObjectRefs[5].BeginPlay();
 
-    setupString = std::string("You are the Blue Tank Warrier \nKill the Orange Tank Bad Guys\n Good luck my fellow Blue Tanker!");
+    setupString = std::string("You are the Blue Tank Warrior \nKill the Orange Tank Bad Guys\n Good luck my fellow Blue Tanker!");
     setupText.SetFontSize(30);
     setupText.SetText(setupString);
     MenuObjectRefs[10] = MenuObject({ 1590, 600 }, { 650, 300 }, Driscoll::Color(232, 106, 23, 255), Driscoll::Color(37, 150, 190, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
