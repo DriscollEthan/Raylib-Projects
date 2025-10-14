@@ -115,7 +115,6 @@ void Gunner::BulletCollisionCheck(Entity& _enemy)
 {
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
-		BulletsInPool[i].SetHitboxRadius(10 * BulletsInPool[i].GetWorldScale().x);
 		if (BulletsInPool[i].GetCurrentState() == Active && BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
 		{
 			BulletsInPool[i].SetCurrentState(NonDeadlyExplosion);
@@ -123,7 +122,6 @@ void Gunner::BulletCollisionCheck(Entity& _enemy)
 		}
 		else if (BulletsInPool[i].GetCurrentState() == Explosion)
 		{
-			BulletsInPool[i].SetHitboxRadius(49 * BulletsInPool[i].GetWorldScale().x);
 			if (BulletsInPool[i].GetHitbox().CheckCollision(_enemy.GetHitbox()))
 			{
 				BulletsInPool[i].SetCurrentState(NonDeadlyExplosion);
@@ -142,6 +140,7 @@ void Gunner::Shoot(float _speed, float _lifetime)
 	Driscoll::Vector2D spawnPositionBasedOnEndOfTurret = { (texture.GetHeight() * unitVectorBasedOnCurrentRotation.x + GetWorldPosition().x),
 		(texture.GetHeight() * unitVectorBasedOnCurrentRotation.y + GetWorldPosition().y)};
 	BulletsInPool[WhichBulletToUse].SetTextureIndex(BulletTextureIndex);
+	BulletsInPool[WhichBulletToUse].SetHitboxRadius(TextureManagerRef->GetTexture(BulletTextureIndex).GetWidth() * BulletsInPool[WhichBulletToUse].GetWorldScale().x - 2.5f);
 	BulletsInPool[WhichBulletToUse].SpawnBullet(spawnPositionBasedOnEndOfTurret, unitVectorBasedOnCurrentRotation, _speed, _lifetime);
 
 	++WhichBulletToUse;
@@ -162,11 +161,11 @@ void Gunner::SetBulletData(LocalData2D _localData)
 	}
 }
 
-void Gunner::SetBulletHitboxRadius()
+void Gunner::SetBulletHitboxRadius(float _hitboxShrinkAmount)
 {
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
-		BulletsInPool[i].SetHitboxRadius(BulletsInPool[i].GetHitbox().HitboxRadius * BulletsInPool[i].GetWorldScale().y);
+		BulletsInPool[i].SetHitboxRadius((BulletsInPool[i].GetHitbox().HitboxRadius * BulletsInPool[i].GetWorldScale().x) - _hitboxShrinkAmount);
 	}
 }
 

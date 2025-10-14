@@ -52,7 +52,7 @@ void Bullet::BeginPlay()
 	//Init Vars
 	SetCurrentState(None);
 	Origin = { 0.5f, 0.5f };
-	Hitbox.SetHitbox(GetWorldPosition(), GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth());
+	Hitbox.SetHitbox(GetWorldPosition(), (GetTextureManagerRef()->GetTexture(TextureIndex).GetWidth() * LocalData.LocalScale.x) - 2.5f);
 	LivingTimer.SetTimerInSeconds(0.0f, 0.0f);
 	ExplosionTimer.SetTimerInSeconds(0.0f, 0.1);
 	ExplosionIterations = 0;
@@ -77,6 +77,8 @@ void Bullet::Update()
 		{
 			CurrentState = Explosion;
 			ExplosionIterations = 0;
+			TextureIndex = 14;
+			SetHitboxRadius((TextureManagerRef->GetTexture(TextureIndex).GetWidth() * GetWorldScale().x) - 20.0f);
 		}
 
 		break;
@@ -84,6 +86,7 @@ void Bullet::Update()
 		break;
 	case Explosion:
 	{
+		Entity::Update();
 		if (ExplosionTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
 		{
 			DrawColor = Driscoll::Color(255, 63, 63, 255);
@@ -118,6 +121,7 @@ void Bullet::Update()
 		break;
 	case NonDeadlyExplosion:
 	{
+		Entity::Update();
 		if (ExplosionTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
 		{
 			DrawColor = Driscoll::PINK;

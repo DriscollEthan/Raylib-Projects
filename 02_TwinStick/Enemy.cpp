@@ -84,8 +84,8 @@ void Enemy::BeginPlay()
   DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.15f);
 
   Turret->BeginPlay();
-  Turret->SetBulletData(LocalData2D({ 0, 0 }, 0, { 2.0f, 2.0f }));
-  Turret->SetBulletHitboxRadius();
+  Turret->SetBulletData(LocalData2D({ 0, 0 }, 0, { 1.5f, 1.5f }));
+  Turret->SetBulletHitboxRadius(3.0f);
 }
 
 void Enemy::Update()
@@ -230,18 +230,19 @@ void Enemy::GotHit()
     switch ((int)GetHealth())
     {
     case 0:
-      //bool for last hit to flash colors
+      //bool for last hit to flash colors'
+      Turret->SetTextureIndex(12);
       bLastHit = true;
       DrawColor = Driscoll::DARKRED;
       Turret->SetDrawColor(DrawColor);
       break;
     case 1:
-      //Full Turret
-      Turret->SetTextureIndex(12);
+      //1/4
+      Turret->SetTextureIndex(11);
       break;
     case 2:
-      //1/2 Turret Left
-      Turret->SetTextureIndex(10);
+      //3/4 Turret Left
+      Turret->SetTextureIndex(9);
       bShowHit = true;
       break;
     }
@@ -309,13 +310,15 @@ void Enemy::IncreaseDifficulty(int _round)
   bLastHit = false;
   SetDrawColor(Driscoll::WHITE);
   SetTextureIndex(2);
+  Speed += 0.75f;
   BulletSpeed += 0.5f;
-  BulletLifetime += 0.25f;
-  float endShootingTime = ShootingTimer.GetTimer()->GetEndTimeInSeconds() - 0.2f;
+  BulletLifetime += 0.5f;
+  float endShootingTime = ShootingTimer.GetTimer()->GetEndTimeInSeconds() - 0.4f;
   ShootingTimer.CustomSetTimer(endShootingTime, ShootingTimer.TimerDeviation);
   SetHealth(3);
   Turret->SetTextureIndex(8);
   Turret->SetDrawColor(Driscoll::WHITE);
+  Turret->SetBulletHitboxRadius(2.5f);
   Turret->IncreaseDifficulty(_round);
   SetIsAlive(true);
   DeadExplosionCountingTimer.ResetTimer();

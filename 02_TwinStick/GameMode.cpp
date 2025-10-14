@@ -62,7 +62,7 @@ void GameMode::BeginPlay()
   {
     Rounds = 0;
     PlayingTime.SetTimerInSeconds(0.0f, 0.0f);
-    CurrentAmountOfEnemies = 5;
+    CurrentAmountOfEnemies = 1;
 
     CurrentState = MainMenu;
 
@@ -221,7 +221,7 @@ void GameMode::BeginPlay()
   {
     //SETUP TIMERS
     EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
-    HitStopTimer.SetTimerInSeconds(0.0f, 0.008f);
+    HitStopTimer.SetTimerInSeconds(0.0f, 0.007f);
     StartingCountdownTimer.SetTimerInSeconds(0.0f, 4.0f);
     PlayerLastHitFlashTimer.SetTimerInSeconds(0.0f, 0.25f);
     
@@ -284,7 +284,7 @@ void GameMode::BeginPlay()
     }
   }
 
-  //Setup for InBetweenRounds State;
+  //Setup for InBetweenRounds State; 
   {
      //11 = Round Counter
     raylib::Text setupText;
@@ -532,7 +532,6 @@ void GameMode::Update()
       {
         bShowPlayerLastHit = !bShowPlayerLastHit;
         PlayerLastHitFlashTimer.ResetTimer();
-        std::cout << "ShowLastPlayerHit: " << bShowPlayerLastHit << std::endl;
       }
 
       //UPDATE PLAYER
@@ -562,7 +561,7 @@ void GameMode::Update()
     {
       if (CurrentAmountOfEnemies < TOTAL_ENEMY_COUNT)
       {
-        CurrentAmountOfEnemies++;
+        CurrentAmountOfEnemies += 3;
       }
       //SETUP TIMERS
       EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
@@ -588,6 +587,8 @@ void GameMode::Update()
       PlayerRef->GetTurretRef()->DisableAllBullets();
       PlayerRef->Update();
       PlayerRef->GetTurretRef()->DisableAllBullets();
+
+      bShowPlayerLastHit = false;
 
       CurrentState = PlayingGame;
       break;
@@ -664,22 +665,22 @@ void GameMode::Draw()
           if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(0))
           {
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
-              ? Driscoll::BLACK : DrawColor = Driscoll::DARKGREY;
+              ? Driscoll::BLACK : Driscoll::DARKGREY;
           }
           else if (bShowPlayerLastHit == true)
           {
             DrawColor = Driscoll::BLACK;
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
-              ? Driscoll::Color(207, 7, 0, 255) : DrawColor = Driscoll::Color(233, 120, 99, 255);
+              ? Driscoll::Color(207, 7, 0, 255) : Driscoll::Color(233, 120, 99, 255);
 
             //Should Main Area be a Shade of Red at: 160, 71, 50, 255 || Normal Color at: 233, 160, 99, 255
           }
           else
           {
             DrawColor = (j == 0 || j == NextEnvironmentPosiiton - 1 || k == 0 || k == HowManyImagesPerColumn - 1)
-              ? Driscoll::Color(185, 133, 85, 255) : DrawColor = Driscoll::Color(233, 160, 99, 255);
+              ? Driscoll::Color(185, 133, 85, 255) : Driscoll::Color(233, 160, 99, 255);
           }
-          
+
           //Color Options
           // 1: 185, 133, 85
           // 2: 233, 160, 99
@@ -728,9 +729,49 @@ void GameMode::Draw()
         MenuObjectRefs[8].Draw();
         MenuObjectRefs[9].Draw();
       }
-    }
-    break;
+      size_t textureIndex = 0;
 
+      //Draw Mini Health Bar under Mouse Cursor
+      switch ((int)PlayerRef->GetHealth())
+      {
+      default:
+      case 1:
+        //Full Turret
+        textureIndex = 12;
+        break;
+      case 2:
+        //1/4 Turret Left
+        textureIndex = 11;
+        break;
+      case 3:
+        //1/2 Turret Left
+        textureIndex = 10;
+        break;
+      case 4:
+        //3/4 Turret Left
+        textureIndex = 9;
+        break;
+      case 5:
+        // Full Health Turret
+        textureIndex = 8;
+        break;
+      }
+     raylib::Texture& texture = TextureManagerRef->GetTexture(textureIndex);
+     raylib::Texture& mouseTexture = TextureManagerRef->GetTexture(5);
+
+     //Actually Draw Mini Health Bar Texture:
+     texture.Draw
+     (
+       raylib::Rectangle(0, 0, (float)texture.GetWidth(), (float)texture.GetHeight()),																																								              // SourceRec
+       raylib::Rectangle(GetMousePosition().x, GetMousePosition().y + (mouseTexture.GetHeight() / 2) + 7.5f, (float)texture.GetWidth() * 0.5f, (float)texture.GetHeight() * 0.5f),	// DestRec
+       raylib::Vector2((float)texture.GetWidth() * 0.5f * 0.5f, (float)texture.GetHeight() * 0.5f * 0.5f),											                                                    // Origin
+       90.0f,	// Rotation
+       Driscoll::WHITE // Tint
+     );
+
+     break;
+
+    }
   case InbetweenRounds:
     MenuObjectRefs[3].Draw();
     MenuObjectRefs[5].Draw();

@@ -74,7 +74,7 @@ void Character::BeginPlay()
 	SetHealth(5);
 	SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
 	bShowHit = false;
-	HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.6f);
+	HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.9f);
 	SwitchHitColorTimer.SetTimerInSeconds(0.0f, 0.15f);
 
 	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.2f);
@@ -104,6 +104,7 @@ void Character::BeginPlay()
 	}
 
 	Turret->BeginPlay();
+	Turret->SetBulletHitboxRadius(-1.0f);
 }
 //Update: Called Every Tick in the Update Section && MUST BE USER CALLED
 void Character::Update()
@@ -272,30 +273,27 @@ void Character::GotHit()
 {
 	if (!bShowHit)
 	{
-		SetHealth(GetHealth() - 2);
+		SetHealth(GetHealth() - 1.5);
 
-		if (GetHealth() < 0 && bLastHit == true)
+		if (GetHealth() <= 0 && bLastHit == true)
 		{
 			SetIsAlive(false);
 		}
 
 		switch ((int)GetHealth())
 		{
-		case -2:
-
-		case -1:
-
-		case 0:
-			//bool for last hit to flash colors
-			bLastHit = true;
-			DrawColor = Driscoll::RED;
-			Turret->SetDrawColor(DrawColor);
-			bShowHit = true;
-			break;
+		default:
+			std::cout << "Default \n";
 		case 1:
 			//Full Turret
 			Turret->SetTextureIndex(12);
 			bShowHit = true;
+
+			//bool for last hit to flash colors
+			bLastHit = true;
+			DrawColor = Driscoll::RED;
+			Turret->SetDrawColor(DrawColor);
+			std::cout << "Case 1 \n";
 			break;
 		case 2:
 			//1/4 Turret Left
@@ -379,33 +377,10 @@ void Character::IncreaseDifficulty(int _round)
 	BulletLifetime += 0.01f;
 	float endShootingTime = ShootingTimer.GetEndTimeInSeconds() - 0.001f;
 	ShootingTimer.SetTimerInSeconds(0.0f, endShootingTime);
-	SetHealth(GetHealth() + 2);
+	SetHealth(5);
 	SetDrawColor(Driscoll::WHITE);
 	Turret->SetDrawColor(Driscoll::WHITE);
-	switch ((int)GetHealth())
-	{
-	case 1:
-		//Full Turret
-		Turret->SetTextureIndex(12);
-		break;
-	case 2:
-		//1/4 Turret Left
-		Turret->SetTextureIndex(11);
-		break;
-	case 3:
-		//1/2 Turret Left
-		Turret->SetTextureIndex(10);
-		break;
-	case 4:
-		//3/4 Turret Left
-		Turret->SetTextureIndex(9);
-		break;
-	case 5:
-		Turret->SetTextureIndex(8);
-		break;
-	default:
-		Turret->SetTextureIndex(8);
-		break;
-	}
+	Turret->SetTextureIndex(8);
+	Turret->SetBulletHitboxRadius(-1.0f);
 	Turret->IncreaseDifficulty(_round);
 }

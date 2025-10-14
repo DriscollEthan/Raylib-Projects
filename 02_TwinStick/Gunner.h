@@ -71,7 +71,7 @@ public:
 
 	void SetBulletData(LocalData2D _localData);
 
-	void SetBulletHitboxRadius();
+	void SetBulletHitboxRadius(float _hitboxShrinkAmount);
 
 	void IncreaseDifficulty(int _round);
 
