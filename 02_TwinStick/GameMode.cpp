@@ -62,7 +62,7 @@ void GameMode::BeginPlay()
   {
     Rounds = 0;
     PlayingTime.SetTimerInSeconds(0.0f, 0.0f);
-    CurrentAmountOfEnemies = 1;
+    CurrentAmountOfEnemies = 3;
 
     CurrentState = MainMenu;
 
@@ -561,7 +561,7 @@ void GameMode::Update()
     {
       if (CurrentAmountOfEnemies < TOTAL_ENEMY_COUNT)
       {
-        CurrentAmountOfEnemies += 3;
+        CurrentAmountOfEnemies += 2;
       }
       //SETUP TIMERS
       EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
