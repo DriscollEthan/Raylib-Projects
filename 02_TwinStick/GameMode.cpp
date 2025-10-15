@@ -32,6 +32,8 @@ GameMode::~GameMode()
 
 void GameMode::BeginPlay()
 {
+  UpgradePoints = 0;
+
   //CREATE TEXTURE MANAGER
   TextureManagerRef = new TextureManager(20);
 
@@ -174,10 +176,13 @@ void GameMode::BeginPlay()
    *  13. Round HighScore
    *  14. Quit
    *  15. In Game Round Counter
+   *  16. Shooting Speed Upgrade
+   *  17. Health Upgrade
+   *  18. Player Bullet Upgrade
    */
   bShowPlayerLastHit = false;
 
-  MenuObjectRefs = new MenuObject[16];
+  MenuObjectRefs = new MenuObject[19];
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -206,10 +211,10 @@ void GameMode::BeginPlay()
     MenuObjectRefs[3].SetTextureIndex(13);
     MenuObjectRefs[3].BeginPlay();
 
-    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Left Click: Shoot\n Space Bar: Shoot\n\nAiming: \n The Turret Looks\n Towards the Mouse");
+    setupString = std::string("Controls: \n\nMovement: \n W: Move Up\n Up: Move Up\n\n A: Move Left\n Left: Move Left\n\n S: Move Down\n Down: Move Down\n\n D: Move Right\n Right: Move Right\n\n\nShooting:\n Hold Left Click: Shoot\n Hold Space Bar: Shoot\n\nAiming: \n The Turret Looks\n Towards the Mouse");
     setupText.SetFontSize(30);
     setupText.SetText(setupString);
-    MenuObjectRefs[5] = MenuObject({ 330, 600 }, { 375, 775 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
+    MenuObjectRefs[5] = MenuObject({ 330, 525 }, { 425, 775 }, Driscoll::Color(37, 150, 190, 255), Driscoll::Color(232, 106, 23, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
     MenuObjectRefs[5].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[5].SetTextureIndex(13);
     MenuObjectRefs[5].SetTextOrigin({ 0.55f, 0.53f });
@@ -218,7 +223,7 @@ void GameMode::BeginPlay()
     setupString = std::string("You are the Blue Tank Warrior \nKill the Orange Tank Bad Guys\n Good luck my fellow Blue Tanker!");
     setupText.SetFontSize(30);
     setupText.SetText(setupString);
-    MenuObjectRefs[10] = MenuObject({ 1590, 600 }, { 650, 300 }, Driscoll::Color(232, 106, 23, 255), Driscoll::Color(37, 150, 190, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
+    MenuObjectRefs[10] = MenuObject({ 1590, 525 }, { 650, 300 }, Driscoll::Color(232, 106, 23, 255), Driscoll::Color(37, 150, 190, 255), Driscoll::BLACK, Driscoll::BLACK, setupText);
     MenuObjectRefs[10].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[10].SetTextureIndex(13);
     MenuObjectRefs[10].SetTextOrigin({ 0.55f, 0.53f });
@@ -302,6 +307,8 @@ void GameMode::BeginPlay()
 
   //Setup for InBetweenRounds State; 
   {
+    NextRoundDelay.SetTimerInSeconds(0.0f, 1.5f);
+
      //11 = Round Counter
     raylib::Text setupText;
     std::string setupString;
@@ -318,7 +325,7 @@ void GameMode::BeginPlay()
     setupString = std::string("Next Round");
     setupText.SetFontSize(50);
     setupText.SetText(setupString);
-    MenuObjectRefs[12] = MenuObject({ GlobalVariables.ScreenX / 2.f, 500}, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[12] = MenuObject({ GlobalVariables.ScreenX / 2.f, 400}, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
     MenuObjectRefs[12].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[12].SetTextureIndex(13);
     MenuObjectRefs[12].BeginPlay();
@@ -327,10 +334,37 @@ void GameMode::BeginPlay()
     setupString = std::string("Quit");
     setupText.SetFontSize(50);
     setupText.SetText(setupString);
-    MenuObjectRefs[14] = MenuObject({ GlobalVariables.ScreenX / 2.f, 900 }, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[14] = MenuObject({ GlobalVariables.ScreenX / 2.f, 600 }, { 400, 150 }, Driscoll::BLACK, Driscoll::TEAL, Driscoll::CYAN, Driscoll::ORANGE, setupText);
     MenuObjectRefs[14].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[14].SetTextureIndex(13);
     MenuObjectRefs[14].BeginPlay();
+
+    //16 = Turret Upgrade
+    setupString = std::string("Turret Upgrade");
+    setupText.SetFontSize(40);
+    setupText.SetText(setupString);
+    MenuObjectRefs[16] = MenuObject({ GlobalVariables.ScreenX / 2.f, 950 }, { 375, 100 }, Driscoll::YELLOW, Driscoll::TEAL, Driscoll::BLACK, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[16].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[16].SetTextureIndex(13);
+    MenuObjectRefs[16].BeginPlay();
+
+    //17 = Health Upgrade
+    setupString = std::string("Tank Upgrade");
+    setupText.SetFontSize(40);
+    setupText.SetText(setupString);
+    MenuObjectRefs[17] = MenuObject({ (GlobalVariables.ScreenX / 2.f) - 400.0f, 950 }, { 375, 100 }, Driscoll::YELLOW, Driscoll::TEAL, Driscoll::BLACK, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[17].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[17].SetTextureIndex(13);
+    MenuObjectRefs[17].BeginPlay();
+
+    //18 = Bullet Upgrade
+    setupString = std::string("Bullet Upgrade");
+    setupText.SetFontSize(40);
+    setupText.SetText(setupString);
+    MenuObjectRefs[18] = MenuObject({ (GlobalVariables.ScreenX / 2.f) + 400.0f, 950 }, { 375, 100 }, Driscoll::YELLOW, Driscoll::TEAL, Driscoll::BLACK, Driscoll::ORANGE, setupText);
+    MenuObjectRefs[18].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[18].SetTextureIndex(13);
+    MenuObjectRefs[18].BeginPlay();
 
   }
 
@@ -461,15 +495,6 @@ void GameMode::Update()
     break;
 
   case PlayingGame:
-    if (!StartingCountdownTimer.RunTimer(GetFrameTime()))
-    {
-      break;
-    }
-
-    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
-    MenuObjectRefs[15].SetText(setupText);
-    MenuObjectRefs[15].Update();
-
     if (PlayerRef->GetShouldPause())
     {
       PlayerRef->CheckPauseInput();
@@ -512,6 +537,15 @@ void GameMode::Update()
       break;
     }
 
+    if (!StartingCountdownTimer.RunTimer(GetFrameTime()))
+    {
+      break;
+    }
+
+    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
+    MenuObjectRefs[15].SetText(setupText);
+    MenuObjectRefs[15].Update();
+
     if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(GetFrameTime()))
     {
       break;
@@ -536,6 +570,7 @@ void GameMode::Update()
         if (EndConditionWaitingTimer.RunTimer(GetFrameTime()))
         {
           Rounds++;
+          UpgradePoints++;
           CurrentState = InbetweenRounds;
           break;
         }
@@ -591,16 +626,34 @@ void GameMode::Update()
 
   case InbetweenRounds:
   {
+    NextRoundDelay.RunTimer(GetFrameTime());
+
     //CHECK COLLISIONS
     raylib::Text setupText; setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
 
     MenuObjectRefs[11].SetText(setupText);
+
     MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
     bIsNextRoundHovered = MenuObjectRefs[12].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
     bIsQuitHovered = MenuObjectRefs[14].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
+    bool bIsTurretUpgradeHovered = false;
+    bool bIsTankUpgradeHovered = false;
+    bool bIsBulletUpgradeHovered = false;
+    if (UpgradePoints > 0)
+    {
+      bIsTurretUpgradeHovered = MenuObjectRefs[16].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
+      bIsTankUpgradeHovered = MenuObjectRefs[17].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
+      bIsBulletUpgradeHovered = MenuObjectRefs[18].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    }
+
     MenuObjectRefs[5].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     MenuObjectRefs[10].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
-    if (bIsNextRoundHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (bIsNextRoundHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && NextRoundDelay.RunTimer(0.0f))
     {
       if (CurrentAmountOfEnemies < TOTAL_ENEMY_COUNT)
       {
@@ -627,33 +680,84 @@ void GameMode::Update()
       }
 
       PlayerRef->IncreaseDifficulty(Rounds);
-      PlayerRef->GetTurretRef()->DisableAllBullets();
       PlayerRef->Update();
       PlayerRef->GetTurretRef()->DisableAllBullets();
 
       bShowPlayerLastHit = false;
 
+      NextRoundDelay.ResetTimer();
+
       CurrentState = PlayingGame;
       break;
     }
-    if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && NextRoundDelay.RunTimer(0.0f))
     {
+      if (RoundHighScore < Rounds)
+      {
+        std::fstream HighScoreFile;
+        HighScoreFile.open("Resources/HighScores.txt", std::ios::out);
+        if (HighScoreFile.is_open())
+        {
+          RoundHighScore = Rounds;
+          HighScoreFile << RoundHighScore;
+
+          raylib::Text newHighscoreText;
+          newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
+          MenuObjectRefs[13].SetText(newHighscoreText);
+        }
+        HighScoreFile.flush();
+        HighScoreFile.close();
+      }
+
+      NextRoundDelay.ResetTimer();
+
       bShouldShutdown = true;
       break;
     }
+
+    if (bIsTurretUpgradeHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      PlayerRef->UpgradePlayer(ETurret, Rounds);
+      UpgradePoints--;
+      break;
+    }
+
+    if (bIsTankUpgradeHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      PlayerRef->UpgradePlayer(ETank, Rounds);
+      UpgradePoints--;
+      break;
+    }
+
+    if (bIsBulletUpgradeHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      PlayerRef->UpgradePlayer(EBullet, Rounds);
+      UpgradePoints--;
+      break;
+    }
+
     MenuObjectRefs[3].Update();
     MenuObjectRefs[5].Update();
     MenuObjectRefs[10].Update();
     MenuObjectRefs[12].Update();
     MenuObjectRefs[13].Update();
     MenuObjectRefs[14].Update();
+    if (UpgradePoints > 0)
+    {
+      MenuObjectRefs[16].Update();
+      MenuObjectRefs[17].Update();
+      MenuObjectRefs[18].Update();
+    }
     break;
   }
   case EndMenu:
+
+    NextRoundDelay.RunTimer(GetFrameTime());
+
     //CHECK COLLISIONS
     MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
-    if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && NextRoundDelay.RunTimer(0))
     {
       bShouldRestart = true;
       bShouldShutdown = true;
@@ -661,7 +765,7 @@ void GameMode::Update()
     }
 
     bIsQuitHovered = MenuObjectRefs[1].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
-    if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && NextRoundDelay.RunTimer(0))
     {
       bShouldShutdown = true;
       break;
@@ -774,33 +878,8 @@ void GameMode::Draw()
         MenuObjectRefs[8].Draw();
         MenuObjectRefs[9].Draw();
       }
-      size_t textureIndex = 0;
+      size_t textureIndex = PlayerRef->GetTurretRef()->GetTextureIndex();
 
-      //Draw Mini Health Bar under Mouse Cursor
-      switch ((int)PlayerRef->GetHealth())
-      {
-      default:
-      case 1:
-        //Full Turret
-        textureIndex = 12;
-        break;
-      case 2:
-        //1/4 Turret Left
-        textureIndex = 11;
-        break;
-      case 3:
-        //1/2 Turret Left
-        textureIndex = 10;
-        break;
-      case 4:
-        //3/4 Turret Left
-        textureIndex = 9;
-        break;
-      case 5:
-        // Full Health Turret
-        textureIndex = 8;
-        break;
-      }
      raylib::Texture& texture = TextureManagerRef->GetTexture(textureIndex);
      raylib::Texture& mouseTexture = TextureManagerRef->GetTexture(5);
 
@@ -825,6 +904,12 @@ void GameMode::Draw()
     MenuObjectRefs[12].Draw();
     MenuObjectRefs[13].Draw();
     MenuObjectRefs[14].Draw();
+    if (UpgradePoints > 0)
+    {
+      MenuObjectRefs[16].Draw();
+      MenuObjectRefs[17].Draw();
+      MenuObjectRefs[18].Draw();
+    }
     break;
 
   case EndMenu:

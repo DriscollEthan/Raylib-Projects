@@ -29,6 +29,9 @@ NOTES:
    *  13. Round HighScore
    *  14. Quit
    *  15. In Game Round Counter
+   *  16. Shooting Speed Upgrade
+   *  17. Health Upgrade
+   *  18. Player Bullet Upgrade
    */
 
 

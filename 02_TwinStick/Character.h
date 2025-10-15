@@ -2,6 +2,14 @@
 #include "Player.h"
 #include "Gunner.h"
 
+enum EUpgradeType
+{
+	EBullet,
+	ETank,
+	ETurret,
+	ENone
+};
+
 class Character : public Player
 {
 public:
@@ -34,6 +42,7 @@ protected:
 
 	float BulletSpeed;
 	float BulletLifetime;
+	Driscoll::Vector2D BulletScale;
 
 	Timer ShootingTimer;
 
@@ -49,7 +58,9 @@ protected:
 		bool bShouldPause;
 
 	//Health
-		int Health;
+		float Health;
+
+		float DamageToTake;
 
 		bool bLastHit;
 
@@ -107,6 +118,8 @@ public:
 	void SetShouldBePaused(bool _shouldBePaused);
 
 	void IncreaseDifficulty(int _round);
+
+	void UpgradePlayer(EUpgradeType _type, int _currentRound);
 
 };
 

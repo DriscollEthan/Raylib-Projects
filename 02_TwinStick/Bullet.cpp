@@ -67,22 +67,26 @@ void Bullet::Update()
 	switch (CurrentState)
 	{
 	case None:
+		Hitbox.Position = { -1000, -1000 };
 		break;
 	case Active:
 		Entity::Update();
 		Move();
 		SetLocalRotation(Driscoll::AngleFrom2D(MovementVector.x, MovementVector.y));
+		SetHitboxRadius((TextureManagerRef->GetTexture(TextureIndex).GetWidth() * GetWorldScale().x) - 20.0f);
 		//Check if still Alive
 		if (LivingTimer.RunTimer(GetFrameTime()))
 		{
 			CurrentState = Explosion;
 			ExplosionIterations = 0;
 			TextureIndex = 14;
-			SetHitboxRadius((TextureManagerRef->GetTexture(TextureIndex).GetWidth() * GetWorldScale().x) - 20.0f);
+			SetHitboxRadius((70 * GetWorldScale().x) - 20.0f);
 		}
 
 		break;
 	case Inactive:
+		Hitbox.Position = { -1000, -1000 };
+
 		break;
 	case Explosion:
 	{
@@ -122,6 +126,8 @@ void Bullet::Update()
 	case NonDeadlyExplosion:
 	{
 		Entity::Update();
+		Hitbox.Position = { -1000, -1000 };
+
 		if (ExplosionTimer.RunTimer(GetFrameTime()) && TextureIndex != 0)
 		{
 			DrawColor = Driscoll::PINK;
@@ -228,12 +234,24 @@ void Bullet::SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _
 {
 	LocalData.LocalPosition = _spawnPosition;
 	MovementVector = _movementVector;
+	Entity::Update();
 	Speed = _speed;
-	SetCurrentState(Active);
 	LivingTimer.SetTimerInSeconds(0.0f, _timeToLive);
 	DrawColor = Driscoll::WHITE;
+	SetCurrentState(Active);
 }
 
 void Bullet::IncreaseDifficulty(int _round)
 {
+}
+
+void Bullet::UpgradeSpeed(float _amount)
+{
+	Speed += _amount;
+}
+
+void Bullet::UpgradeLifetime(float _amount)
+{
+	float endTime = LivingTimer.GetEndTimeInSeconds() + _amount;
+	LivingTimer.SetTimerInSeconds(0.0f, _amount);
 }

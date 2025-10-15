@@ -52,6 +52,11 @@ void Object::SetTextureIndex(size_t _newIndex)
 	TextureIndex = _newIndex;
 }
 
+size_t Object::GetTextureIndex()
+{
+	return TextureIndex;
+}
+
 TextureManager* Object::GetTextureManagerRef()
 {
 	if (!TextureManagerRef)

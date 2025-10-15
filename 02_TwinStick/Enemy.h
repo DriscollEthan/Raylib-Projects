@@ -53,7 +53,6 @@ struct CustomTimer
 
 		float min = 0 - TimerDeviation;
 		float max = 0 + TimerDeviation;
-		SetRandomSeed(min * max * Driscoll::Pi * Driscoll::Rad2Deg / Driscoll::Deg2Rad);
 		TimerDeviation = GetRandomValue(min, max);
 
 		TimerLength += TimerDeviation;

@@ -11,11 +11,15 @@ More Balancing (maybe)
     - Infinite with slow Build Up?
 
 - Need to Have
-    - Extra Upgrade for Player at end of Round(s).
+    - Extra Upgrade for Player at end of Round(s). 
+      - Upgrade Ideas:
+        - More Shooting Speed & Bullet Lifetime
+        - More Health
+        - Player Bullets deal AOE on Hit with Explosion Damage. Then Get Bigger, Then Get Faster and Faster
     
 - Want to Have
      
-    - An actual goal to work towards beyond "kill everything"
+    - An actual goal to work towards beyond "kill everything" [Rounds...][Highscore...]
     - Powerups
     - Enemy Movement Profiles?
     

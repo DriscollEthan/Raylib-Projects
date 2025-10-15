@@ -179,6 +179,24 @@ void Gunner::DisableAllBullets()
 	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
 	{
 		BulletsInPool[i].SetCurrentState(Inactive);
+		BulletsInPool[i].SetLocalPosition({ -1000, -1000 });
+		BulletsInPool[i].Update();
+	}
+}
+
+void Gunner::UpgradeBulletSpeed(float _amount)
+{
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].UpgradeSpeed(_amount);
+	}
+}
+
+void Gunner::UpgradeBulletLifetime(float _amount)
+{
+	for (int i = 0; i < MAX_BULLETS_IN_POOL; ++i)
+	{
+		BulletsInPool[i].UpgradeLifetime(_amount);
 	}
 }
 

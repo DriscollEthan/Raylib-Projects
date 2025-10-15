@@ -310,7 +310,7 @@ void Enemy::IncreaseDifficulty(int _round)
   bLastHit = false;
   SetDrawColor(Driscoll::WHITE);
   SetTextureIndex(2);
-  Speed += 0.75f;
+  Speed += 0.25f;
   BulletSpeed += 0.5f;
   BulletLifetime += 0.5f;
   float endShootingTime = ShootingTimer.GetTimer()->GetEndTimeInSeconds() - 0.4f;
@@ -323,4 +323,5 @@ void Enemy::IncreaseDifficulty(int _round)
   SetIsAlive(true);
   DeadExplosionCountingTimer.ResetTimer();
   ExplosionIterationCount = 0;
+  Turret->DisableAllBullets();
 }

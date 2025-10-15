@@ -59,11 +59,6 @@ public:
 
 	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
 
-	/* BULLET INPUT FUNCTIONS */
-
-
-	/*** ------------------------------------------------------------------ *** ------------------------------------------------------------------ ***/
-
 	/* BULLET SPECIFIC GET FUNCTIONS */
 	EState GetCurrentState();
 	
@@ -80,6 +75,10 @@ public:
 	void SpawnBullet(Driscoll::Vector2D _spawnPosition, Driscoll::Vector2D _movementVector, float _speed, float _timeToLive);
 
 	void IncreaseDifficulty(int _round);
+
+	void UpgradeSpeed(float _amount);
+
+	void UpgradeLifetime(float _amount);
 
 };
 

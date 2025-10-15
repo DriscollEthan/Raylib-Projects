@@ -77,5 +77,9 @@ public:
 
 	void DisableAllBullets();
 
+	void UpgradeBulletSpeed(float _amount);
+
+	void UpgradeBulletLifetime(float _amount);
+
 };
 

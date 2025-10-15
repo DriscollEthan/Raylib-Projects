@@ -48,11 +48,15 @@ protected:
 
   Timer PlayingTime;
 
+  Timer NextRoundDelay;
+
   int Rounds;
 
   int RoundHighScore;
 
   int CurrentAmountOfEnemies;
+
+  int UpgradePoints;
 
   ///Funny
   int CyclePlayerTank;

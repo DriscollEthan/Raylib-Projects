@@ -11,6 +11,7 @@ Character::Character(LocalData2D _localData, size_t _textureLocation, Driscoll::
 	BulletLifetime = _bulletLifetime;
 	bLastHit = false;
 	bFlipFlop = true;
+	BulletScale = { 1,1 };
 }
 
 //Copy Constructor
@@ -72,6 +73,7 @@ void Character::BeginPlay()
 	SetLocalRotation(0);
 
 	SetHealth(5);
+	DamageToTake = 2.0f;
 	SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
 	bShowHit = false;
 	HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.9f);
@@ -273,27 +275,26 @@ void Character::GotHit()
 {
 	if (!bShowHit)
 	{
-		SetHealth(GetHealth() - 1.5);
-
+	std::cout << "Player Hit \n";
+		SetHealth(GetHealth() - DamageToTake);
+	
 		if (GetHealth() <= 0 && bLastHit == true)
 		{
 			SetIsAlive(false);
 		}
-
+	
 		switch ((int)GetHealth())
 		{
 		default:
-			std::cout << "Default \n";
 		case 1:
 			//Full Turret
 			Turret->SetTextureIndex(12);
 			bShowHit = true;
-
+	
 			//bool for last hit to flash colors
 			bLastHit = true;
 			DrawColor = Driscoll::RED;
 			Turret->SetDrawColor(DrawColor);
-			std::cout << "Case 1 \n";
 			break;
 		case 2:
 			//1/4 Turret Left
@@ -377,10 +378,53 @@ void Character::IncreaseDifficulty(int _round)
 	BulletLifetime += 0.01f;
 	float endShootingTime = ShootingTimer.GetEndTimeInSeconds() - 0.001f;
 	ShootingTimer.SetTimerInSeconds(0.0f, endShootingTime);
-	SetHealth(5);
+	SetHealth(GetHealth() + 1.5f);
 	SetDrawColor(Driscoll::WHITE);
 	Turret->SetDrawColor(Driscoll::WHITE);
 	Turret->SetTextureIndex(8);
 	Turret->SetBulletHitboxRadius(-1.0f);
 	Turret->IncreaseDifficulty(_round);
+	Turret->DisableAllBullets();
+}
+
+void Character::UpgradePlayer(EUpgradeType _type, int _currentRound)
+{
+	switch (_type)
+	{
+	case EBullet:
+	{
+		if (_currentRound % 2 == 0)
+		{
+			Turret->UpgradeBulletSpeed(0.5f);
+		}
+		else
+		{
+			BulletScale += 0.2f;
+			Turret->SetBulletData({ GetWorldPosition(), 0.0f, BulletScale });
+		}
+		break;
+	}
+	case ETank:
+	{
+		DamageToTake -= 0.25f;
+		if (DamageToTake <= 0.0f)
+		{
+			DamageToTake = 0.25f;
+		}
+		break;
+	}
+	case ETurret:
+	{
+		if (_currentRound % 2 == 0)
+		{
+			float shootingTime = ShootingTimer.GetEndTimeInSeconds() - 0.025f;
+			ShootingTimer.SetTimerInSeconds(0.0f, shootingTime);
+		}
+		else
+		{
+			Turret->UpgradeBulletLifetime(0.5f);
+		}
+		break;
+	}
+	}
 }
