@@ -112,6 +112,7 @@ void MenuObject::SetDimensions(Driscoll::Vector2D _newDimensionsInPixels)
 void MenuObject::SetWorldPosition(Driscoll::Vector2D _newPosition)
 {
   WorldPosition = _newPosition;
+  DrawPosition = WorldPosition - (DrawScale * 0.5f);
 }
 
 void MenuObject::SetTextFontSize(int _fontSize)

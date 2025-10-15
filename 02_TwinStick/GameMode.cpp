@@ -603,6 +603,11 @@ void GameMode::Update()
             HighScoreFile.flush();
             HighScoreFile.close();
         }
+
+          MenuObjectRefs[15].SetWorldPosition({ (GlobalVariables.ScreenX / 2.f) + 700.f, 200 });
+          MenuObjectRefs[15].SetTextFontSize(40);
+          MenuObjectRefs[15].SetTextNormalColor(Driscoll::YELLOW);
+
           CurrentState = EndMenu;
         }
       }
@@ -776,6 +781,7 @@ void GameMode::Update()
     MenuObjectRefs[3].Update();
     MenuObjectRefs[4].Update();
     MenuObjectRefs[13].Update();
+    MenuObjectRefs[15].Update();
     break;
   }
 }
@@ -918,6 +924,7 @@ void GameMode::Draw()
     MenuObjectRefs[3].Draw();
     MenuObjectRefs[4].Draw();
     MenuObjectRefs[13].Draw();
+    MenuObjectRefs[15].Draw();
     break;
   }
 
