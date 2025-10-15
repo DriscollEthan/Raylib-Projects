@@ -16,36 +16,83 @@ GameMode::~GameMode()
   {
     delete PlayerRef;
   }
+  else
+  {
+    std::cout << "\033[31m ERROR: PlayerRef = INVALID PTR \033[0m" << std::endl;
+  }
   if (EnemyRefs)
   {
     delete[] EnemyRefs;
+  }
+  else
+  {
+    std::cout << "\033[31m ERROR: EnemyRefs = INVALID PTR \033[0m" << std::endl;
   }
   if (TextureManagerRef)
   {
     delete TextureManagerRef;
   }
+  else
+  {
+    std::cout << "\033[31m ERROR: TextureManagerRef = INVALID PTR \033[0m" << std::endl;
+  }
   if (MenuObjectRefs)
   {
     delete[] MenuObjectRefs;
+  }
+  else
+  {
+    std::cout << "\033[31m ERROR: MenuObjectRefs = INVALID PTR \033[0m" << std::endl;
+  }
+  if (PlayerName)
+  {
+    delete[] PlayerName;
+  }
+  else
+  {
+    std::cout << "\033[31m ERROR: PlayerName = INVALID PTR \033[0m" << std::endl;
   }
 }
 
 void GameMode::BeginPlay()
 {
+  PlayerName = new char[MAX_NAME_CHARS + 1];
+  for (int i = 0; i < MAX_NAME_CHARS + 1; ++i)
+  {
+    PlayerName[i] = '\0';
+  }
+  LetterCount = 0;
+
   UpgradePoints = 0;
 
-  //CREATE TEXTURE MANAGER
-  TextureManagerRef = new TextureManager(20);
+  DrawCustomMouseCursor = true;
 
   std::fstream HighScoreFile;
-  HighScoreFile.open("Resources/HighScores.txt", std::ios::in);
+  HighScoreFile.open("Resources/HighScoreName.txt", std::ios::in);
+
+  if (HighScoreFile.is_open())
+  {
+    for (int i = 0; i < MAX_NAME_CHARS; ++i)
+    {
+      HighScoreFile.seekg(i);
+      HighScoreFile >> PlayerName[i];
+    }
+    PlayerName[MAX_NAME_CHARS] = '\0';
+  }
+  HighScoreFile.close();
+
+  HighScoreFile.open("Resources/HighScoreNum.txt", std::ios::in);
+
   if (HighScoreFile.is_open())
   {
     HighScoreFile >> RoundHighScore;
   }
   HighScoreFile.close();
 
-  /* Texture List: (TOTAL = 20)
+  //CREATE TEXTURE MANAGER
+  TextureManagerRef = new TextureManager(21);
+
+  /* Texture List: (TOTAL = 21)
    * 0 = DEFAULT (ALWAYS DEFAULT)
    * 1 = Player Image
    * 2 = Enemy Image
@@ -66,6 +113,7 @@ void GameMode::BeginPlay()
    * 17 = Death Smoke 3
    * 18 = Death Smoke 4
    * 19 = Death Smoke 5
+   * 20 = Cursor I-Beam
    */
 
   //SET TEXTURES
@@ -157,6 +205,10 @@ void GameMode::BeginPlay()
     //White Smoke 5
     ImageLoader.Load("Resources/Smoke/smokeWhite5.png");
     TextureManagerRef->SetTexture(ImageLoader, 19);
+
+    //I-Beam Cursor
+    ImageLoader.Load("Resources/I-BeamCursor.png");
+    TextureManagerRef->SetTexture(ImageLoader, 20);
   }
 
   /* Menu Object List:
@@ -179,10 +231,12 @@ void GameMode::BeginPlay()
    *  16. Shooting Speed Upgrade
    *  17. Health Upgrade
    *  18. Player Bullet Upgrade
+   *  19. Player Name TextBox
+   *  20. Player Name Background
    */
   bShowPlayerLastHit = false;
 
-  MenuObjectRefs = new MenuObject[19];
+  MenuObjectRefs = new MenuObject[21];
   //Setup for MainMenu State;
   {
     raylib::Text setupText = raylib::Text();
@@ -230,10 +284,12 @@ void GameMode::BeginPlay()
     MenuObjectRefs[10].BeginPlay();
 
     //13 = High Score
+    setupString = PlayerName;
     setupText.SetFontSize(30);
-    setupText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
-    MenuObjectRefs[13] = MenuObject({ GlobalVariables.ScreenX - 225.f, 75 }, { 350, 150 }, Driscoll::BLUE, Driscoll::TEAL, Driscoll::WHITE, Driscoll::BLACK, setupText);
+    setupText.SetText(TextFormat("%s Highscore of \nRounds Completed: %03i", PlayerName, RoundHighScore));
+    MenuObjectRefs[13] = MenuObject({ GlobalVariables.ScreenX - 225.f, 75 }, { 450, 150 }, Driscoll::BLUE, Driscoll::TEAL, Driscoll::WHITE, Driscoll::BLACK, setupText);
     MenuObjectRefs[13].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[13].SetTextOrigin({ 0.55f, 0.5f });
     MenuObjectRefs[13].SetTextureIndex(13);
     MenuObjectRefs[13].BeginPlay();
   }
@@ -388,6 +444,24 @@ void GameMode::BeginPlay()
     MenuObjectRefs[4].SetTextureManagerRef(TextureManagerRef);
     MenuObjectRefs[4].SetTextureIndex(13);
     MenuObjectRefs[4].BeginPlay();
+
+    setupString = std::string(PlayerName);
+    setupText.SetText(setupString);
+    MenuObjectRefs[19] = MenuObject({ GlobalVariables.ScreenX / 2.f + 500, 815 }, { 250, 100 }, Driscoll::DARKRED, Driscoll::Color(127, 237, 77, 255), Driscoll::WHITE, Driscoll::BLACK, setupText);
+    MenuObjectRefs[19].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[19].SetTextFontSize(25);
+    MenuObjectRefs[19].SetTextOrigin({ 0.6f, 0.5f });
+    MenuObjectRefs[19].SetTextureIndex(13);
+    MenuObjectRefs[19].BeginPlay();
+
+    setupString = std::string("Input Name:");
+    setupText.SetText(setupString);
+    setupText.SetFontSize(35);
+    MenuObjectRefs[20] = MenuObject({ GlobalVariables.ScreenX / 2.f + 500, 800 }, { 300, 150 }, Driscoll::RED, Driscoll::RED, Driscoll::WHITE, Driscoll::WHITE, setupText);
+    MenuObjectRefs[20].SetTextureManagerRef(TextureManagerRef);
+    MenuObjectRefs[20].SetTextureIndex(13);
+    MenuObjectRefs[20].SetTextOrigin({ 0.5f, 2.f });
+    MenuObjectRefs[20].BeginPlay();
   }
 }
 
@@ -395,13 +469,14 @@ void GameMode::Update()
 {
   bool bIsStartHovered = false;
   bool bIsQuitHovered = false;
-  bool bIsRestartHovered = false;
+  bool bIsRestartHovered = false; 
   bool bIsTitleHovered = false;
   bool bIsNextRoundHovered = false;
 
   bool bEnemiesDead = true;
   bool bIsPauseResumeHovered = false;
   bool bIsPauseQuitHovered = false;
+  bool bIsPlayerNameTextBoxHovered = false;
 
   raylib::Text setupText;
 
@@ -504,28 +579,14 @@ void GameMode::Update()
       if (bIsPauseResumeHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
       {
         PlayerRef->SetShouldBePaused(false);
+        SaveData();
         break;
       }
 
       bIsPauseQuitHovered = MenuObjectRefs[9].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
       if (bIsPauseQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
       {
-        if (RoundHighScore < Rounds)
-        {
-          std::fstream HighScoreFile;
-          HighScoreFile.open("Resources/HighScores.txt", std::ios::out);
-          if (HighScoreFile.is_open())
-          {
-            RoundHighScore = Rounds;
-            HighScoreFile << RoundHighScore;
-
-            raylib::Text newHighscoreText;
-            newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
-            MenuObjectRefs[13].SetText(newHighscoreText);
-          }
-          HighScoreFile.flush();
-          HighScoreFile.close();
-        }
+        SaveData();
         bShouldShutdown = true;
         break;
       }
@@ -537,14 +598,14 @@ void GameMode::Update()
       break;
     }
 
+    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
+    MenuObjectRefs[15].SetText(setupText);
+    MenuObjectRefs[15].Update();
+
     if (!StartingCountdownTimer.RunTimer(GetFrameTime()))
     {
       break;
     }
-
-    setupText.SetText(TextFormat("Rounds Completed: %03i", Rounds));
-    MenuObjectRefs[15].SetText(setupText);
-    MenuObjectRefs[15].Update();
 
     if (PlayerRef->bIsHit() && !HitStopTimer.RunTimer(GetFrameTime()))
     {
@@ -587,22 +648,7 @@ void GameMode::Update()
             MenuObjectRefs[4].SetTextNormalColor(Driscoll::PINK);
           }
 
-          if (RoundHighScore < Rounds)
-          {
-            std::fstream HighScoreFile;
-            HighScoreFile.open("Resources/HighScores.txt", std::ios::out);
-            if (HighScoreFile.is_open())
-            {
-              RoundHighScore = Rounds;
-              HighScoreFile << RoundHighScore;
-
-              raylib::Text newHighscoreText;
-              newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
-              MenuObjectRefs[13].SetText(newHighscoreText);
-            }
-            HighScoreFile.flush();
-            HighScoreFile.close();
-        }
+          SaveData();
 
           MenuObjectRefs[15].SetWorldPosition({ (GlobalVariables.ScreenX / 2.f) + 700.f, 200 });
           MenuObjectRefs[15].SetTextFontSize(40);
@@ -643,6 +689,44 @@ void GameMode::Update()
     bIsNextRoundHovered = MenuObjectRefs[12].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
 
     bIsQuitHovered = MenuObjectRefs[14].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
+    bIsPlayerNameTextBoxHovered = MenuObjectRefs[19].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+
+    if (bIsPlayerNameTextBoxHovered)
+    {
+      //Use I-Beam Cursor
+      DrawCustomMouseCursor = false;
+
+      //Get Text Input
+      int key = GetCharPressed();
+
+      //If more than one key pressed, get all keys.
+      while (key > 0)
+      {
+        //Only allow keys in range [32 - 125] or [Space - Closing Brace]
+        if ((key >= 32) && (key <= 125) && (LetterCount < MAX_NAME_CHARS))
+        {
+          PlayerName[LetterCount] = (char)key;
+          PlayerName[LetterCount + 1] = '\0';
+          LetterCount++;
+        }
+
+        key = GetCharPressed();   // Check next Char in queue;
+      }
+
+      if (IsKeyPressed(KEY_BACKSPACE))
+      {
+        LetterCount--;
+        if (LetterCount < 0) LetterCount = 0;
+        PlayerName[LetterCount] = '\0';
+      }
+
+      MenuObjectRefs[19].SetText(std::string(PlayerName));
+    }
+    else
+    {
+      DrawCustomMouseCursor = true;
+    }
 
     bool bIsTurretUpgradeHovered = false;
     bool bIsTankUpgradeHovered = false;
@@ -697,22 +781,7 @@ void GameMode::Update()
     }
     if (bIsQuitHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && NextRoundDelay.RunTimer(0.0f))
     {
-      if (RoundHighScore < Rounds)
-      {
-        std::fstream HighScoreFile;
-        HighScoreFile.open("Resources/HighScores.txt", std::ios::out);
-        if (HighScoreFile.is_open())
-        {
-          RoundHighScore = Rounds;
-          HighScoreFile << RoundHighScore;
-
-          raylib::Text newHighscoreText;
-          newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
-          MenuObjectRefs[13].SetText(newHighscoreText);
-        }
-        HighScoreFile.flush();
-        HighScoreFile.close();
-      }
+      SaveData();
 
       NextRoundDelay.ResetTimer();
 
@@ -747,6 +816,8 @@ void GameMode::Update()
     MenuObjectRefs[12].Update();
     MenuObjectRefs[13].Update();
     MenuObjectRefs[14].Update();
+    MenuObjectRefs[19].Update();
+    MenuObjectRefs[20].Update();
     if (UpgradePoints > 0)
     {
       MenuObjectRefs[16].Update();
@@ -762,6 +833,7 @@ void GameMode::Update()
     //CHECK COLLISIONS
     MenuObjectRefs[13].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     bIsRestartHovered = MenuObjectRefs[2].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
+    bIsPlayerNameTextBoxHovered = MenuObjectRefs[19].CheckCollision(GetMousePosition(), TextureManagerRef->GetTexture(5).GetWidth() / 2.0f);
     if (bIsRestartHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && NextRoundDelay.RunTimer(0))
     {
       bShouldRestart = true;
@@ -776,12 +848,51 @@ void GameMode::Update()
       break;
     }
 
+    if (bIsPlayerNameTextBoxHovered)
+    {
+      //Use I-Beam Cursor
+      DrawCustomMouseCursor = false;
+
+      //Get Text Input
+      int key = GetCharPressed();
+
+      //If more than one key pressed, get all keys.
+      while (key > 0)
+      {
+        //Only allow keys in range [32 - 125] or [Space - Closing Brace]
+        if ((key >= 32) && (key <= 125) && (LetterCount < MAX_NAME_CHARS))
+        {
+          PlayerName[LetterCount] = (char)key;
+          PlayerName[LetterCount + 1] = '\0';
+          LetterCount++;
+        }
+
+        key = GetCharPressed();   // Check next Char in queue;
+      }
+
+      if (IsKeyPressed(KEY_BACKSPACE))
+      {
+          LetterCount--;
+          if (LetterCount < 0) LetterCount = 0;
+          PlayerName[LetterCount] = '\0';
+      }
+
+      MenuObjectRefs[19].SetText(std::string(PlayerName));
+    }
+    else
+    {
+      HideCursor();
+      DrawCustomMouseCursor = true;
+    }
+
     MenuObjectRefs[2].Update();
     MenuObjectRefs[1].Update();
     MenuObjectRefs[3].Update();
     MenuObjectRefs[4].Update();
     MenuObjectRefs[13].Update();
     MenuObjectRefs[15].Update();
+    MenuObjectRefs[19].Update();
+    MenuObjectRefs[20].Update();
     break;
   }
 }
@@ -910,6 +1021,8 @@ void GameMode::Draw()
     MenuObjectRefs[12].Draw();
     MenuObjectRefs[13].Draw();
     MenuObjectRefs[14].Draw();
+    MenuObjectRefs[20].Draw();
+    MenuObjectRefs[19].Draw();
     if (UpgradePoints > 0)
     {
       MenuObjectRefs[16].Draw();
@@ -925,10 +1038,45 @@ void GameMode::Draw()
     MenuObjectRefs[4].Draw();
     MenuObjectRefs[13].Draw();
     MenuObjectRefs[15].Draw();
+    MenuObjectRefs[20].Draw();
+    MenuObjectRefs[19].Draw();
     break;
   }
 
   //DRAW MOUSE
-  raylib::Texture& MouseTexture = TextureManagerRef->GetTexture(5);
+  raylib::Texture& MouseTexture = (DrawCustomMouseCursor) ? TextureManagerRef->GetTexture(5) : TextureManagerRef->GetTexture(20);
   MouseTexture.Draw(GetMousePosition().x - (MouseTexture.GetWidth() / 2), GetMousePosition().y - (MouseTexture.GetHeight() / 2));
+}
+
+void GameMode::SaveData()
+{
+  if (RoundHighScore < Rounds)
+  {
+    std::fstream HighScoreFile;
+
+    HighScoreFile.open("Resources/HighScoreName.txt", std::ios::out);
+    if (HighScoreFile.is_open())
+    {
+      for (int i = 0; i < MAX_NAME_CHARS + 1; ++i)
+      {
+        HighScoreFile.seekg(i);
+        HighScoreFile << PlayerName[i];
+      }
+    }
+    HighScoreFile.flush();
+    HighScoreFile.close();
+
+    HighScoreFile.open("Resources/HighScoreNum.txt", std::ios::out);
+    if (HighScoreFile.is_open())
+    {
+      RoundHighScore = Rounds;
+      HighScoreFile << RoundHighScore;
+
+      raylib::Text newHighscoreText;
+      newHighscoreText.SetText(TextFormat("Rounds HighScore \nCompleted: %03i", RoundHighScore));
+      MenuObjectRefs[13].SetText(newHighscoreText);
+    }
+    HighScoreFile.flush();
+    HighScoreFile.close();
+  }
 }

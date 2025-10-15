@@ -407,10 +407,14 @@ void Character::UpgradePlayer(EUpgradeType _type, int _currentRound)
 	}
 	case ETank:
 	{
-		DamageToTake -= 0.25f;
-		if (DamageToTake <= 0.0f)
+		if (DamageToTake > 0.25f)
+		{
+			DamageToTake -= 0.25f;
+		}
+		else
 		{
 			DamageToTake = 0.25f;
+			Speed += 0.2f;
 		}
 		break;
 	}

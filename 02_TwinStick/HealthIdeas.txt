@@ -32,6 +32,7 @@ NOTES:
    *  16. Shooting Speed Upgrade
    *  17. Health Upgrade
    *  18. Player Bullet Upgrade
+   *  19. Player Name TextBox
    */
 
 

@@ -25,6 +25,8 @@ public:
 
   virtual void Draw() override;
 
+  void SaveData();
+
 protected:
   Character* PlayerRef;
 
@@ -57,6 +59,14 @@ protected:
   int CurrentAmountOfEnemies;
 
   int UpgradePoints;
+
+  const int MAX_NAME_CHARS = 10;
+
+  char* PlayerName;
+
+  int LetterCount;
+
+  bool DrawCustomMouseCursor;
 
   ///Funny
   int CyclePlayerTank;
