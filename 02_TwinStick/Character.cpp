@@ -76,7 +76,7 @@ void Character::BeginPlay()
 	DamageToTake = 2.0f;
 	SwitchingColorTimer.SetTimerInSeconds(0.0f, 0.25f);
 	bShowHit = false;
-	HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.9f);
+	HitColorShowingTimer.SetTimerInSeconds(0.0f, 0.75f);
 	SwitchHitColorTimer.SetTimerInSeconds(0.0f, 0.15f);
 
 	DeadExplosionCountingTimer.SetTimerInSeconds(0.0f, 0.2f);
@@ -380,9 +380,48 @@ void Character::IncreaseDifficulty(int _round)
 	float endShootingTime = ShootingTimer.GetEndTimeInSeconds() - 0.001f;
 	ShootingTimer.SetTimerInSeconds(0.0f, endShootingTime);
 	SetHealth(GetHealth() + 1.5f);
+
+	switch ((int)GetHealth())
+	{
+	case 1:
+		//Full Turret
+		Turret->SetTextureIndex(12);
+
+		//bool for last hit to flash colors
+		bLastHit = true;
+		DrawColor = Driscoll::RED;
+		Turret->SetDrawColor(DrawColor);
+		break;
+	case 2:
+		//1/4 Turret Left
+		Turret->SetTextureIndex(11);
+		break;
+	case 3:
+		//1/2 Turret Left
+		Turret->SetTextureIndex(10);
+		break;
+	case 4:
+		//3/4 Turret Left
+		Turret->SetTextureIndex(9);
+		break;
+	case 5:
+		Turret->SetTextureIndex(8);
+		break;
+	default:
+		if (GetHealth() < 1)
+		{
+			//Full Turret
+			Turret->SetTextureIndex(12);
+		}
+		else
+		{
+			Turret->SetTextureIndex(8);
+		}
+		break;
+	}
+
 	SetDrawColor(Driscoll::WHITE);
 	Turret->SetDrawColor(Driscoll::WHITE);
-	Turret->SetTextureIndex(8);
 	Turret->SetBulletHitboxRadius(-1.0f);
 	Turret->IncreaseDifficulty(_round);
 	Turret->DisableAllBullets();
@@ -407,13 +446,13 @@ void Character::UpgradePlayer(EUpgradeType _type, int _currentRound)
 	}
 	case ETank:
 	{
-		if (DamageToTake > 0.25f)
+		if (DamageToTake > 0.5f)
 		{
-			DamageToTake -= 0.25f;
+			DamageToTake -= 0.1f;
 		}
 		else
 		{
-			DamageToTake = 0.25f;
+			DamageToTake = 0.5f;
 			Speed += 0.2f;
 		}
 		break;

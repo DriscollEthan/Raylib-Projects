@@ -54,4 +54,5 @@ raylib::Texture& TextureManager::GetTexture(size_t _index)
   {
     std::cout << "\033[31m ERROR: OUT OF BOUNDS \n \033[0m";
   }
+  return TextureArray[0];
 }

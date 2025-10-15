@@ -298,7 +298,7 @@ void GameMode::BeginPlay()
   {
     //SETUP TIMERS
     EndConditionWaitingTimer.SetTimerInSeconds(0.0f, 1.25f);
-    HitStopTimer.SetTimerInSeconds(0.0f, 0.007f);
+    HitStopTimer.SetTimerInSeconds(0.0f, 0.00f);
     StartingCountdownTimer.SetTimerInSeconds(0.0f, 4.0f);
     PlayerLastHitFlashTimer.SetTimerInSeconds(0.0f, 0.25f);
     
