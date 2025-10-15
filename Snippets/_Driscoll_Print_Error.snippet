@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>_Driscoll_Print_Error</Title>
+      <Shortcut>PrintError</Shortcut>
+      <Description>Outputs a message using std::cout</Description>
+      <Author>Ethan Driscoll</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>message</ID>
+          <ToolTip>The message to print</ToolTip>
+          <Default>\033[31m ERROR: Error Log \033[0m</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CPP">
+        <![CDATA[
+std::cout << "$message$" << std::endl;
+]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -100,6 +100,7 @@ void Character::BeginPlay()
 		ShootInput[0] = FInput(E_IsMouseButtonDown, MOUSE_BUTTON_LEFT, 0);
 		ShootInput[1] = FInput(E_IsKeyDown, KEY_SPACE, 0);
 
+
 		//Setup Pause Variables
 		PauseInput[0] = FInput(E_IsKeyPressed, KEY_ESCAPE, 0);
 		PauseInput[1] = FInput(E_IsKeyPressed, KEY_END, 0);
