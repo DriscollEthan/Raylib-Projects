@@ -286,12 +286,10 @@ void Character::GotHit()
 	
 		switch ((int)GetHealth())
 		{
-		default:
 		case 1:
 			//Full Turret
 			Turret->SetTextureIndex(12);
-			bShowHit = true;
-	
+
 			//bool for last hit to flash colors
 			bLastHit = true;
 			DrawColor = Driscoll::RED;
@@ -300,17 +298,28 @@ void Character::GotHit()
 		case 2:
 			//1/4 Turret Left
 			Turret->SetTextureIndex(11);
-			bShowHit = true;
 			break;
 		case 3:
 			//1/2 Turret Left
 			Turret->SetTextureIndex(10);
-			bShowHit = true;
 			break;
 		case 4:
 			//3/4 Turret Left
 			Turret->SetTextureIndex(9);
-			bShowHit = true;
+			break;
+		case 5:
+			Turret->SetTextureIndex(8);
+			break;
+		default:
+			if (GetHealth() < 1)
+			{
+				//Full Turret
+				Turret->SetTextureIndex(12);
+			}
+			else
+			{
+				Turret->SetTextureIndex(8);
+			}
 			break;
 		}
 	}
